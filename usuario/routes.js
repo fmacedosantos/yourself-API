@@ -1,6 +1,6 @@
 import express from "express";
 import { UsuarioController } from "./controller.js";
-import { authenticateToken } from '../middlewares/authenticate-jwt.js';
+import { authenticateToken } from '../middlewares/autenticate-jwt.js';
 
 const app = express();
 const usuarioController = new UsuarioController();
