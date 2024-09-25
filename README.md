@@ -4,7 +4,7 @@
 > http://localhost:3000
 ### Usuario
 > /usuario
-#### CREATE
+#### POST
 > /cadastrar
 - Body da requisição:
 > {  
@@ -14,6 +14,8 @@
     "senha": "senha"  
 }
 
+> /autenticarToken
+- Recebe o jwt pelo cabeçalho da requisição e retorna a validade do token
 # Desenvolvimento
 ## Configurando o ambiente 
 ### Iniciando o projeto
