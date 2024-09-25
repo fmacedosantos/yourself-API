@@ -1,3 +1,5 @@
+import { AtividadeRepository } from "./repository.js"
+
 export class Atividade {
 
     // atributos
@@ -16,6 +18,10 @@ export class Atividade {
 
     #repository
 
+    constructor(){
+        this.#repository = new AtividadeRepository()
+    }
+
     registrarAtividade(){
         if (!this.titulo || !this.categoria || !this.dificuldade || !this.pontos || !this.tempoConcentracao) {
             return Promise.reject({
@@ -23,6 +29,8 @@ export class Atividade {
                 message: "Informações necessárias não informadas!"
             })
         }
+
+        return this.#repository.registrarAtividade(this.titulo, this.descricao, this.categoria, this.tempoConcentracao)
     }
 
 

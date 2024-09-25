@@ -2,6 +2,7 @@ import express from "express";
 import admin from 'firebase-admin';
 import bodyParser from 'body-parser';
 import { usuarioRouter } from './usuario/routes.js';
+import { atividadeRouter } from "./atividade/routes.js";
 
 const app = express();
 
@@ -15,5 +16,6 @@ app.use(bodyParser.json());
 
 // rotas de usuario
 app.use('/usuario', usuarioRouter);
+app.use('/atividade', atividadeRouter);
 
 app.listen(3000, () => console.log('API REST iniciada em http://localhost:3000'));
