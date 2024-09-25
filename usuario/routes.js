@@ -9,7 +9,7 @@ app.post('/cadastrar', (req, res) => {
     usuarioController.cadastrarUsuario(req, res);
 });
 
-app.post('/logar', authenticateToken, (req, res) => {
+app.post('/autenticarToken', authenticateToken, (req, res) => {
     res.status(200).send({ message: 'Usuário autenticado com sucesso!', usuario: req.usuario });
 })
 
