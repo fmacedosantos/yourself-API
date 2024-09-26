@@ -25,13 +25,6 @@ export class Usuario {
     }
 
     cadastrarUsuario() {
-        if (!this.email || !this.nome || !this.nomeUsuario || !this.senha) {
-            return Promise.reject({
-                code: 500,
-                message: "Informações necessárias não informadas!"
-            });
-        }
-
         return this.#repository.cadastrarUsuario(this.email, this.senha, this.nome, this.nomeUsuario);
     }
 }

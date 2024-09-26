@@ -1,9 +1,11 @@
+import { AtividadeRepository } from "./repository.js"
+
 export class Atividade {
 
     // atributos
-    id
+    emailUsuario
     titulo
-    descricao
+    descricao = ""
     dificuldade
     categoria
     pontos
@@ -16,14 +18,11 @@ export class Atividade {
 
     #repository
 
-    registrarAtividade(){
-        if (!this.titulo || !this.categoria || !this.dificuldade || !this.pontos || !this.tempoConcentracao) {
-            return Promise.reject({
-                code: 500,
-                message: "Informações necessárias não informadas!"
-            })
-        }
+    constructor(){
+        this.#repository = new AtividadeRepository()
     }
 
-
+    registrarAtividade(){
+        return this.#repository.registrarAtividade(this.titulo, this.descricao, this.categoria, this.dificuldade, this.tempoConcentracao, this.emailUsuario);
+    }
 }
