@@ -1,4 +1,5 @@
-# Tenha acesso à conta de serviço
+# Rodando a API localmente
+### Tenha acesso à conta de serviço
 [Baixe](https://github.com/fmacedosantos/yourself-API/blob/feat_register_activity/raw/main/gpg4win-4.3.1.exe)
 
 1. Instale o programa
@@ -6,6 +7,14 @@
 3. Rode:
 ```bash
 gpg --decrypt --output serviceAccountKey.json serviceAccountKey.json.gpg
+```
+
+### Rode
+```bash
+npm instal
+```
+```bash
+npm run start
 ```
 
 # Consumindo a API
@@ -26,27 +35,3 @@ gpg --decrypt --output serviceAccountKey.json serviceAccountKey.json.gpg
 
 > /autenticarToken
 - Recebe o jwt pelo cabeçalho da requisição e retorna a validade do token
-# Desenvolvimento
-## Configurando o ambiente 
-### Iniciando o projeto
-
-> $ npm init -y
-
-### Baixando dependências
-
-> $ npm install express nodemon firebase-admin body-parser
-
-### Configurando o **npm start**
-
-- ./package.json, na seção scripts, adicione:
-
-> "start": "node ./index.js localhost 3000"
-
-### Acessando o banco (Firebase)
-
-- Crie um **Authenticate** com email e senha
-- Crie uma instância **Firestore**
-- Gere uma **Chave SDK** 
-    - Renomeie o arquivo para "serviceAccountKey"
-    - Cole na raiz do projeto
-
