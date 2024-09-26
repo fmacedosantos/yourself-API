@@ -1,44 +1,57 @@
 import admin from 'firebase-admin';
 
+const COLLECTION_ATIVIDADES = 'atividades';
+const COLLECTION_USUARIOS = 'usuarios';
+
 export class AtividadeRepository {
 
     db = admin.firestore();
 
-    calcularPontos(tempoConcentracao, dificuldade){
-        const dificuldadeFormatada = 0
+    calcularPontos(tempoConcentracao, dificuldade) {
+        let dificuldadeFormatada = 0;
         switch (dificuldade) {
-            case "Facil":
-                dificuldadeFormatada = 0.5
-                break
-            case "Media":
-                dificuldadeFormatada = 1
-                break
-            case "Dificil":
-                dificuldadeFormatada = 1.5
+            case 1:
+                dificuldadeFormatada = 0.5;
+                break;
+            case 2:
+                dificuldadeFormatada = 1;
+                break;
+            case 3:
+                dificuldadeFormatada = 1.5;
+                break;
         }
-        return pontos = tempoConcentracao * dificuldadeFormatada
+        return tempoConcentracao * dificuldadeFormatada;
     }
 
-    registrarAtividade(titulo, descricao, categoria, dificuldade, tempoConcentracao){
-        const pontos = this.calcularPontos(tempoConcentracao, dificuldade)
+    async registrarAtividade(titulo, descricao, categoria, dificuldade, tempoConcentracao, emailUsuario) {
+        const pontos = this.calcularPontos(tempoConcentracao, dificuldade);
+
+        const atividadeRef = this.db.collection(COLLECTION_ATIVIDADES).doc();
+        const atividadeId = atividadeRef.id;
 
         const atividade = {
-            titulo: titulo,
+            titulo,
             descricao: descricao || "",
-            categoria: categoria,
-            dificuldade: dificuldade,
-            tempoConcentracao: tempoConcentracao,
-            pontos: pontos
-        }
-        return this.db
-            .collection('atividades')
-            .add(atividade)
-            .catch(error => {
-                return Promise.reject({
-                    code: 500,
-                    message: "Erro ao cadastrar atividade: " + error.message
-                })
-            })
-    }
+            categoria,
+            dificuldade,
+            tempoConcentracao,
+            pontos,
+            usuario: emailUsuario
+        };
 
+        await atividadeRef.set(atividade);
+
+        const usuarioRef = this.db.collection(COLLECTION_USUARIOS).doc(emailUsuario);
+        const usuarioDoc = await usuarioRef.get();
+
+        if (!usuarioDoc.exists) {
+            throw new Error("Usuário não encontrado!");
+        }
+
+        await usuarioRef.update({
+            atividades: admin.firestore.FieldValue.arrayUnion(atividadeId)
+        });
+
+        return atividadeId;
+    }
 }
