@@ -4,7 +4,7 @@ import { AtividadeController } from "./controller.js";
 const app = express();
 const atividadeController = new AtividadeController()
 
-app.post('/registrar', (req, res) => {
+app.post('/cadastrar', (req, res) => {
     atividadeController.registrarAtividade(req, res)
 })
 
