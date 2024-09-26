@@ -6,7 +6,7 @@
 2. Feche e abra novamente o ambiente de desenvolvimento
 3. Rode:
 ```bash
-gpg --decrypt --output serviceAccountKey.json serviceAccountKey.json.gpg
+npm run decrypt
 ```
 
 ### Rode
@@ -16,6 +16,17 @@ npm instal
 ```bash
 npm run start
 ```
+
+#### Caso compartilhe o computador, após o uso, rode:
+**Em ambientes Windows**:
+```bash
+npm run delete-key-win
+```
+Outros:
+```bash
+npm run delete-key
+```
+
 
 # Consumindo a API
 ## Endpoints
