@@ -1,22 +1,22 @@
 import admin from 'firebase-admin';
 
+const COLLECTION_USUARIOS = 'usuarios';
+
 export class UsuarioRepository {
 
-    // acessando o firestore
     db = admin.firestore();
 
-    cadastrarUsuario(email, senha, nome, nomeUsuario) {
-        // registrando o usuario no firebase authentication
-        return admin.auth().createUser({
-            email: email,
-            password: senha
-        })
-        .then((userRecord) => {
-            // armazenando informacoes adicionais no firestore
-            return this.db.collection('usuarios').doc(userRecord.uid).set({
+    async cadastrarUsuario(email, senha, nome, nomeUsuario) {
+        try {
+            const userRecord = await admin.auth().createUser({
                 email: email,
-                nome: nome,
-                nomeUsuario: nomeUsuario,
+                password: senha
+            });
+
+            await this.db.collection(COLLECTION_USUARIOS).doc(email).set({
+                email,
+                nome,
+                nomeUsuario,
                 anoRegistro: new Date().getFullYear(),
                 pontos: 0,
                 totalPontos: 0,
@@ -27,18 +27,12 @@ export class UsuarioRepository {
                 comprasItens: [],
                 atividades: []
             });
-        })
-        .catch((error) => {
-            if (error.message == "The email address is already in use by another account.") {
-                return Promise.reject({
-                    code: 500,
-                    message: "Usuário já cadastrado!"
-                })
+
+        } catch (error) {
+            if (error.message === "The email address is already in use by another account.") {
+                throw new Error("Usuário já cadastrado!");
             }
-            return Promise.reject({
-                code: 500,
-                message: "Erro ao cadastrar usuário: " + error.message
-            });
-        });
+            throw new Error("Erro ao cadastrar usuário: " + error.message);
+        }
     }
 }
