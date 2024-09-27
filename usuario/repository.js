@@ -49,15 +49,12 @@ export class UsuarioRepository {
             }
 
             if (novaSenha) {
-                await admin.auth().updateUser
-                (
-                    email, 
-                    { 
-                        password: novaSenha 
-                    }
-                );
+                // buscar o uid do usuário pelo email
+                const userRecord = await admin.auth().getUserByEmail(email);
+                await admin.auth().updateUser(userRecord.uid, { password: novaSenha });
             }
 
+            // atualizar no Firestore se houver mudanças
             if (Object.keys(atualizacoesFirestore).length > 0) {
                 await this.db.collection(COLLECTION_USUARIOS).doc(email).update(atualizacoesFirestore);
             }
