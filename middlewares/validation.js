@@ -22,7 +22,7 @@ export const validarAtualizarUsuario = (req, res, next) => {
         return res.status(400).json({ message: mensagemErroInformacoesNecessarias });
     }
     if (!nome && !nomeUsuario && !novaSenha) {
-        return res.status(200).json({ message: "Nada foi atualizado!" });
+        return res.status(200).json({ message: "Nenhum dado foi atualizado!" });
     }
     next();
 };
