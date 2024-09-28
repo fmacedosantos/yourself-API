@@ -30,19 +30,33 @@ npm run delete-key
 
 # Consumindo a API
 ## Endpoints
-- URL padrão:
+BASE_URL
 > http://localhost:3000
 ### Usuario
 > /usuario
 #### POST
 > /cadastrar
 - Body da requisição:
-> {  
+```json
+{  
     "email": "teste@email.com",  
     "nomeUsuario": "teste",  
     "nome": "teste",  
     "senha": "senha"  
 }
+```
 
 > /autenticarToken
 - Recebe o jwt pelo cabeçalho da requisição e retorna a validade do token
+
+#### PATCH
+> /atualizar
+- Body da requisição:
+```json
+{
+  "email": "teste@email.com",
+  "nomeUsuario": "testado001",
+  "nome": "Usuario Teste", 
+  "novaSenha": "123456"
+}
+```
