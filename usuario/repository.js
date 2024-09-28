@@ -8,7 +8,7 @@ export class UsuarioRepository {
 
     async cadastrarUsuario(email, senha, nome, nomeUsuario) {
         try {
-            const userRecord = await admin.auth().createUser({
+            await admin.auth().createUser({
                 email: email,
                 password: senha
             });
@@ -33,6 +33,34 @@ export class UsuarioRepository {
                 throw new Error("Usuário já cadastrado!");
             }
             throw new Error("Erro ao cadastrar usuário: " + error.message);
+        }
+    }
+
+    async atualizarUsuario(email, nome = "", nomeUsuario = "", novaSenha = "") {
+        try {
+            const atualizacoesFirestore = {};
+
+            if (nome) {
+                atualizacoesFirestore.nome = nome;
+            }
+
+            if (nomeUsuario) {
+                atualizacoesFirestore.nomeUsuario = nomeUsuario;
+            }
+
+            if (novaSenha) {
+                // buscar o uid do usuário pelo email
+                const userRecord = await admin.auth().getUserByEmail(email);
+                await admin.auth().updateUser(userRecord.uid, { password: novaSenha });
+            }
+
+            // atualizar no Firestore se houver mudanças
+            if (Object.keys(atualizacoesFirestore).length > 0) {
+                await this.db.collection(COLLECTION_USUARIOS).doc(email).update(atualizacoesFirestore);
+            }
+
+        } catch (error) {
+            throw new Error("Erro ao atualizar usuário: " + error.message);
         }
     }
 }

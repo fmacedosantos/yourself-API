@@ -27,4 +27,8 @@ export class Usuario {
     cadastrarUsuario() {
         return this.#repository.cadastrarUsuario(this.email, this.senha, this.nome, this.nomeUsuario);
     }
+
+    atualizarUsuario(){
+        return this.#repository.atualizarUsuario(this.email, this.nome, this.nomeUsuario, this.senha)
+    }
 }
