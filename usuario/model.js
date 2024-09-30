@@ -33,6 +33,10 @@ export class Usuario {
     }
 
     atualizarUsuario(){
-        return this.#repository.atualizarUsuario(this.email, this.nome, this.nomeUsuario, this.senha)
+        return this.#repository.atualizarUsuario(this.email, this.nome, this.nomeUsuario, this.senha);
+    }
+
+    deletarUsuario(){
+        return this.#repository.deletarUsuario(this.email);
     }
 }

@@ -86,4 +86,24 @@ export class UsuarioRepository {
             throw new Error("Erro ao atualizar usuário: " + error.message);
         }
     }
+
+    async deletarUsuario(email) {
+        try {
+            const userRecord = await admin.auth().getUserByEmail(email);
+            
+            // deletando o usuario do Firebase Authentication
+            await admin.auth().deleteUser(userRecord.uid);
+    
+            // deletando os dados do usuário no Firestore
+            await this.db.collection(COLLECTION_USUARIOS).doc(email).delete();
+    
+            return true;  
+        } catch (error) {
+            if (error.message === "There is no user record corresponding to the provided identifier.") {
+                throw new Error("Usuário não cadastrado no Firebase Authentication.");
+            }
+            throw new Error("Erro ao deletar usuário: " + error.message);
+        }
+    }
+    
 }

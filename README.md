@@ -49,6 +49,15 @@ BASE_URL
 > /autenticarToken
 - Recebe o jwt pelo cabeçalho da requisição e retorna a validade do token
 
+#### GET
+> /mostrar
+- Body da requisição:
+```json
+{
+  "email": "teste@email.com"
+}
+```
+
 #### PATCH
 > /atualizar
 - Body da requisição:
@@ -60,3 +69,11 @@ BASE_URL
   "novaSenha": "123456"
 }
 ```
+
+#### DELETE
+> /deletar
+- Body da requisição:
+```json
+{
+  "email": "teste@email.com"
+}
