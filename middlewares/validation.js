@@ -8,6 +8,14 @@ export const validarCadastroUsuario = (req, res, next) => {
     next();
 };
 
+export const validarMostrarUsuario = (req, res, next) => {
+    const { email } = req.body;
+    if (!email) {
+        return res.status(400).json({ message: mensagemErroInformacoesNecessarias });
+    }
+    next();
+}
+
 export const validarCadastroAtividade = (req, res, next) => {
     const { titulo, categoria, dificuldade, tempoConcentracao, emailUsuario } = req.body;
     if (!titulo || !categoria || !dificuldade || !tempoConcentracao || !emailUsuario) {

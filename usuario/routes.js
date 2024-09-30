@@ -1,7 +1,7 @@
 import express from "express";
 import { UsuarioController } from "./controller.js";
 import { authenticateToken } from '../middlewares/autenticate-jwt.js';
-import { validarAtualizarUsuario, validarCadastroUsuario } from '../middlewares/validation.js';
+import { validarAtualizarUsuario, validarCadastroUsuario, validarMostrarUsuario } from '../middlewares/validation.js';
 
 const app = express();
 const usuarioController = new UsuarioController();
@@ -14,7 +14,7 @@ app.post('/autenticarToken', authenticateToken, (req, res) => {
     res.status(200).send({ message: 'Usuário autenticado com sucesso!', usuario: req.usuario });
 });
 
-app.get('/mostrar', (req, res) => {
+app.get('/mostrar', validarMostrarUsuario, (req, res) => {
     usuarioController.mostrarUsuario(req, res);
 })
 
