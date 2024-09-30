@@ -26,4 +26,12 @@ app.delete('/deletar', validarEmailUsuario, (req, res) => {
     usuarioController.deletarUsuario(req, res);
 })
 
+app.get('/mostrarIdAtividades', validarEmailUsuario, (req, res) => {
+    usuarioController.mostrarIdAtividades(req, res);
+})
+
+app.get('/mostrarAtividades', validarEmailUsuario, (req, res) => {
+    usuarioController.mostrarAtividades(req, res);
+})
+
 export const usuarioRouter = app;

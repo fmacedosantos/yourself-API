@@ -67,4 +67,32 @@ export class UsuarioController {
             res.status(500).json({ message: error.message });
         }
     }
+
+    async mostrarIdAtividades(req, res) {
+        try {
+            const { email } = req.body;
+    
+            const usuario = new Usuario();
+            usuario.email = email;
+
+            const idAtividadesUsuario = await usuario.mostrarIdAtividades();
+            res.status(200).send({ idAtividadesUsuario });
+        } catch (error) {
+            res.status(500).json({ message: error.message });
+        }
+    }
+
+    async mostrarAtividades(req, res) {
+        try {
+            const { email } = req.body;
+
+            const usuario = new Usuario();
+            usuario.email = email;
+
+            const dadosAtividades = await usuario.mostrarAtividades();
+            res.status(200).send({ dadosAtividades })
+        } catch (error) {
+            res.status(500).json({ message: error.message });
+        }
+    }
 }
