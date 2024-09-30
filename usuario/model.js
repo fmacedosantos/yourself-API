@@ -28,6 +28,10 @@ export class Usuario {
         return this.#repository.cadastrarUsuario(this.email, this.senha, this.nome, this.nomeUsuario);
     }
 
+    mostrarUsuario() {
+        return this.#repository.mostrarUsuario(this.email);
+    }
+
     atualizarUsuario(){
         return this.#repository.atualizarUsuario(this.email, this.nome, this.nomeUsuario, this.senha)
     }

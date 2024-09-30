@@ -18,6 +18,20 @@ export class UsuarioController {
         }
     }
 
+    async mostrarUsuario(req, res) {
+        try {
+            const { email } = req.body;
+
+            const usuario = new Usuario();
+            usuario.email = email;
+
+            const dadosUsuario = await usuario.mostrarUsuario();
+            res.status(200).send({ dadosUsuario });
+        } catch (error) {
+            res.status(500).json({ message: error.message });
+        }
+    }
+
     async atualizarUsuario(req, res) {
         try {
             const { email, nome, nomeUsuario, novaSenha } = req.body;
