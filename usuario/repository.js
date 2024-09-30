@@ -36,6 +36,29 @@ export class UsuarioRepository {
         }
     }
 
+    async mostrarUsuario(email) {
+        try {
+            // verifica se o usuário existe no Firebase Authentication
+            await admin.auth().getUserByEmail(email);
+    
+            // busca os dados do usuário no Firestore
+            const usuarioSnapshot = await this.db.collection(COLLECTION_USUARIOS).doc(email).get();
+    
+            if (!usuarioSnapshot.exists) {
+                throw new Error("Usuário não encontrado no banco de dados.");
+            }
+    
+            return usuarioSnapshot.data(); // retorna os dados do usuário
+        } catch (error) {
+            let errorMessage = error.message;
+            
+            if (error.message == "There is no user record corresponding to the provided identifier.") {
+                errorMessage = 'Usuário não cadastrado!';
+            }
+            throw new Error("Erro ao mostrar usuário: " + errorMessage );
+        }
+    }
+
     async atualizarUsuario(email, nome = "", nomeUsuario = "", novaSenha = "") {
         try {
             const atualizacoesFirestore = {};

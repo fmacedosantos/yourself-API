@@ -14,6 +14,10 @@ app.post('/autenticarToken', authenticateToken, (req, res) => {
     res.status(200).send({ message: 'Usuário autenticado com sucesso!', usuario: req.usuario });
 });
 
+app.get('/mostrar', (req, res) => {
+    usuarioController.mostrarUsuario(req, res);
+})
+
 app.patch('/atualizar', validarAtualizarUsuario, (req, res) => {
     usuarioController.atualizarUsuario(req, res);
 })
