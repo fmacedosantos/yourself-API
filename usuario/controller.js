@@ -48,4 +48,23 @@ export class UsuarioController {
             res.status(500).json({ message: error.message });
         }
     }
+
+    async deletarUsuario(req, res) {
+        try {
+            const { email } = req.body;
+    
+            const usuario = new Usuario();
+            usuario.email = email;
+    
+            const deletado = await usuario.deletarUsuario();
+    
+            if (deletado) {
+                res.status(200).send({ message: 'Usuário deletado com sucesso!' });
+            } else {
+                res.status(400).send({ message: 'Falha ao deletar usuário.' });
+            }
+        } catch (error) {
+            res.status(500).json({ message: error.message });
+        }
+    }
 }
