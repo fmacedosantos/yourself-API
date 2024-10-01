@@ -110,16 +110,13 @@ export class UsuarioRepository {
 
     async mostrarIdAtividades(email) {
         try {
-            await admin.auth().getUserByEmail(email);
-
             const usuarioSnapshot = await this.db.collection(COLLECTION_USUARIOS).doc(email).get();
-
             if (!usuarioSnapshot.exists) {
-                throw new Error("O usuário não possui atividades.");
-            } else {
-                const atividades = usuarioSnapshot.get('atividades');
-                return atividades;
+                throw new Error("Usuário não encontrado.");
             }
+
+            const atividades = usuarioSnapshot.get('atividades') || [];
+            return atividades;
     
         } catch (error) {
             let errorMessage = error.message;

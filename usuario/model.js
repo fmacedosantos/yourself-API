@@ -49,8 +49,12 @@ export class Usuario {
         const atividadeRepository = new AtividadeRepository();
 
         const idsAtividades = await this.#repository.mostrarIdAtividades(this.email);
-        const atividades = await atividadeRepository.buscarAtividadesPorIds(idsAtividades);
 
+        if (idsAtividades.length === 0) {
+            throw new Error("Usuário não possui atividades.");
+        }
+
+        const atividades = await atividadeRepository.buscarAtividadesPorIds(idsAtividades);
         return atividades;
     }
 }

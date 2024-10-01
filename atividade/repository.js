@@ -58,19 +58,19 @@ export class AtividadeRepository {
     async buscarAtividadesPorIds(idsAtividades) {
         try {
             const atividades = [];
-
-            // para cada ID de atividade, busca o documento correspondente
+    
             for (const id of idsAtividades) {
                 const atividadeSnapshot = await this.db.collection(COLLECTION_ATIVIDADES).doc(id).get();
-
+    
                 if (atividadeSnapshot.exists) {
-                    atividades.push(atividadeSnapshot.data());  // adiciona os dados da atividade no array
+                    atividades.push(atividadeSnapshot.data());
                 }
             }
-
-            return atividades;  // retorna um array de atividades
+    
+            return atividades;
         } catch (error) {
-            throw new Error("Erro ao buscar atividades: " + error.message);
+            throw new Error("Erro ao buscar atividades no banco de dados.");
         }
     }
+    
 }
