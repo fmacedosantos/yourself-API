@@ -8,15 +8,18 @@ export class UsuarioRepository {
 
     async cadastrarUsuario(email, senha, nome, nomeUsuario) {
         try {
+            // cadastra no authentication
             await admin.auth().createUser({
                 email: email,
                 password: senha
             });
 
+            // cadastra no firestore, sendo o doc o email do usuário
             await this.db.collection(COLLECTION_USUARIOS).doc(email).set({
                 email,
                 nome,
                 nomeUsuario,
+                // valores padrões (não informados no cadastro)
                 anoRegistro: new Date().getFullYear(),
                 pontos: 0,
                 totalPontos: 0,
@@ -38,17 +41,15 @@ export class UsuarioRepository {
 
     async mostrarUsuario(email) {
         try {
-            // verifica se o usuário existe no Firebase Authentication
-            await admin.auth().getUserByEmail(email);
     
-            // busca os dados do usuário no Firestore
+            // busca os dados do usuário no firestore
             const usuarioSnapshot = await this.db.collection(COLLECTION_USUARIOS).doc(email).get();
     
             if (!usuarioSnapshot.exists) {
-                throw new Error("Usuário não encontrado no banco de dados.");
+                throw new Error("Usuário não cadastrado!");
             }
     
-            return usuarioSnapshot.data(); // retorna os dados do usuário
+            return usuarioSnapshot.data(); 
         } catch (error) {
             let errorMessage = error.message;
             
@@ -61,6 +62,7 @@ export class UsuarioRepository {
 
     async atualizarUsuario(email, nome = "", nomeUsuario = "", novaSenha = "") {
         try {
+            // armazena as mudanças
             const atualizacoesFirestore = {};
 
             if (nome) {
@@ -72,12 +74,12 @@ export class UsuarioRepository {
             }
 
             if (novaSenha) {
-                // buscar o uid do usuário pelo email
+                // atualiza no authenticate
                 const userRecord = await admin.auth().getUserByEmail(email);
                 await admin.auth().updateUser(userRecord.uid, { password: novaSenha });
             }
 
-            // atualizar no Firestore se houver mudanças
+            // atualiza no firestore se houver mudanças
             if (Object.keys(atualizacoesFirestore).length > 0) {
                 await this.db.collection(COLLECTION_USUARIOS).doc(email).update(atualizacoesFirestore);
             }
@@ -100,9 +102,29 @@ export class UsuarioRepository {
             return true;  
         } catch (error) {
             if (error.message === "There is no user record corresponding to the provided identifier.") {
-                throw new Error("Usuário não cadastrado no Firebase Authentication.");
+                throw new Error("Usuário não cadastrado!");
             }
             throw new Error("Erro ao deletar usuário: " + error.message);
+        }
+    }
+
+    async mostrarIdAtividades(email) {
+        try {
+            const usuarioSnapshot = await this.db.collection(COLLECTION_USUARIOS).doc(email).get();
+            if (!usuarioSnapshot.exists) {
+                throw new Error("Usuário não encontrado.");
+            }
+
+            const atividades = usuarioSnapshot.get('atividades') || [];
+            return atividades;
+    
+        } catch (error) {
+            let errorMessage = error.message;
+            
+            if (error.message == "There is no user record corresponding to the provided identifier.") {
+                errorMessage = 'Usuário não cadastrado!';
+            }
+            throw new Error(`Erro ao mostrar atividades de ${email}: ` + errorMessage);
         }
     }
     

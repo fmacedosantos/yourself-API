@@ -1,3 +1,4 @@
+import { AtividadeRepository } from "../atividade/repository.js";
 import { UsuarioRepository } from "./repository.js";
 
 export class Usuario {
@@ -38,5 +39,22 @@ export class Usuario {
 
     deletarUsuario(){
         return this.#repository.deletarUsuario(this.email);
+    }
+
+    mostrarIdAtividades(){
+        return this.#repository.mostrarIdAtividades(this.email);
+    }
+
+    async mostrarAtividades(){
+        const atividadeRepository = new AtividadeRepository();
+
+        const idsAtividades = await this.#repository.mostrarIdAtividades(this.email);
+
+        if (idsAtividades.length === 0) {
+            throw new Error("Usuário não possui atividades.");
+        }
+
+        const atividades = await atividadeRepository.buscarAtividadesPorIds(idsAtividades);
+        return atividades;
     }
 }

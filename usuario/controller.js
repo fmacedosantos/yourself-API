@@ -35,19 +35,22 @@ export class UsuarioController {
     async atualizarUsuario(req, res) {
         try {
             const { email, nome, nomeUsuario, novaSenha } = req.body;
-
+    
             const usuario = new Usuario();
             usuario.email = email;
             usuario.nome = nome;
             usuario.nomeUsuario = nomeUsuario;
             usuario.senha = novaSenha;
-
+    
             await usuario.atualizarUsuario();
-            res.status(200).send({ message: 'Usuário atualizado com sucesso!' });
+    
+            const usuarioAtualizado = await usuario.mostrarUsuario();
+            res.status(200).send({ message: 'Usuário atualizado com sucesso!', usuarioAtualizado });
         } catch (error) {
             res.status(500).json({ message: error.message });
         }
     }
+    
 
     async deletarUsuario(req, res) {
         try {
@@ -65,6 +68,37 @@ export class UsuarioController {
             }
         } catch (error) {
             res.status(500).json({ message: error.message });
+        }
+    }
+
+    async mostrarIdAtividades(req, res) {
+        try {
+            const { email } = req.body;
+    
+            const usuario = new Usuario();
+            usuario.email = email;
+
+            const idAtividadesUsuario = await usuario.mostrarIdAtividades();
+            res.status(200).send({ idAtividadesUsuario });
+        } catch (error) {
+            res.status(500).json({ message: error.message });
+        }
+    }
+
+    async mostrarAtividades(req, res) {
+        try {
+            const { email } = req.body;
+            const usuario = new Usuario();
+            usuario.email = email;
+    
+            const dadosAtividades = await usuario.mostrarAtividades();
+            res.status(200).send({ dadosAtividades });
+        } catch (error) {
+            if (error.message === "Usuário não possui atividades.") {
+                res.status(404).send({ message: "O usuário não possui atividades cadastradas." });
+            } else {
+                res.status(500).json({ message: error.message });
+            }
         }
     }
 }

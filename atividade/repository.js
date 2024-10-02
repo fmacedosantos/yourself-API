@@ -54,4 +54,23 @@ export class AtividadeRepository {
 
         return atividadeId;
     }
+
+    async buscarAtividadesPorIds(idsAtividades) {
+        try {
+            const atividades = [];
+    
+            for (const id of idsAtividades) {
+                const atividadeSnapshot = await this.db.collection(COLLECTION_ATIVIDADES).doc(id).get();
+    
+                if (atividadeSnapshot.exists) {
+                    atividades.push(atividadeSnapshot.data());
+                }
+            }
+    
+            return atividades;
+        } catch (error) {
+            throw new Error("Erro ao buscar atividades no banco de dados.");
+        }
+    }
+    
 }
