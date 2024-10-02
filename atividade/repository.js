@@ -25,10 +25,10 @@ export class AtividadeRepository {
 
     async registrarAtividade(titulo, descricao, categoria, dificuldade, tempoConcentracao, emailUsuario) {
         const pontos = this.calcularPontos(tempoConcentracao, dificuldade);
-
+    
         const atividadeRef = this.db.collection(COLLECTION_ATIVIDADES).doc();
         const atividadeId = atividadeRef.id;
-
+    
         const atividade = {
             titulo,
             descricao: descricao || "",
@@ -38,22 +38,31 @@ export class AtividadeRepository {
             pontos,
             usuario: emailUsuario
         };
-
+    
+        // registrar a nova atividade
         await atividadeRef.set(atividade);
-
+    
         const usuarioRef = this.db.collection(COLLECTION_USUARIOS).doc(emailUsuario);
         const usuarioDoc = await usuarioRef.get();
-
+    
         if (!usuarioDoc.exists) {
             throw new Error("Usuário não encontrado!");
         }
-
+    
+        const usuarioData = usuarioDoc.data();
+        const novosPontos = usuarioData.pontos + pontos;
+        const novoTotalPontos = usuarioData.totalPontos + pontos;
+    
+        // atualizar os pontos do usuário
         await usuarioRef.update({
-            atividades: admin.firestore.FieldValue.arrayUnion(atividadeId)
+            atividades: admin.firestore.FieldValue.arrayUnion(atividadeId),
+            pontos: novosPontos,
+            totalPontos: novoTotalPontos
         });
-
+    
         return atividadeId;
     }
+    
 
     async buscarAtividadesPorIds(idsAtividades) {
         try {
