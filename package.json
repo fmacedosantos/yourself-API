@@ -4,7 +4,7 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node ./index.js localhost 3000",
+    "start": "node ./src/index.js localhost 3000",
     "delete-key": "rm -f serviceAccountKey.json",
     "delete-key-win": "del /f serviceAccountKey.json",
     "decrypt": "gpg --decrypt --output serviceAccountKey.json serviceAccountKey.json.gpg"

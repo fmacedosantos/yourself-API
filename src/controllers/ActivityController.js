@@ -1,4 +1,4 @@
-import { Atividade } from "./model.js";
+import { Atividade } from "../models/ActivityModel.js";
 
 export class AtividadeController {
     async registrarAtividade(request, response) {
