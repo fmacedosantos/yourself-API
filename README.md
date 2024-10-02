@@ -1,6 +1,6 @@
 # Rodando a API localmente
 ### Tenha acesso à conta de serviço
-<a href="https://github.com/fmacedosantos/yourself-API/blob/main/raw/main/gpg4win-4.3.1.exe" download="gpg4win-4.3.1.exe">Baixar gpg4win-4.3.1.exe</a>
+<a href="https://www.gpg4win.org/get-gpg4win.html" download="gpg4win-4.3.1.exe">Baixar gpg4win-4.3.1.exe</a>
 
 1. Instale o programa
 2. Feche e abra novamente o ambiente de desenvolvimento
