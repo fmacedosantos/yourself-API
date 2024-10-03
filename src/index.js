@@ -33,4 +33,5 @@ app.use(bodyParser.json());
 app.use('/usuario', usuarioRouter);
 app.use('/atividade', atividadeRouter);
 
-app.listen(3000, () => console.log('API REST iniciada em http://localhost:3000'));
+// Exportando o app para o Vercel usar como serverless function
+export default app;
