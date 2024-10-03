@@ -1,12 +1,9 @@
 {
   "name": "yourself",
   "version": "1.0.0",
-  "main": "index.js",
+  "main": "src/index.js",
   "scripts": {
-    "start": "node ./src/index.js localhost 3000",
-    "delete-key": "del /f serviceAccountKey.json",
-    "delete-key-linux": "rm -f serviceAccountKey.json",
-    "decrypt": "gpg --decrypt --output serviceAccountKey.json serviceAccountKey.json.gpg"
+    "start": "node src/index.js"
   },
   "keywords": [],
   "author": "",
@@ -15,6 +12,7 @@
   "description": "",
   "dependencies": {
     "body-parser": "^1.20.3",
+    "dotenv": "^16.4.5",
     "express": "^4.21.0",
     "firebase-admin": "^12.5.0",
     "nodemon": "^3.1.7"
