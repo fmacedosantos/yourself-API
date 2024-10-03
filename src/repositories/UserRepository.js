@@ -6,11 +6,11 @@ export class UsuarioRepository {
 
     db = admin.firestore();
 
-    async cadastrarUsuario(email, senha, nome, nomeUsuario) {
+    async cadastrarUsuario(email, senha, nome, apelido) {
         try {
             // Verifica se o nomeUsuario já existe no Firestore
             const snapshot = await this.db.collection(COLLECTION_USUARIOS)
-            .where("nomeUsuario", "==", nomeUsuario).get();
+            .where("apelido", "==", apelido).get();
 
             if (!snapshot.empty) {
                 throw new Error("O nome de usuário já está em uso!");
@@ -26,7 +26,7 @@ export class UsuarioRepository {
             await this.db.collection(COLLECTION_USUARIOS).doc(email).set({
                 email,
                 nome,
-                nomeUsuario,
+                apelido,
                 // valores padrões (não informados no cadastro)
                 anoRegistro: new Date().getFullYear(),
                 pontos: 0,
@@ -72,7 +72,7 @@ export class UsuarioRepository {
         }
     }
 
-    async atualizarUsuario(email, nome = "", nomeUsuario = "", novaSenha = "") {
+    async atualizarUsuario(email, nome = "", apelido = "", novaSenha = "") {
         try {
             // armazena as mudanças
             const atualizacoesFirestore = {};
@@ -81,8 +81,8 @@ export class UsuarioRepository {
                 atualizacoesFirestore.nome = nome;
             }
 
-            if (nomeUsuario) {
-                atualizacoesFirestore.nomeUsuario = nomeUsuario;
+            if (apelido) {
+                atualizacoesFirestore.apelido = apelido;
             }
 
             if (novaSenha) {

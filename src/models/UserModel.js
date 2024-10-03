@@ -5,7 +5,7 @@ export class Usuario {
 
     // atributos
     email;
-    nomeUsuario;
+    apelido;
     nome;
     senha;
     pontos = 0;  
@@ -26,7 +26,7 @@ export class Usuario {
     }
 
     cadastrarUsuario() {
-        return this.#repository.cadastrarUsuario(this.email, this.senha, this.nome, this.nomeUsuario);
+        return this.#repository.cadastrarUsuario(this.email, this.senha, this.nome, this.apelido);
     }
 
     mostrarUsuario() {
@@ -34,7 +34,7 @@ export class Usuario {
     }
 
     atualizarUsuario(){
-        return this.#repository.atualizarUsuario(this.email, this.nome, this.nomeUsuario, this.senha);
+        return this.#repository.atualizarUsuario(this.email, this.nome, this.apelido, this.senha);
     }
 
     deletarUsuario(){

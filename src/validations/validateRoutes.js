@@ -1,8 +1,8 @@
 const mensagemErroInformacoesNecessarias = "Informações necessárias não informadas!";
 
 export const validarCadastroUsuario = (req, res, next) => {
-    const { email, nome, nomeUsuario, senha } = req.body;
-    if (!email || !nome || !nomeUsuario || !senha) {
+    const { email, nome, apelido, senha } = req.body;
+    if (!email || !nome || !apelido || !senha) {
         return res.status(400).json({ message: mensagemErroInformacoesNecessarias });
     }
     next();
@@ -25,11 +25,11 @@ export const validarCadastroAtividade = (req, res, next) => {
 };
 
 export const validarAtualizarUsuario = (req, res, next) => {
-    const {email, nome, nomeUsuario, novaSenha } = req.body;
+    const {email, nome, nomeUsuario: apelido, novaSenha } = req.body;
     if (!email) {
         return res.status(400).json({ message: mensagemErroInformacoesNecessarias });
     }
-    if (!nome && !nomeUsuario && !novaSenha) {
+    if (!nome && !apelido && !novaSenha) {
         return res.status(200).json({ message: "Nenhum dado foi atualizado!" });
     }
     next();
