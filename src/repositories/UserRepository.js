@@ -35,6 +35,9 @@ export class UsuarioRepository {
             if (error.message === "The email address is already in use by another account.") {
                 throw new Error("Usuário já cadastrado!");
             }
+            if (error.message === "The password must be a string with at least 6 characters.") {
+                throw new Error("A senha deve possuir, ao menos, 6 caracteres!");
+            }
             throw new Error("Erro ao cadastrar usuário: " + error.message);
         }
     }
@@ -51,12 +54,10 @@ export class UsuarioRepository {
     
             return usuarioSnapshot.data(); 
         } catch (error) {
-            let errorMessage = error.message;
-            
-            if (error.message == "There is no user record corresponding to the provided identifier.") {
-                errorMessage = 'Usuário não cadastrado!';
+            if (error.message == "Usuário não cadastrado!") {
+                throw new Error("Usuário não cadastrado!");
             }
-            throw new Error("Erro ao mostrar usuário: " + errorMessage );
+            throw new Error("Erro ao mostrar usuário: " + error.message );
         }
     }
 
@@ -85,6 +86,9 @@ export class UsuarioRepository {
             }
 
         } catch (error) {
+            if (error.message === "The password must be a string with at least 6 characters.") {
+                throw new Error("A nova senha deve possuir, ao menos, 6 caracteres!");
+            }
             throw new Error("Erro ao atualizar usuário: " + error.message);
         }
     }
