@@ -1,3 +1,7 @@
 serviceAccountKey.json
+<<<<<<< HEAD
 *.log
+=======
+.env
+>>>>>>> 1f868a1b78354884e46d288a3cfb07cb5ef1fd56
 node_modules
