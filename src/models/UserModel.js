@@ -1,5 +1,5 @@
-import { AtividadeRepository } from "../atividade/repository.js";
-import { UsuarioRepository } from "./repository.js";
+import { AtividadeRepository } from "../repositories/ActivityRepository.js";
+import { UsuarioRepository } from "../repositories/UserRepository.js";
 
 export class Usuario {
 

@@ -3,10 +3,9 @@
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node ./index.js localhost 3000",
-    "delete-key": "rm -f serviceAccountKey.json",
-    "delete-key-win": "del /f serviceAccountKey.json",
+    "start": "node ./src/index.js localhost 3000",
+    "delete-key": "del /f serviceAccountKey.json",
+    "delete-key-linux": "rm -f serviceAccountKey.json",
     "decrypt": "gpg --decrypt --output serviceAccountKey.json serviceAccountKey.json.gpg"
   },
   "keywords": [],

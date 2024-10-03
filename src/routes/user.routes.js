@@ -1,7 +1,7 @@
 import express from "express";
-import { UsuarioController } from "./controller.js";
-import { authenticateToken } from '../middlewares/autenticate-jwt.js';
-import { validarAtualizarUsuario, validarCadastroUsuario, validarEmailUsuario } from '../middlewares/validation.js';
+import { UsuarioController } from "../controllers/UserController.js";
+import { authenticateToken } from '../validations/middlewares/autenticate-jwt.js';
+import { validarAtualizarUsuario, validarCadastroUsuario, validarEmailUsuario } from "../validations/validateRoutes.js";
 
 const app = express();
 const usuarioController = new UsuarioController();

@@ -1,4 +1,4 @@
-import { Usuario } from "./model.js";
+import { Usuario } from "../models/UserModel.js";
 
 export class UsuarioController {
     async cadastrarUsuario(req, res) {

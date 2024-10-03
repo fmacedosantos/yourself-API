@@ -1,4 +1,4 @@
-import { AtividadeRepository } from "./repository.js"
+import { AtividadeRepository } from "../repositories/ActivityRepository.js"
 
 export class Atividade {
 

@@ -1,6 +1,6 @@
 import express from "express";
-import { AtividadeController } from "./controller.js";
-import { validarCadastroAtividade } from '../middlewares/validation.js';
+import { AtividadeController } from "../controllers/ActivityController.js";
+import { validarCadastroAtividade } from '../validations/validateRoutes.js';
 
 const app = express();
 const atividadeController = new AtividadeController();
