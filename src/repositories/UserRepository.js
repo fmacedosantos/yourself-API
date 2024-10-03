@@ -8,6 +8,14 @@ export class UsuarioRepository {
 
     async cadastrarUsuario(email, senha, nome, nomeUsuario) {
         try {
+            // Verifica se o nomeUsuario já existe no Firestore
+            const snapshot = await this.db.collection(COLLECTION_USUARIOS)
+            .where("nomeUsuario", "==", nomeUsuario).get();
+
+            if (!snapshot.empty) {
+                throw new Error("O nome de usuário já está em uso!");
+            }
+
             // cadastra no authentication
             await admin.auth().createUser({
                 email: email,
@@ -37,6 +45,9 @@ export class UsuarioRepository {
             }
             if (error.message === "The password must be a string with at least 6 characters.") {
                 throw new Error("A senha deve possuir, ao menos, 6 caracteres!");
+            }
+            if (error.message === "O nome de usuário já está em uso!") {
+                throw new Error("O nome de usuário já está em uso!");
             }
             throw new Error("Erro ao cadastrar usuário: " + error.message);
         }
