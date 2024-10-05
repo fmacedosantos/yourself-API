@@ -18,10 +18,12 @@ export class Atividade {
 
     #repository
 
+    // criando acesso à camada que controla o banco
     constructor(){
         this.#repository = new AtividadeRepository()
     }
 
+    // métodos
     registrarAtividade(){
         return this.#repository.registrarAtividade(this.titulo, this.descricao, this.categoria, this.dificuldade, this.tempoConcentracao, this.emailUsuario);
     }

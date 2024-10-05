@@ -1,5 +1,6 @@
 import admin from 'firebase-admin';
 
+const COLLECTION_ATIVIDADES = 'atividades';
 const COLLECTION_USUARIOS = 'usuarios';
 
 export class UsuarioRepository {
@@ -8,7 +9,7 @@ export class UsuarioRepository {
 
     async cadastrarUsuario(email, senha, nome, apelido) {
         try {
-            // Verifica se o nomeUsuario já existe no Firestore
+            // verifica se o nomeUsuario já existe no Firestore
             const snapshot = await this.db.collection(COLLECTION_USUARIOS)
             .where("apelido", "==", apelido).get();
 
@@ -75,7 +76,7 @@ export class UsuarioRepository {
     async atualizarUsuario(email, nome = "", apelido = "", novaSenha = "") {
         try {
 
-            // Verifica se o nomeUsuario já existe no Firestore
+            // verifica se o nomeUsuario já existe no Firestore
             const snapshot = await this.db.collection(COLLECTION_USUARIOS)
             .where("apelido", "==", apelido).get();
 
@@ -118,15 +119,31 @@ export class UsuarioRepository {
 
     async deletarUsuario(email) {
         try {
+            // recupera o usuário pelo email
             const userRecord = await admin.auth().getUserByEmail(email);
+    
+            // recupera o documento do usuário no Firestore
+            const usuarioSnapshot = await this.db.collection(COLLECTION_USUARIOS).doc(email).get();
             
-            // deletando o usuario do Firebase Authentication
+            if (!usuarioSnapshot.exists) {
+                throw new Error("Usuário não cadastrado!");
+            }
+    
+            // recupera as atividades associadas ao usuário
+            const atividades = usuarioSnapshot.get('atividades') || [];
+    
+            // exclui as atividades associadas ao usuário
+            for (const atividadeId of atividades) {
+                await this.db.collection(COLLECTION_ATIVIDADES).doc(atividadeId).delete();
+            }
+    
+            // deleta o usuário do Firebase Authentication
             await admin.auth().deleteUser(userRecord.uid);
     
-            // deletando os dados do usuário no Firestore
+            // deleta o documento do usuário no Firestore
             await this.db.collection(COLLECTION_USUARIOS).doc(email).delete();
     
-            return true;  
+            return true;
         } catch (error) {
             if (error.message === "There is no user record corresponding to the provided identifier.") {
                 throw new Error("Usuário não cadastrado!");
@@ -134,6 +151,7 @@ export class UsuarioRepository {
             throw new Error("Erro ao deletar usuário: " + error.message);
         }
     }
+    
 
     async mostrarIdAtividades(email) {
         try {

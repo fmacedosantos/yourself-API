@@ -1,9 +1,11 @@
+// importações
 import express from "express";
 import admin from 'firebase-admin';
 import bodyParser from 'body-parser';
 import { usuarioRouter } from "./routes/user.routes.js";
 import { atividadeRouter } from "./routes/activity.routes.js";
 
+// criando a aplicação express
 const app = express();
 
 // inicializando o acesso ao banco de dados e credenciando a chave de conta de servico
@@ -18,4 +20,5 @@ app.use(bodyParser.json());
 app.use('/usuario', usuarioRouter);
 app.use('/atividade', atividadeRouter);
 
+// rodando na porta 3000
 app.listen(3000, () => console.log('API REST iniciada em http://localhost:3000'));
