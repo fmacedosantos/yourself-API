@@ -3,12 +3,12 @@ import { Usuario } from "../models/UserModel.js";
 export class UsuarioController {
     async cadastrarUsuario(req, res) {
         try {
-            const { email, nome, nomeUsuario, senha } = req.body;
+            const { email, nome, apelido, senha } = req.body;
 
             const usuario = new Usuario();
             usuario.email = email;
             usuario.nome = nome;
-            usuario.nomeUsuario = nomeUsuario;
+            usuario.apelido = apelido;
             usuario.senha = senha;
 
             await usuario.cadastrarUsuario();
@@ -34,12 +34,12 @@ export class UsuarioController {
 
     async atualizarUsuario(req, res) {
         try {
-            const { email, nome, nomeUsuario, novaSenha } = req.body;
+            const { email, nome, apelido, novaSenha } = req.body;
     
             const usuario = new Usuario();
             usuario.email = email;
             usuario.nome = nome;
-            usuario.nomeUsuario = nomeUsuario;
+            usuario.apelido = apelido;
             usuario.senha = novaSenha;
     
             await usuario.atualizarUsuario();
