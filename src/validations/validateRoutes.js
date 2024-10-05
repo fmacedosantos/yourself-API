@@ -25,7 +25,7 @@ export const validarCadastroAtividade = (req, res, next) => {
 };
 
 export const validarAtualizarUsuario = (req, res, next) => {
-    const {email, nome, nomeUsuario: apelido, novaSenha } = req.body;
+    const {email, nome, apelido, novaSenha } = req.body;
     if (!email) {
         return res.status(400).json({ message: mensagemErroInformacoesNecessarias });
     }
