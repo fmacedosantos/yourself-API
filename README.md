@@ -17,14 +17,14 @@ npm instal
 npm run start
 ```
 
-#### Caso compartilhe o computador, após o uso, rode:
+### Caso compartilhe o computador, após o uso, rode:
 **Em ambientes Windows**:
 ```bash
-npm run delete-key-win
-```
-Outros:
-```bash
 npm run delete-key
+```
+Linux ou mac:
+```bash
+npm run delete-key-linux
 ```
 
 
