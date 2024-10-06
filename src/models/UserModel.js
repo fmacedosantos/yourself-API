@@ -25,6 +25,7 @@ export class Usuario {
         this.#repository = new UsuarioRepository();
     }
 
+    // métodos
     cadastrarUsuario() {
         return this.#repository.cadastrarUsuario(this.email, this.senha, this.nome, this.apelido);
     }
