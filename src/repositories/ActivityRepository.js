@@ -107,7 +107,6 @@ export class AtividadeRepository {
                 await atividadeRef.update(atualizacoes);
             }
     
-            return "Atividade atualizada com sucesso!";
         } catch (error) {
             throw new Error("Erro ao atualizar a atividade: " + error.message);
         }

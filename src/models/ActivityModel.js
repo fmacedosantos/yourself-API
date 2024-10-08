@@ -3,6 +3,7 @@ import { AtividadeRepository } from "../repositories/ActivityRepository.js"
 export class Atividade {
 
     // atributos
+    id
     emailUsuario
     titulo
     descricao = ""
@@ -26,5 +27,9 @@ export class Atividade {
     // métodos
     registrarAtividade(){
         return this.#repository.registrarAtividade(this.titulo, this.descricao, this.categoria, this.dificuldade, this.tempoConcentracao, this.emailUsuario);
+    }
+
+    atualizarAtividade(){
+        return this.#repository.atualizarAtividade(this.id, this.titulo, this.descricao, this.categoria)
     }
 }
