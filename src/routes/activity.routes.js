@@ -11,7 +11,11 @@ const atividadeController = new AtividadeController();
 
 // rotas
 app.post('/cadastrar', validarCadastroAtividade, (req, res) => {
-    atividadeController.registrarAtividade(req, res);
+    atividadeController.cadastrarAtividade(req, res);
+});
+
+app.post("/mostrar", (req, res) => {
+    atividadeController.mostrarAtividades(req, res);
 });
 
 app.patch('/atualizar', (req, res) => {

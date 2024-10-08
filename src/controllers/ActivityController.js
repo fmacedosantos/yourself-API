@@ -2,10 +2,10 @@
 import { Atividade } from "../models/ActivityModel.js";
 
 export class AtividadeController {
-    async registrarAtividade(request, response) {
+    async cadastrarAtividade(request, response) {
         try {
             // variáveis do body
-            const { titulo, descricao, categoria, dificuldade, tempoConcentracao, emailUsuario } = request.body;
+            const { titulo, descricao, categoria, dificuldade, tempoConcentracao, email } = request.body;
 
             // chamando o model
             const atividade = new Atividade();
@@ -16,15 +16,31 @@ export class AtividadeController {
             atividade.categoria = categoria;
             atividade.dificuldade = dificuldade;
             atividade.tempoConcentracao = tempoConcentracao;
-            atividade.emailUsuario = emailUsuario;
+            atividade.email = email;
 
             // chamando o método do repository
-            const atividadeId = await atividade.registrarAtividade();
+            const atividadeId = await atividade.cadastrarAtividade();
             response.status(201).send({ message: "Atividade cadastrada com sucesso!", atividadeId });
         } catch (error) {
             response.status(500).json({ message: error.message });
         }
     }
+
+    async mostrarAtividades(request, response) {
+        try {
+            const { email } = request.body;
+    
+            const atividade = new Atividade();
+            atividade.email = email;
+    
+            const atividades = await atividade.mostrarAtividades();
+    
+            response.status(200).send({ atividades });
+        } catch (error) {
+            response.status(500).json({ message: error.message });
+        }
+    }
+    
 
     async atualizarAtividade(request, response) {
         try {

@@ -17,8 +17,8 @@ export const validarEmailUsuario = (req, res, next) => {
 }
 
 export const validarCadastroAtividade = (req, res, next) => {
-    const { titulo, categoria, dificuldade, tempoConcentracao, emailUsuario } = req.body;
-    if (!titulo || !categoria || !dificuldade || !tempoConcentracao || !emailUsuario) {
+    const { titulo, categoria, dificuldade, tempoConcentracao, email } = req.body;
+    if (!titulo || !categoria || !dificuldade || !tempoConcentracao || !email) {
         return res.status(400).json({ message: mensagemErroInformacoesNecessarias });
     }
     next();
