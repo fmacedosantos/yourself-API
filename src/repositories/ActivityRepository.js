@@ -28,8 +28,10 @@ export class AtividadeRepository {
     
         const atividadeRef = this.db.collection(COLLECTION_ATIVIDADES).doc();
         const atividadeId = atividadeRef.id;
+        const id = atividadeId;
     
         const atividade = {
+            id,
             titulo,
             descricao: descricao || "",
             categoria,
@@ -81,5 +83,36 @@ export class AtividadeRepository {
             throw new Error("Erro ao buscar atividades no banco de dados.");
         }
     }
+
+    async atualizarAtividade(id, titulo = null, descricao = null, categoria = null) {
+        try {
+            // recupera a referência da atividade pelo ID
+            const atividadeRef = this.db.collection(COLLECTION_ATIVIDADES).doc(id);
+            const atividadeSnapshot = await atividadeRef.get();
+    
+            if (!atividadeSnapshot.exists) {
+                throw new Error("Atividade não encontrada!");
+            }
+    
+            // armazena as mudanças
+            const atualizacoes = {
+                titulo: titulo !== null ? titulo : atividadeSnapshot.get('titulo'),
+                descricao: descricao !== null ? descricao : atividadeSnapshot.get('descricao'),
+                categoria: categoria !== null ? categoria : atividadeSnapshot.get('categoria')
+            };
+    
+            // verifica se há atualizações para fazer
+            if (Object.keys(atualizacoes).length > 0) {
+                // atualiza o documento da atividade no Firestore
+                await atividadeRef.update(atualizacoes);
+            }
+    
+            return "Atividade atualizada com sucesso!";
+        } catch (error) {
+            throw new Error("Erro ao atualizar a atividade: " + error.message);
+        }
+    }
+    
+    
     
 }
