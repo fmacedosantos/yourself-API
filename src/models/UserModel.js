@@ -42,7 +42,7 @@ export class Usuario {
         return this.#repository.deletarUsuario(this.email);
     }
 
-    mostrarIdAtividades(){
+    /*mostrarIdAtividades(){
         return this.#repository.mostrarIdAtividades(this.email);
     }
 
@@ -57,5 +57,5 @@ export class Usuario {
 
         const atividades = await atividadeRepository.buscarAtividadesPorIds(idsAtividades);
         return atividades;
-    }
+    }*/
 }

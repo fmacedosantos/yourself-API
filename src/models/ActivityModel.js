@@ -3,7 +3,8 @@ import { AtividadeRepository } from "../repositories/ActivityRepository.js"
 export class Atividade {
 
     // atributos
-    emailUsuario
+    id
+    email
     titulo
     descricao = ""
     dificuldade
@@ -20,11 +21,19 @@ export class Atividade {
 
     // criando acesso à camada que controla o banco
     constructor(){
-        this.#repository = new AtividadeRepository()
+        this.#repository = new AtividadeRepository();
     }
 
     // métodos
-    registrarAtividade(){
-        return this.#repository.registrarAtividade(this.titulo, this.descricao, this.categoria, this.dificuldade, this.tempoConcentracao, this.emailUsuario);
+    cadastrarAtividade(){
+        return this.#repository.cadastrarAtividade(this.titulo, this.descricao, this.categoria, this.dificuldade, this.tempoConcentracao, this.email);
+    }
+
+    mostrarAtividades(){
+        return this.#repository.mostrarAtividades(this.email);
+    }
+
+    atualizarAtividade(){
+        return this.#repository.atualizarAtividade(this.id, this.titulo, this.descricao, this.categoria)
     }
 }

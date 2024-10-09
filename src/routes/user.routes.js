@@ -27,9 +27,9 @@ app.delete('/deletar', validarEmailUsuario, (req, res) => {
     usuarioController.deletarUsuario(req, res);
 })
 
-app.get('/mostrarAtividades', validarEmailUsuario, (req, res) => {
+/*app.get('/mostrarAtividades', validarEmailUsuario, (req, res) => {
     usuarioController.mostrarAtividades(req, res);
-})
+})*/
 
 app.post('/autenticarToken', authenticateToken, (req, res) => {
     res.status(200).send({ 

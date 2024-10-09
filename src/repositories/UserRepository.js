@@ -73,37 +73,41 @@ export class UsuarioRepository {
         }
     }
 
-    async atualizarUsuario(email, nome = "", apelido = "", novaSenha = "") {
+    async atualizarUsuario(email, nome = null, apelido = null, novaSenha = null) {
         try {
-
-            // verifica se o nomeUsuario já existe no Firestore
-            const snapshot = await this.db.collection(COLLECTION_USUARIOS)
-            .where("apelido", "==", apelido).get();
-
-            if (!snapshot.empty) {
-                throw new Error("O nome de usuário já está em uso!");
+            // verifica se o apelido já existe no Firestore
+            if (apelido !== null) {
+                const snapshot = await this.db.collection(COLLECTION_USUARIOS)
+                    .where("apelido", "==", apelido).get();
+    
+                if (!snapshot.empty) {
+                    throw new Error("O nome de usuário já está em uso!");
+                }
             }
-
-            // armazena as mudanças
-            const atualizacoesFirestore = {};
-
-            if (nome) {
-                atualizacoesFirestore.nome = nome;
+    
+            // recupera o documento do usuário
+            const usuarioSnapshot = await this.db.collection(COLLECTION_USUARIOS).doc(email).get();
+            if (!usuarioSnapshot.exists) {
+                throw new Error("Usuário não cadastrado!");
             }
-
-            if (apelido) {
-                atualizacoesFirestore.apelido = apelido;
-            }
-
-            if (novaSenha) {
-                // atualiza no authenticate
+    
+            const usuarioData = usuarioSnapshot.data();
+    
+            // monta as atualizações condicionalmente
+            const atualizacoes = {
+                nome: nome !== null ? nome : usuarioData.nome,
+                apelido: apelido !== null ? apelido : usuarioData.apelido
+            };
+    
+            // atualiza a senha no Firebase Authentication, se fornecida
+            if (novaSenha !== null) {
                 const userRecord = await admin.auth().getUserByEmail(email);
                 await admin.auth().updateUser(userRecord.uid, { password: novaSenha });
             }
-
-            // atualiza no firestore se houver mudanças
-            if (Object.keys(atualizacoesFirestore).length > 0) {
-                await this.db.collection(COLLECTION_USUARIOS).doc(email).update(atualizacoesFirestore);
+    
+            // atualiza no Firestore, caso tenha algo para atualizar
+            if (Object.keys(atualizacoes).length > 0) {
+                await this.db.collection(COLLECTION_USUARIOS).doc(email).update(atualizacoes);
             }
 
         } catch (error) {
@@ -116,6 +120,7 @@ export class UsuarioRepository {
             throw new Error("Erro ao atualizar usuário: " + error.message);
         }
     }
+    
 
     async deletarUsuario(email) {
         try {

@@ -93,7 +93,7 @@ export class UsuarioController {
         }
     }
 
-    async mostrarIdAtividades(req, res) {
+    /*async mostrarIdAtividades(req, res) {
         try {
             // variáveis do body
             const { email } = req.body;
@@ -133,5 +133,5 @@ export class UsuarioController {
                 res.status(500).json({ message: error.message });
             }
         }
-    }
+    }*/
 }
