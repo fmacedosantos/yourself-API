@@ -137,6 +137,12 @@ export class AtividadeRepository {
         }
     }
     
-    
+    async deletarAtividade(id){
+        try {
+            
+        } catch (error) {
+            
+        }
+    }
     
 }
