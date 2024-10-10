@@ -157,25 +157,4 @@ export class UsuarioRepository {
         }
     }
     
-
-    async mostrarIdAtividades(email) {
-        try {
-            const usuarioSnapshot = await this.db.collection(COLLECTION_USUARIOS).doc(email).get();
-            if (!usuarioSnapshot.exists) {
-                throw new Error("Usuário não encontrado.");
-            }
-
-            const atividades = usuarioSnapshot.get('atividades') || [];
-            return atividades;
-    
-        } catch (error) {
-            let errorMessage = error.message;
-            
-            if (error.message == "There is no user record corresponding to the provided identifier.") {
-                errorMessage = 'Usuário não cadastrado!';
-            }
-            throw new Error(`Erro ao mostrar atividades de ${email}: ` + errorMessage);
-        }
-    }
-    
 }

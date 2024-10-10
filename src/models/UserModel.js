@@ -42,20 +42,4 @@ export class Usuario {
         return this.#repository.deletarUsuario(this.email);
     }
 
-    /*mostrarIdAtividades(){
-        return this.#repository.mostrarIdAtividades(this.email);
-    }
-
-    async mostrarAtividades(){
-        const atividadeRepository = new AtividadeRepository();
-
-        const idsAtividades = await this.#repository.mostrarIdAtividades(this.email);
-
-        if (idsAtividades.length === 0) {
-            throw new Error("Usuário não possui atividades.");
-        }
-
-        const atividades = await atividadeRepository.buscarAtividadesPorIds(idsAtividades);
-        return atividades;
-    }*/
 }
