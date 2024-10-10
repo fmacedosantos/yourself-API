@@ -29,6 +29,12 @@ export class AtividadeRepository {
         const atividadeRef = this.db.collection(COLLECTION_ATIVIDADES).doc();
         const atividadeId = atividadeRef.id;
         const id = atividadeId;
+
+        const data = () => {
+            const dataAtual = new Date();
+            const dataFormatada = dataAtual.toISOString().split('T')[0];
+            return dataFormatada;
+        }
     
         const atividade = {
             id,
@@ -38,7 +44,8 @@ export class AtividadeRepository {
             dificuldade,
             tempoConcentracao,
             pontos,
-            email
+            email,
+            data
         };
     
         // registrar a nova atividade
@@ -64,25 +71,6 @@ export class AtividadeRepository {
     
         return atividadeId;
     }
-    
-
-    /*async buscarAtividadesPorIds(idsAtividades) {
-        try {
-            const atividades = [];
-    
-            for (const id of idsAtividades) {
-                const atividadeSnapshot = await this.db.collection(COLLECTION_ATIVIDADES).doc(id).get();
-    
-                if (atividadeSnapshot.exists) {
-                    atividades.push(atividadeSnapshot.data());
-                }
-            }
-    
-            return atividades;
-        } catch (error) {
-            throw new Error("Erro ao buscar atividades no banco de dados.");
-        }
-    }*/
 
     async mostrarAtividades(emailUsuario) {
         try {

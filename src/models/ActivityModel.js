@@ -11,11 +11,7 @@ export class Atividade {
     categoria
     pontos
     tempoConcentracao
-    data = () => {
-        const dataAtual = new Date();
-        const dataFormatada = dataAtual.toISOString().split('T')[0];
-        return dataFormatada;
-    }
+    data 
 
     #repository
 
