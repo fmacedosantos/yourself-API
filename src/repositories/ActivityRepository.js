@@ -109,26 +109,6 @@ export class AtividadeRepository {
         }
     }
 
-    async mostrarEstatisticas(email) {
-        try {
-            const usuarioSnapshot = await this.db.collection(COLLECTION_USUARIOS).doc(email).get();
-            if (!usuarioSnapshot.exists) {
-                throw new Error("Usuário não encontrado.");
-            }
-
-            const usuarioData = usuarioSnapshot.data();
-
-            return {
-                pontos: usuarioData.pontos,
-                totalPontos: usuarioData.totalPontos,
-                ofensiva: usuarioData.ofensiva,
-                maiorOfensiva: usuarioData.maiorOfensiva
-            };
-        } catch (error) {
-            throw new Error("Erro ao buscar estatísticas do usuário: " + error.message);
-        }
-    }
-
     async atualizarAtividade(id, titulo = null, descricao = null, categoria = null) {
         try {
             const atividadeRef = this.db.collection(COLLECTION_ATIVIDADES).doc(id);

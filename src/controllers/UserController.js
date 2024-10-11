@@ -44,6 +44,25 @@ export class UsuarioController {
         }
     }
 
+    async mostrarEstatisticasUsuario(req, res) {
+        try {
+            // variáveis do body
+            const { email } = req.body;
+
+            // chamando o model
+            const usuario = new Usuario();
+
+            // atribuindo as variáveis ao model
+            usuario.email = email;
+
+            // chamando o método do repository
+            const dadosEstatisticas = await usuario.mostrarEstatisticasUsuario();
+            res.status(200).send({ dadosEstatisticas })
+        } catch (error) {
+            res.status(500).json({ message: error.message });
+        }
+    }
+
     async atualizarUsuario(req, res) {
         try {
             // variáveis do body
