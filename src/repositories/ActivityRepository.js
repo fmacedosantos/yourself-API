@@ -59,19 +59,35 @@ export class AtividadeRepository {
         const novosPontos = usuarioData.pontos + pontos;
         const novoTotalPontos = usuarioData.totalPontos + pontos;
     
-        // atualizar os pontos do usuário
+        // aumentando a ofensiva
+        const dataUltimaAtividade = usuarioData.ultimaAtividade;
+        const dataFormatada = dataAtual.toLocaleDateString('pt-BR');
+        let novaOfensiva = usuarioData.ofensiva;
+        let novaMaiorOfensiva = usuarioData.maiorOfensiva;
+
+        if (dataUltimaAtividade !== dataFormatada) {
+            novaOfensiva += 1;
+            if (novaOfensiva > novaMaiorOfensiva) {
+                novaMaiorOfensiva = novaOfensiva;
+            }
+        }
+
+        // atualizando os pontos e a ofensiva do usuário
         await usuarioRef.update({
             atividades: admin.firestore.FieldValue.arrayUnion(atividadeId),
             pontos: novosPontos,
-            totalPontos: novoTotalPontos
+            totalPontos: novoTotalPontos,
+            ofensiva: novaOfensiva,
+            maiorOfensiva: novaMaiorOfensiva,
+            ultimaAtividade: dataFormatada
         });
     
         return atividadeId;
     }
 
-    async mostrarAtividades(emailUsuario) {
+    async mostrarAtividades(email) {
         try {
-            const usuarioSnapshot = await this.db.collection(COLLECTION_USUARIOS).doc(emailUsuario).get();
+            const usuarioSnapshot = await this.db.collection(COLLECTION_USUARIOS).doc(email).get();
             if (!usuarioSnapshot.exists) {
                 throw new Error("Usuário não encontrado.");
             }
@@ -92,11 +108,29 @@ export class AtividadeRepository {
             throw new Error("Erro ao buscar atividades no banco de dados.");
         }
     }
-    
+
+    async mostrarEstatisticas(email) {
+        try {
+            const usuarioSnapshot = await this.db.collection(COLLECTION_USUARIOS).doc(email).get();
+            if (!usuarioSnapshot.exists) {
+                throw new Error("Usuário não encontrado.");
+            }
+
+            const usuarioData = usuarioSnapshot.data();
+
+            return {
+                pontos: usuarioData.pontos,
+                totalPontos: usuarioData.totalPontos,
+                ofensiva: usuarioData.ofensiva,
+                maiorOfensiva: usuarioData.maiorOfensiva
+            };
+        } catch (error) {
+            throw new Error("Erro ao buscar estatísticas do usuário: " + error.message);
+        }
+    }
 
     async atualizarAtividade(id, titulo = null, descricao = null, categoria = null) {
         try {
-            // recupera a referência da atividade pelo ID
             const atividadeRef = this.db.collection(COLLECTION_ATIVIDADES).doc(id);
             const atividadeSnapshot = await atividadeRef.get();
     
@@ -104,16 +138,13 @@ export class AtividadeRepository {
                 throw new Error("Atividade não encontrada!");
             }
     
-            // armazena as mudanças
             const atualizacoes = {
                 titulo: titulo !== null ? titulo : atividadeSnapshot.get('titulo'),
                 descricao: descricao !== null ? descricao : atividadeSnapshot.get('descricao'),
                 categoria: categoria !== null ? categoria : atividadeSnapshot.get('categoria')
             };
     
-            // verifica se há atualizações para fazer
             if (Object.keys(atualizacoes).length > 0) {
-                // atualiza o documento da atividade no Firestore
                 await atividadeRef.update(atualizacoes);
             }
     
@@ -121,13 +152,13 @@ export class AtividadeRepository {
             throw new Error("Erro ao atualizar a atividade: " + error.message);
         }
     }
-    
-    async deletarAtividade(id){
+
+    async deletarAtividade(id) {
         try {
-            
+            const atividadeRef = this.db.collection(COLLECTION_ATIVIDADES).doc(id);
+            await atividadeRef.delete();
         } catch (error) {
-            
+            throw new Error("Erro ao deletar a atividade: " + error.message);
         }
     }
-    
 }

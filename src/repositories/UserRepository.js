@@ -37,7 +37,8 @@ export class UsuarioRepository {
                 preferenciaConcentracao: 25,
                 preferenciaDescanso: 5,
                 comprasItens: [],
-                atividades: []
+                atividades: [],
+                ultimaAtividade: null
             });
 
         } catch (error) {
