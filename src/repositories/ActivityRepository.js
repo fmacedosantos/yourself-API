@@ -30,11 +30,8 @@ export class AtividadeRepository {
         const atividadeId = atividadeRef.id;
         const id = atividadeId;
 
-        const data = () => {
-            const dataAtual = new Date();
-            const dataFormatada = dataAtual.toISOString().split('T')[0];
-            return dataFormatada;
-        }
+        const dataAtual = new Date();
+        const data = dataAtual.toLocaleDateString('pt-BR'); 
     
         const atividade = {
             id,
