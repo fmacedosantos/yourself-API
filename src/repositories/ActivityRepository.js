@@ -59,17 +59,27 @@ export class AtividadeRepository {
         const novosPontos = usuarioData.pontos + pontos;
         const novoTotalPontos = usuarioData.totalPontos + pontos;
     
-        // aumentando a ofensiva
+        // Verificando a ofensiva
         const dataUltimaAtividade = usuarioData.ultimaAtividade;
         const dataFormatada = dataAtual.toLocaleDateString('pt-BR');
         let novaOfensiva = usuarioData.ofensiva;
         let novaMaiorOfensiva = usuarioData.maiorOfensiva;
 
-        if (dataUltimaAtividade !== dataFormatada) {
-            novaOfensiva += 1;
+        if (dataUltimaAtividade) {
+            const ultimaData = new Date(dataUltimaAtividade.split('/').reverse().join('-'));
+            const diffDias = Math.floor((dataAtual - ultimaData) / (1000 * 60 * 60 * 24));
+            
+            if (diffDias === 1) {
+                novaOfensiva += 1;
+            } else if (diffDias > 1) {
+                novaOfensiva = 1; // reinicia a ofensiva
+            }
+
             if (novaOfensiva > novaMaiorOfensiva) {
                 novaMaiorOfensiva = novaOfensiva;
             }
+        } else {
+            novaOfensiva = 1; // primeira atividade do usuário
         }
 
         // atualizando os pontos e a ofensiva do usuário
