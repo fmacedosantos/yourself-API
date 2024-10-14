@@ -27,7 +27,7 @@ app.delete('/deletar', validarEmailUsuario, (req, res) => {
     usuarioController.deletarUsuario(req, res);
 })
 
-app.post('mostrar-estatisticas', validarEmailUsuario, (req, res) => {
+app.post('/mostrar-estatisticas', validarEmailUsuario, (req, res) => {
     usuarioController.mostrarEstatisticasUsuario(req, res);
 })
 
