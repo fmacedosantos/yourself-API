@@ -57,42 +57,72 @@ export class UsuarioRepository {
 
     async mostrarUsuario(email) {
         try {
-    
-            // busca os dados do usuário no firestore
-            const usuarioSnapshot = await this.db.collection(COLLECTION_USUARIOS).doc(email).get();
-    
-            if (!usuarioSnapshot.exists) {
-                throw new Error("Usuário não cadastrado!");
-            }
-    
-            return usuarioSnapshot.data(); 
-        } catch (error) {
-            if (error.message == "Usuário não cadastrado!") {
-                throw new Error("Usuário não cadastrado!");
-            }
-            throw new Error("Erro ao mostrar usuário: " + error.message );
-        }
-    }
-
-    async mostrarEstatisticas(email) {
-        try {
-            const usuarioSnapshot = await this.db.collection(COLLECTION_USUARIOS).doc(email).get();
+            const usuarioRef = this.db.collection(COLLECTION_USUARIOS).doc(email);
+            const usuarioSnapshot = await usuarioRef.get();
             if (!usuarioSnapshot.exists) {
                 throw new Error("Usuário não encontrado.");
             }
-
+    
             const usuarioData = usuarioSnapshot.data();
+    
+            // Atualizar a ofensiva ao acessar os dados do usuário
+            const dataAtual = new Date();
+            const { novaOfensiva, novaMaiorOfensiva } = this.atualizarOfensiva(usuarioData, dataAtual);
+    
+            // Se a ofensiva foi atualizada, salvar no Firestore
+            if (novaOfensiva !== usuarioData.ofensiva || novaMaiorOfensiva !== usuarioData.maiorOfensiva) {
+                await usuarioRef.update({
+                    ofensiva: novaOfensiva,
+                    maiorOfensiva: novaMaiorOfensiva
+                });
+            }
+    
+            // Retornar os dados do usuário atualizados
+            return {
+                email: usuarioData.email,
+                pontos: usuarioData.pontos,
+                totalPontos: usuarioData.totalPontos,
+                ofensiva: novaOfensiva,
+                maiorOfensiva: novaMaiorOfensiva
+            };
+        } catch (error) {
+            throw new Error("Erro ao mostrar os dados do usuário.");
+        }
+    }    
 
+    async mostrarEstatisticas(email) {
+        try {
+            const usuarioRef = this.db.collection(COLLECTION_USUARIOS).doc(email);
+            const usuarioSnapshot = await usuarioRef.get();
+            if (!usuarioSnapshot.exists) {
+                throw new Error("Usuário não encontrado.");
+            }
+    
+            const usuarioData = usuarioSnapshot.data();
+    
+            // Atualizar a ofensiva ao acessar as estatísticas do usuário
+            const dataAtual = new Date();
+            const { novaOfensiva, novaMaiorOfensiva } = this.atualizarOfensiva(usuarioData, dataAtual);
+    
+            // Se a ofensiva foi atualizada, salvar no Firestore
+            if (novaOfensiva !== usuarioData.ofensiva || novaMaiorOfensiva !== usuarioData.maiorOfensiva) {
+                await usuarioRef.update({
+                    ofensiva: novaOfensiva,
+                    maiorOfensiva: novaMaiorOfensiva
+                });
+            }
+    
+            // Retornar as estatísticas do usuário
             return {
                 pontos: usuarioData.pontos,
                 totalPontos: usuarioData.totalPontos,
-                ofensiva: usuarioData.ofensiva,
-                maiorOfensiva: usuarioData.maiorOfensiva
+                ofensiva: novaOfensiva,
+                maiorOfensiva: novaMaiorOfensiva
             };
         } catch (error) {
-            throw new Error("Erro ao buscar estatísticas do usuário: " + error.message);
+            throw new Error("Erro ao mostrar as estatísticas do usuário.");
         }
-    }
+    }    
 
     async atualizarUsuario(email, nome = null, apelido = null, novaSenha = null) {
         try {

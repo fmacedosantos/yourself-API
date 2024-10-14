@@ -45,7 +45,7 @@ export class AtividadeRepository {
             data
         };
     
-        // registrar a nova atividade
+        // Registrar a nova atividade
         await atividadeRef.set(atividade);
     
         const usuarioRef = this.db.collection(COLLECTION_USUARIOS).doc(email);
@@ -59,16 +59,30 @@ export class AtividadeRepository {
         const novosPontos = usuarioData.pontos + pontos;
         const novoTotalPontos = usuarioData.totalPontos + pontos;
     
-        // Verificando a ofensiva
+        // Verificando e atualizando a ofensiva ao registrar a atividade
+        const { novaOfensiva, novaMaiorOfensiva } = this.atualizarOfensiva(usuarioData, dataAtual);
+    
+        await usuarioRef.update({
+            atividades: admin.firestore.FieldValue.arrayUnion(atividadeId),
+            pontos: novosPontos,
+            totalPontos: novoTotalPontos,
+            ofensiva: novaOfensiva,
+            maiorOfensiva: novaMaiorOfensiva,
+            ultimaAtividade: data
+        });
+    
+        return atividadeId;
+    }
+
+    atualizarOfensiva(usuarioData, dataAtual) {
         const dataUltimaAtividade = usuarioData.ultimaAtividade;
-        const dataFormatada = dataAtual.toLocaleDateString('pt-BR');
         let novaOfensiva = usuarioData.ofensiva;
         let novaMaiorOfensiva = usuarioData.maiorOfensiva;
 
         if (dataUltimaAtividade) {
             const ultimaData = new Date(dataUltimaAtividade.split('/').reverse().join('-'));
             const diffDias = Math.floor((dataAtual - ultimaData) / (1000 * 60 * 60 * 24));
-            
+
             if (diffDias === 1) {
                 novaOfensiva += 1;
             } else if (diffDias > 1) {
@@ -82,34 +96,38 @@ export class AtividadeRepository {
             novaOfensiva = 1; // primeira atividade do usuário
         }
 
-        // atualizando os pontos e a ofensiva do usuário
-        await usuarioRef.update({
-            atividades: admin.firestore.FieldValue.arrayUnion(atividadeId),
-            pontos: novosPontos,
-            totalPontos: novoTotalPontos,
-            ofensiva: novaOfensiva,
-            maiorOfensiva: novaMaiorOfensiva,
-            ultimaAtividade: dataFormatada
-        });
-    
-        return atividadeId;
+        return { novaOfensiva, novaMaiorOfensiva };
     }
 
     async mostrarAtividades(email) {
         try {
-            const usuarioSnapshot = await this.db.collection(COLLECTION_USUARIOS).doc(email).get();
+            const usuarioRef = this.db.collection(COLLECTION_USUARIOS).doc(email);
+            const usuarioSnapshot = await usuarioRef.get();
             if (!usuarioSnapshot.exists) {
                 throw new Error("Usuário não encontrado.");
             }
 
-            const idAtividades = await usuarioSnapshot.get('atividades') || [];
+            const usuarioData = usuarioSnapshot.data();
+
+            // Atualizar a ofensiva ao acessar os dados do usuário
+            const dataAtual = new Date();
+            const { novaOfensiva, novaMaiorOfensiva } = this.atualizarOfensiva(usuarioData, dataAtual);
+
+            // Se a ofensiva foi atualizada, salvar no Firestore
+            if (novaOfensiva !== usuarioData.ofensiva || novaMaiorOfensiva !== usuarioData.maiorOfensiva) {
+                await usuarioRef.update({
+                    ofensiva: novaOfensiva,
+                    maiorOfensiva: novaMaiorOfensiva
+                });
+            }
+
+            const idAtividades = usuarioData.atividades || [];
             const atividades = [];
 
             for(const id of idAtividades){
                 const atividadeSnapshot = await this.db.collection(COLLECTION_ATIVIDADES).doc(id).get();
-
                 if (atividadeSnapshot.exists) {
-                    atividades.push(atividadeSnapshot.data())
+                    atividades.push(atividadeSnapshot.data());
                 }
             }
 
