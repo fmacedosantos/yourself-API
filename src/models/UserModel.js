@@ -15,7 +15,7 @@ export class Usuario {
     anoRegistro = new Date().getFullYear();
     preferenciaConcentracao = 25;
     preferenciaDescanso = 5;
-    comprasItens = [];
+    itens = [];
     atividades = [];
 
     #repository;
@@ -34,6 +34,10 @@ export class Usuario {
         return this.#repository.mostrarUsuario(this.email);
     }
 
+    mostrarEstatisticasUsuario() {
+        return this.#repository.mostrarEstatisticas(this.email);
+    }
+
     atualizarUsuario(){
         return this.#repository.atualizarUsuario(this.email, this.nome, this.apelido, this.senha);
     }
@@ -42,20 +46,4 @@ export class Usuario {
         return this.#repository.deletarUsuario(this.email);
     }
 
-    /*mostrarIdAtividades(){
-        return this.#repository.mostrarIdAtividades(this.email);
-    }
-
-    async mostrarAtividades(){
-        const atividadeRepository = new AtividadeRepository();
-
-        const idsAtividades = await this.#repository.mostrarIdAtividades(this.email);
-
-        if (idsAtividades.length === 0) {
-            throw new Error("Usuário não possui atividades.");
-        }
-
-        const atividades = await atividadeRepository.buscarAtividadesPorIds(idsAtividades);
-        return atividades;
-    }*/
 }

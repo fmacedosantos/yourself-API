@@ -1,4 +1,5 @@
 import admin from 'firebase-admin';
+import { atualizarOfensiva } from './ActivityRepository.js';
 
 const COLLECTION_ATIVIDADES = 'atividades';
 const COLLECTION_USUARIOS = 'usuarios';
@@ -36,8 +37,9 @@ export class UsuarioRepository {
                 maiorOfensiva: 0,
                 preferenciaConcentracao: 25,
                 preferenciaDescanso: 5,
-                comprasItens: [],
-                atividades: []
+                itens: [],
+                atividades: [],
+                ultimaAtividade: null
             });
 
         } catch (error) {
@@ -56,22 +58,72 @@ export class UsuarioRepository {
 
     async mostrarUsuario(email) {
         try {
-    
-            // busca os dados do usuário no firestore
-            const usuarioSnapshot = await this.db.collection(COLLECTION_USUARIOS).doc(email).get();
-    
+            const usuarioRef = this.db.collection(COLLECTION_USUARIOS).doc(email);
+            const usuarioSnapshot = await usuarioRef.get();
             if (!usuarioSnapshot.exists) {
-                throw new Error("Usuário não cadastrado!");
+                throw new Error("Usuário não encontrado.");
             }
     
-            return usuarioSnapshot.data(); 
-        } catch (error) {
-            if (error.message == "Usuário não cadastrado!") {
-                throw new Error("Usuário não cadastrado!");
+            const usuarioData = usuarioSnapshot.data();
+    
+            // Atualizar a ofensiva ao acessar os dados do usuário
+            const dataAtual = new Date();
+            const { novaOfensiva, novaMaiorOfensiva } = atualizarOfensiva(usuarioData, dataAtual);
+    
+            // Se a ofensiva foi atualizada, salvar no Firestore
+            if (novaOfensiva !== usuarioData.ofensiva || novaMaiorOfensiva !== usuarioData.maiorOfensiva) {
+                await usuarioRef.update({
+                    ofensiva: novaOfensiva,
+                    maiorOfensiva: novaMaiorOfensiva
+                });
             }
-            throw new Error("Erro ao mostrar usuário: " + error.message );
+    
+            // Retornar os dados do usuário atualizados
+            return {
+                email: usuarioData.email,
+                pontos: usuarioData.pontos,
+                totalPontos: usuarioData.totalPontos,
+                ofensiva: novaOfensiva,
+                maiorOfensiva: novaMaiorOfensiva
+            };
+        } catch (error) {
+            throw new Error("Erro ao mostrar os dados do usuário.");
         }
-    }
+    }    
+
+    async mostrarEstatisticas(email) {
+        try {
+            const usuarioRef = this.db.collection(COLLECTION_USUARIOS).doc(email);
+            const usuarioSnapshot = await usuarioRef.get();
+            if (!usuarioSnapshot.exists) {
+                throw new Error("Usuário não encontrado.");
+            }
+    
+            const usuarioData = usuarioSnapshot.data();
+    
+            // Atualizar a ofensiva ao acessar as estatísticas do usuário
+            const dataAtual = new Date();
+            const { novaOfensiva, novaMaiorOfensiva } = atualizarOfensiva(usuarioData, dataAtual);
+    
+            // Se a ofensiva foi atualizada, salvar no Firestore
+            if (novaOfensiva !== usuarioData.ofensiva || novaMaiorOfensiva !== usuarioData.maiorOfensiva) {
+                await usuarioRef.update({
+                    ofensiva: novaOfensiva,
+                    maiorOfensiva: novaMaiorOfensiva
+                });
+            }
+    
+            // Retornar as estatísticas do usuário
+            return {
+                pontos: usuarioData.pontos,
+                totalPontos: usuarioData.totalPontos,
+                ofensiva: novaOfensiva,
+                maiorOfensiva: novaMaiorOfensiva
+            };
+        } catch (error) {
+            throw new Error("Erro ao mostrar as estatísticas do usuário.");
+        }
+    }    
 
     async atualizarUsuario(email, nome = null, apelido = null, novaSenha = null) {
         try {
@@ -154,27 +206,6 @@ export class UsuarioRepository {
                 throw new Error("Usuário não cadastrado!");
             }
             throw new Error("Erro ao deletar usuário: " + error.message);
-        }
-    }
-    
-
-    async mostrarIdAtividades(email) {
-        try {
-            const usuarioSnapshot = await this.db.collection(COLLECTION_USUARIOS).doc(email).get();
-            if (!usuarioSnapshot.exists) {
-                throw new Error("Usuário não encontrado.");
-            }
-
-            const atividades = usuarioSnapshot.get('atividades') || [];
-            return atividades;
-    
-        } catch (error) {
-            let errorMessage = error.message;
-            
-            if (error.message == "There is no user record corresponding to the provided identifier.") {
-                errorMessage = 'Usuário não cadastrado!';
-            }
-            throw new Error(`Erro ao mostrar atividades de ${email}: ` + errorMessage);
         }
     }
     
