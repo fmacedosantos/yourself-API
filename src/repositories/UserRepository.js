@@ -1,4 +1,5 @@
 import admin from 'firebase-admin';
+import { atualizarOfensiva } from './ActivityRepository.js';
 
 const COLLECTION_ATIVIDADES = 'atividades';
 const COLLECTION_USUARIOS = 'usuarios';
@@ -67,7 +68,7 @@ export class UsuarioRepository {
     
             // Atualizar a ofensiva ao acessar os dados do usuário
             const dataAtual = new Date();
-            const { novaOfensiva, novaMaiorOfensiva } = this.atualizarOfensiva(usuarioData, dataAtual);
+            const { novaOfensiva, novaMaiorOfensiva } = atualizarOfensiva(usuarioData, dataAtual);
     
             // Se a ofensiva foi atualizada, salvar no Firestore
             if (novaOfensiva !== usuarioData.ofensiva || novaMaiorOfensiva !== usuarioData.maiorOfensiva) {
@@ -102,7 +103,7 @@ export class UsuarioRepository {
     
             // Atualizar a ofensiva ao acessar as estatísticas do usuário
             const dataAtual = new Date();
-            const { novaOfensiva, novaMaiorOfensiva } = this.atualizarOfensiva(usuarioData, dataAtual);
+            const { novaOfensiva, novaMaiorOfensiva } = atualizarOfensiva(usuarioData, dataAtual);
     
             // Se a ofensiva foi atualizada, salvar no Firestore
             if (novaOfensiva !== usuarioData.ofensiva || novaMaiorOfensiva !== usuarioData.maiorOfensiva) {

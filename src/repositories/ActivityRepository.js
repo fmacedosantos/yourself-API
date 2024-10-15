@@ -111,7 +111,7 @@ export class AtividadeRepository {
 
             // Atualizar a ofensiva ao acessar os dados do usuário
             const dataAtual = new Date();
-            const { novaOfensiva, novaMaiorOfensiva } = this.atualizarOfensiva(usuarioData, dataAtual);
+            const { novaOfensiva, novaMaiorOfensiva } = atualizarOfensiva(usuarioData, dataAtual);
 
             // Se a ofensiva foi atualizada, salvar no Firestore
             if (novaOfensiva !== usuarioData.ofensiva || novaMaiorOfensiva !== usuarioData.maiorOfensiva) {
@@ -137,30 +137,6 @@ export class AtividadeRepository {
         }
     }
 
-    async atualizarAtividade(id, titulo = null, descricao = null, categoria = null) {
-        try {
-            const atividadeRef = this.db.collection(COLLECTION_ATIVIDADES).doc(id);
-            const atividadeSnapshot = await atividadeRef.get();
-    
-            if (!atividadeSnapshot.exists) {
-                throw new Error("Atividade não encontrada!");
-            }
-    
-            const atualizacoes = {
-                titulo: titulo !== null ? titulo : atividadeSnapshot.get('titulo'),
-                descricao: descricao !== null ? descricao : atividadeSnapshot.get('descricao'),
-                categoria: categoria !== null ? categoria : atividadeSnapshot.get('categoria')
-            };
-    
-            if (Object.keys(atualizacoes).length > 0) {
-                await atividadeRef.update(atualizacoes);
-            }
-    
-        } catch (error) {
-            throw new Error("Erro ao atualizar a atividade: " + error.message);
-        }
-    }
-
     async deletarAtividade(id) {
         try {
             const atividadeRef = this.db.collection(COLLECTION_ATIVIDADES).doc(id);
@@ -169,4 +145,29 @@ export class AtividadeRepository {
             throw new Error("Erro ao deletar a atividade: " + error.message);
         }
     }
+}
+
+export function atualizarOfensiva(usuarioData, dataAtual) {
+    const dataUltimaAtividade = usuarioData.ultimaAtividade;
+    let novaOfensiva = usuarioData.ofensiva;
+    let novaMaiorOfensiva = usuarioData.maiorOfensiva;
+
+    if (dataUltimaAtividade) {
+        const ultimaData = new Date(dataUltimaAtividade.split('/').reverse().join('-'));
+        const diffDias = Math.floor((dataAtual - ultimaData) / (1000 * 60 * 60 * 24));
+
+        if (diffDias === 1) {
+            novaOfensiva += 1;
+        } else if (diffDias > 1) {
+            novaOfensiva = 0; // reinicia a ofensiva
+        }
+
+        if (novaOfensiva > novaMaiorOfensiva) {
+            novaMaiorOfensiva = novaOfensiva;
+        }
+    } else {
+        novaOfensiva = 0; 
+    }
+
+    return { novaOfensiva, novaMaiorOfensiva };
 }
