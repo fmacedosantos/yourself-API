@@ -1,7 +1,7 @@
 
 import admin from 'firebase-admin'
 
-export async function authenticateToken(req, res, next) {
+export async function autenticarJWT(req, res, next) {
 
     const jwt = req.headers.authorization;
     if (!jwt) {

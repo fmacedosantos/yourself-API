@@ -1,7 +1,7 @@
 // importações
 import express from "express";
 import { UsuarioController } from "../controllers/UserController.js";
-import { authenticateToken } from '../validations/middlewares/autenticate-jwt.js';
+import { autenticarJWT } from '../middlewares/AuthenticateJWT.js';
 import { validarAtualizarUsuario, validarCadastroUsuario, validarEmailUsuario } from "../validations/validateRoutes.js";
 
 // criando a aplicação express
@@ -31,7 +31,7 @@ app.post('/mostrar-estatisticas', validarEmailUsuario, (req, res) => {
     usuarioController.mostrarEstatisticasUsuario(req, res);
 })
 
-app.post('/autenticarToken', authenticateToken, (req, res) => {
+app.post('/autenticar-jwt', autenticarJWT, (req, res) => {
     res.status(200).send({ 
         message: 'Usuário autenticado com sucesso!', 
         usuario: req.usuario 
