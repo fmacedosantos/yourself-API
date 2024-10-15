@@ -15,7 +15,7 @@ export class Usuario {
     anoRegistro = new Date().getFullYear();
     preferenciaConcentracao = 25;
     preferenciaDescanso = 5;
-    comprasItens = [];
+    itens = [];
     atividades = [];
 
     #repository;

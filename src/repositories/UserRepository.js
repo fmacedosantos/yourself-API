@@ -37,7 +37,7 @@ export class UsuarioRepository {
                 maiorOfensiva: 0,
                 preferenciaConcentracao: 25,
                 preferenciaDescanso: 5,
-                comprasItens: [],
+                itens: [],
                 atividades: [],
                 ultimaAtividade: null
             });
