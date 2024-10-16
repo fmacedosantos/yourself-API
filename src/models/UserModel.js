@@ -1,4 +1,3 @@
-import { AtividadeRepository } from "../repositories/ActivityRepository.js";
 import { UsuarioRepository } from "../repositories/UserRepository.js";
 
 export class Usuario {
