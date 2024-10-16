@@ -2,7 +2,7 @@
 import express from "express";
 import { UsuarioController } from "../controllers/UserController.js";
 import { autenticarJWT } from '../middlewares/AuthenticateJWT.js';
-import { validarAtualizarPreferencias, validarAtualizarUsuario, validarCadastroUsuario, validarEmailUsuario } from "../validations/validateRoutes.js";
+import { validarAtualizarPreferencias, validarAtualizarUsuario, validarCadastroUsuario, validarEmailUsuario } from "../middlewares/ValidateUser.js";
 
 // criando a aplicação express
 const app = express();
