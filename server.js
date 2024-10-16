@@ -2,8 +2,8 @@
 import express from "express";
 import admin from 'firebase-admin';
 import bodyParser from 'body-parser';
-import { usuarioRouter } from "./routes/user.routes.js";
-import { atividadeRouter } from "./routes/activity.routes.js";
+import { usuarioRouter } from "./src/routes/user.routes.js";
+import { atividadeRouter } from "./src/routes/activity.routes.js";
 
 // criando a aplicação express
 const app = express();
