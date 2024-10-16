@@ -34,3 +34,16 @@ export const validarAtualizarUsuario = (req, res, next) => {
     }
     next();
 };
+
+export const validarAtualizarPreferencias = (req, res, next) => {
+    const { email, preferenciaConcentracao, preferenciaDescanso } = req.body;
+
+    if (!email) {
+        return res.status(400).json({ message: mensagemErroInformacoesNecessarias });
+    }
+
+    if (!preferenciaConcentracao && !preferenciaDescanso) {
+        return res.status(200).json({ message: "Nenhum dado foi atualizado!" });
+    }
+    next();
+}

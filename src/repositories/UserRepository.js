@@ -1,5 +1,5 @@
 import admin from 'firebase-admin';
-import { atualizarOfensiva } from './ActivityRepository.js';
+import { atualizarOfensiva } from '../services/ActivityServices.js';
 
 const COLLECTION_ATIVIDADES = 'atividades';
 const COLLECTION_USUARIOS = 'usuarios';
@@ -65,12 +65,11 @@ export class UsuarioRepository {
             }
     
             const usuarioData = usuarioSnapshot.data();
-    
-            // Atualizar a ofensiva ao acessar os dados do usuário
             const dataAtual = new Date();
+            
+            // Atualiza a ofensiva somente se houver uma nova atividade em um novo dia
             const { novaOfensiva, novaMaiorOfensiva } = atualizarOfensiva(usuarioData, dataAtual);
     
-            // Se a ofensiva foi atualizada, salvar no Firestore
             if (novaOfensiva !== usuarioData.ofensiva || novaMaiorOfensiva !== usuarioData.maiorOfensiva) {
                 await usuarioRef.update({
                     ofensiva: novaOfensiva,
@@ -78,7 +77,6 @@ export class UsuarioRepository {
                 });
             }
     
-            // Retornar os dados do usuário atualizados
             return {
                 email: usuarioData.email,
                 pontos: usuarioData.pontos,
@@ -89,7 +87,7 @@ export class UsuarioRepository {
         } catch (error) {
             throw new Error("Erro ao mostrar os dados do usuário.");
         }
-    }    
+    }       
 
     async mostrarEstatisticas(email) {
         try {
@@ -173,6 +171,39 @@ export class UsuarioRepository {
         }
     }
     
+    async atualizarPreferencias(email, preferenciaConcentracao = null, preferenciaDescanso = null) {
+        try {
+            // Recupera o documento do usuário no Firestore
+            const usuarioSnapshot = await this.db.collection(COLLECTION_USUARIOS).doc(email).get();
+            if (!usuarioSnapshot.exists) {
+                throw new Error("Usuário não cadastrado!");
+            }
+    
+            const usuarioData = usuarioSnapshot.data();
+    
+            // Monta as atualizações condicionalmente
+            const atualizacoes = {};
+            if (preferenciaConcentracao !== null) {
+                atualizacoes.preferenciaConcentracao = preferenciaConcentracao;
+            }
+            if (preferenciaDescanso !== null) {
+                atualizacoes.preferenciaDescanso = preferenciaDescanso;
+            }
+    
+            // Atualiza as preferências no Firestore
+            if (Object.keys(atualizacoes).length > 0) {
+                await this.db.collection(COLLECTION_USUARIOS).doc(email).update(atualizacoes);
+            }
+    
+            return { 
+                mensagem: "Preferências atualizadas com sucesso!",
+                preferenciaConcentracao: preferenciaConcentracao || usuarioData.preferenciaConcentracao,
+                preferenciaDescanso: preferenciaDescanso || usuarioData.preferenciaDescanso
+            };
+        } catch (error) {
+            throw new Error("Erro ao atualizar preferências: " + error.message);
+        }
+    }    
 
     async deletarUsuario(email) {
         try {

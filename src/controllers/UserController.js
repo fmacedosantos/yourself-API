@@ -87,6 +87,22 @@ export class UsuarioController {
         }
     }
     
+    async atualizarPreferencias(req, res) {
+        try {
+            const {email, preferenciaConcentracao, preferenciaDescanso } = req.body;
+
+            const usuario = new Usuario();
+
+            usuario.email = email;
+            usuario.preferenciaConcentracao = preferenciaConcentracao;
+            usuario.preferenciaDescanso = preferenciaDescanso;
+
+            const usuarioAtualizado = await usuario.atualizarPreferencias();
+            res.status(200).send({ message: 'Preferências atualizadas com sucesso!', usuarioAtualizado });
+        } catch (error) {
+            res.status(500).json({ message: error.message });
+        }
+    }
 
     async deletarUsuario(req, res) {
         try {
