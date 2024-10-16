@@ -17,6 +17,7 @@ export class Usuario {
     preferenciaDescanso = 5;
     itens = [];
     atividades = [];
+    ultimaAtividade = null;
 
     #repository;
 
