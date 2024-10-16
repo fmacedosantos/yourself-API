@@ -30,14 +30,14 @@ export function atualizarOfensiva(usuarioData, dataAtual) {
         if (diffDias === 1) {
             novaOfensiva += 1;
         } else if (diffDias > 1) {
-            novaOfensiva = 1; // Reinicia a ofensiva se mais de 1 dia passou, mas começa em 1 com nova atividade
+            novaOfensiva = 0; // Reinicia a ofensiva se mais de 1 dia passou, mas começa em 1 com nova atividade
         }
 
         if (novaOfensiva > novaMaiorOfensiva) {
             novaMaiorOfensiva = novaOfensiva;
         }
     } else {
-        novaOfensiva = 1; // Primeira atividade registrada
+        novaOfensiva = 0 
     }
 
     return { novaOfensiva, novaMaiorOfensiva };
