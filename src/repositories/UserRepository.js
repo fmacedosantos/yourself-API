@@ -1,5 +1,5 @@
 import admin from 'firebase-admin';
-import { atualizarOfensiva } from './ActivityRepository.js';
+import { atualizarOfensiva } from '../services/ActivityServices.js';
 
 const COLLECTION_ATIVIDADES = 'atividades';
 const COLLECTION_USUARIOS = 'usuarios';
