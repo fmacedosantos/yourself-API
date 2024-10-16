@@ -14,7 +14,7 @@ export class AtividadeRepository {
         const atividadeRef = this.db.collection(COLLECTION_ATIVIDADES).doc();
         const atividadeId = atividadeRef.id;
         const id = atividadeId;
-
+    
         const dataAtual = new Date();
         const data = dataAtual.toLocaleDateString('pt-BR'); 
     
@@ -30,7 +30,6 @@ export class AtividadeRepository {
             data
         };
     
-        // Registrar a nova atividade
         await atividadeRef.set(atividade);
     
         const usuarioRef = this.db.collection(COLLECTION_USUARIOS).doc(email);
@@ -44,7 +43,7 @@ export class AtividadeRepository {
         const novosPontos = usuarioData.pontos + pontos;
         const novoTotalPontos = usuarioData.totalPontos + pontos;
     
-        // Verificando e atualizando a ofensiva ao registrar a atividade
+        // Atualizar a ofensiva ao registrar a atividade
         const { novaOfensiva, novaMaiorOfensiva } = atualizarOfensiva(usuarioData, dataAtual);
     
         await usuarioRef.update({
@@ -53,11 +52,12 @@ export class AtividadeRepository {
             totalPontos: novoTotalPontos,
             ofensiva: novaOfensiva,
             maiorOfensiva: novaMaiorOfensiva,
-            ultimaAtividade: data
+            ultimaAtividade: data // Atualizando a data da última atividade
         });
     
         return atividadeId;
     }
+        
 
     async mostrarAtividades(email) {
         try {
