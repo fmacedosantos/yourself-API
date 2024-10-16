@@ -43,6 +43,10 @@ export class Usuario {
         return this.#repository.atualizarUsuario(this.email, this.nome, this.apelido, this.senha);
     }
 
+    atualizarPreferencias() {
+        return this.#repository.atualizarPreferencias(this.email, this.preferenciaConcentracao, this.preferenciaDescanso);
+    }
+
     deletarUsuario(){
         return this.#repository.deletarUsuario(this.email);
     }

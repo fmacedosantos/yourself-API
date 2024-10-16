@@ -173,6 +173,39 @@ export class UsuarioRepository {
         }
     }
     
+    async atualizarPreferencias(email, preferenciaConcentracao = null, preferenciaDescanso = null) {
+        try {
+            // Recupera o documento do usuário no Firestore
+            const usuarioSnapshot = await this.db.collection(COLLECTION_USUARIOS).doc(email).get();
+            if (!usuarioSnapshot.exists) {
+                throw new Error("Usuário não cadastrado!");
+            }
+    
+            const usuarioData = usuarioSnapshot.data();
+    
+            // Monta as atualizações condicionalmente
+            const atualizacoes = {};
+            if (preferenciaConcentracao !== null) {
+                atualizacoes.preferenciaConcentracao = preferenciaConcentracao;
+            }
+            if (preferenciaDescanso !== null) {
+                atualizacoes.preferenciaDescanso = preferenciaDescanso;
+            }
+    
+            // Atualiza as preferências no Firestore
+            if (Object.keys(atualizacoes).length > 0) {
+                await this.db.collection(COLLECTION_USUARIOS).doc(email).update(atualizacoes);
+            }
+    
+            return { 
+                mensagem: "Preferências atualizadas com sucesso!",
+                preferenciaConcentracao: preferenciaConcentracao || usuarioData.preferenciaConcentracao,
+                preferenciaDescanso: preferenciaDescanso || usuarioData.preferenciaDescanso
+            };
+        } catch (error) {
+            throw new Error("Erro ao atualizar preferências: " + error.message);
+        }
+    }    
 
     async deletarUsuario(email) {
         try {

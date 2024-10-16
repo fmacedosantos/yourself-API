@@ -2,7 +2,7 @@
 import express from "express";
 import { UsuarioController } from "../controllers/UserController.js";
 import { autenticarJWT } from '../middlewares/AuthenticateJWT.js';
-import { validarAtualizarUsuario, validarCadastroUsuario, validarEmailUsuario } from "../validations/validateRoutes.js";
+import { validarAtualizarPreferencias, validarAtualizarUsuario, validarCadastroUsuario, validarEmailUsuario } from "../validations/validateRoutes.js";
 
 // criando a aplicação express
 const app = express();
@@ -21,6 +21,10 @@ app.get('/mostrar', validarEmailUsuario, (req, res) => {
 
 app.patch('/atualizar', validarAtualizarUsuario, (req, res) => {
     usuarioController.atualizarUsuario(req, res);
+})
+
+app.post('/atualizar-preferencias', validarAtualizarPreferencias, (req, res) => {
+    usuarioController.atualizarPreferencias(req, res);
 })
 
 app.delete('/deletar', validarEmailUsuario, (req, res) => {

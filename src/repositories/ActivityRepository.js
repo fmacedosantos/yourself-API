@@ -1,5 +1,5 @@
 import admin from 'firebase-admin';
-import { atualizarOfensiva, calcularPontos } from '../services/ActivityServices';
+import { atualizarOfensiva, calcularPontos } from '../services/ActivityServices.js';
 
 const COLLECTION_ATIVIDADES = 'atividades';
 const COLLECTION_USUARIOS = 'usuarios';
