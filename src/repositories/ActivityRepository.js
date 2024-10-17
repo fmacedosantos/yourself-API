@@ -98,9 +98,28 @@ export class AtividadeRepository {
     async deletarAtividade(id) {
         try {
             const atividadeRef = this.db.collection(COLECAO.ATIVIDADE).doc(id);
+            const atividadeSnapshot = await atividadeRef.get();
+    
+            if (!atividadeSnapshot.exists) {
+                throw new Error("Atividade não encontrada.");
+            }
+    
             await atividadeRef.delete();
+    
+            const usuariosQuery = await this.db.collection(COLECAO.USUARIO)
+                .where("atividades", "array-contains", id).get();
+    
+            if (!usuariosQuery.empty) {
+                usuariosQuery.forEach(async (usuarioDoc) => {
+                    await usuarioDoc.ref.update({
+                        atividades: admin.firestore.FieldValue.arrayRemove(id)
+                    });
+                });
+            }
+    
         } catch (error) {
             throw new Error("Erro ao deletar a atividade: " + error.message);
         }
     }
+    
 }

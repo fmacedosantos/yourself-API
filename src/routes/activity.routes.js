@@ -15,12 +15,16 @@ app.post('/cadastrar', validarCadastroAtividade, (req, res) => {
     atividadeController.cadastrarAtividade(req, res);
 });
 
-app.post("/mostrar", validarEmailUsuario, (req, res) => {
+app.get("/mostrar", validarEmailUsuario, (req, res) => {
     atividadeController.mostrarAtividades(req, res);
 });
 
 app.patch('/atualizar', validarAtualizarAtividade, (req, res) => {
     atividadeController.atualizarAtividade(req, res);
+})
+
+app.delete("/deletar", (req, res) => {
+    atividadeController.deletarAtividade(req, res);
 })
 
 // exportando as rotas

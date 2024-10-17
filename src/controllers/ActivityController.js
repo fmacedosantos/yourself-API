@@ -40,7 +40,6 @@ export class AtividadeController {
             response.status(500).json({ message: error.message });
         }
     }
-    
 
     async atualizarAtividade(request, response) {
         try {
@@ -63,6 +62,22 @@ export class AtividadeController {
             response.status(200).send({ message: 'Atividade atualizada com sucesso!' });
         } catch (error) {
             response.status(500).json({ message: error.message });
+        }
+    }
+
+    async deletarAtividade(req, res) {
+        try {
+            const { id } = req.body;
+
+            const atividade = new Atividade();
+
+            atividade.id = id;
+
+            await atividade.deletarAtividade();
+
+            res.status(200).send({ message: `A atividade de ID ${id} foi excluída com sucesso!` })
+        } catch (error) {
+            res.status(500).json({ message: error.message });
         }
     }
 }
