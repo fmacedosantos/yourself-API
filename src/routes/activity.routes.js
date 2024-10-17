@@ -1,7 +1,7 @@
 // importações
 import express from "express";
 import { AtividadeController } from "../controllers/ActivityController.js";
-import { validarAtualizarAtividade, validarCadastroAtividade } from "../middlewares/ValidateActivity.js";
+import { validarAtualizarAtividade, validarCadastroAtividade, validarIdAtividade } from "../middlewares/ValidateActivity.js";
 import { validarEmailUsuario } from "../middlewares/ValidateUser.js";
 
 // criando a aplicação express
@@ -23,7 +23,7 @@ app.patch('/atualizar', validarAtualizarAtividade, (req, res) => {
     atividadeController.atualizarAtividade(req, res);
 })
 
-app.delete("/deletar", (req, res) => {
+app.delete("/deletar", validarIdAtividade, (req, res) => {
     atividadeController.deletarAtividade(req, res);
 })
 
