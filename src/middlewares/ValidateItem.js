@@ -5,3 +5,11 @@ export const validarCadastroItem = (req, res, next) => {
     }
     next();
 }
+
+export const validarCompraItem = (req, res, next) => {
+    const { id, email } = req.body;
+    if (!id || !email) {
+        return res.status(400).json({ message: "Algum dos dados necessários para comprar o item não foram informados! Informe id e email." });
+    }
+    next();
+}
