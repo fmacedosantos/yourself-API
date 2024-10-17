@@ -37,9 +37,20 @@ export class ItemRepository {
             return "Usuário não encontrado!";
         }
 
-        await usuarioRef.update({
-            itens: admin.firestore.FieldValue.arrayUnion(id)
-        });
+        const pontosUsuario = usuarioDoc.get("pontos");
+        const precoItem = itemDoc.get("preco");
 
+        if (precoItem > pontosUsuario) {
+            return "Os pontos do usuário são insuficientes para comprar o item!";
+        }
+
+        const usuarioData = usuarioDoc.data();
+        const novosPontos = usuarioData.pontos - precoItem;
+
+        await usuarioRef.update({
+            itens: admin.firestore.FieldValue.arrayUnion(id),
+            pontos: novosPontos
+        });
+        return `O usuário de email ${email} adquiriu com sucesso o item de ID ${id}!`;
     }
 }

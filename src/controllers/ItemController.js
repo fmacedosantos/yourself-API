@@ -28,8 +28,8 @@ export class ItemController {
             item.id = id;
             item.email = email;
 
-            await item.comprarItem();
-            res.status(200).send({ message: `O usuário de email ${email} adquiriu com sucesso o item de ID ${id}!` });
+            const compra = await item.comprarItem();
+            res.status(200).send({ message: compra });
         } catch (error) {
             response.status(500).json({ message: error.message });
         }
