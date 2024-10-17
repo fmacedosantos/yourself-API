@@ -1,5 +1,5 @@
 import admin from 'firebase-admin';
-import { COLECAO } from '../constants/Collections';
+import { COLECAO } from '../constants/Collections.js';
 
 export class ItemRepository {
 

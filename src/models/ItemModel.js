@@ -1,4 +1,4 @@
-import { ItemRepository } from "../repositories/ItemRepository"
+import { ItemRepository } from "../repositories/ItemRepository.js"
 
 export class Item {
 

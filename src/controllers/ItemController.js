@@ -1,4 +1,4 @@
-import { Item } from "../models/ItemModel";
+import { Item } from "../models/ItemModel.js";
 
 export class ItemController {
 
