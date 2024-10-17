@@ -23,7 +23,7 @@ app.patch('/atualizar', validarAtualizarUsuario, (req, res) => {
     usuarioController.atualizarUsuario(req, res);
 })
 
-app.post('/atualizar-preferencias', validarAtualizarPreferencias, (req, res) => {
+app.patch('/atualizar-preferencias', validarAtualizarPreferencias, (req, res) => {
     usuarioController.atualizarPreferencias(req, res);
 })
 
@@ -31,7 +31,7 @@ app.delete('/deletar', validarEmailUsuario, (req, res) => {
     usuarioController.deletarUsuario(req, res);
 })
 
-app.post('/mostrar-estatisticas', validarEmailUsuario, (req, res) => {
+app.get('/mostrar-estatisticas', validarEmailUsuario, (req, res) => {
     usuarioController.mostrarEstatisticasUsuario(req, res);
 })
 

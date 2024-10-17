@@ -15,7 +15,7 @@ app.post('/cadastrar', validarCadastroAtividade, (req, res) => {
     atividadeController.cadastrarAtividade(req, res);
 });
 
-app.post("/mostrar", validarEmailUsuario, (req, res) => {
+app.get("/mostrar", validarEmailUsuario, (req, res) => {
     atividadeController.mostrarAtividades(req, res);
 });
 
