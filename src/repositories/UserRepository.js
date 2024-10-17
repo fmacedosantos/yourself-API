@@ -1,8 +1,6 @@
 import admin from 'firebase-admin';
 import { atualizarOfensiva } from '../services/ActivityServices.js';
-
-const COLLECTION_ATIVIDADES = 'atividades';
-const COLLECTION_USUARIOS = 'usuarios';
+import { COLECAO } from '../constants/Collections.js';
 
 export class UsuarioRepository {
 
@@ -11,7 +9,7 @@ export class UsuarioRepository {
     async cadastrarUsuario(email, senha, nome, apelido) {
         try {
             // verifica se o nomeUsuario já existe no Firestore
-            const snapshot = await this.db.collection(COLLECTION_USUARIOS)
+            const snapshot = await this.db.collection(COLECAO.USUARIO)
             .where("apelido", "==", apelido).get();
 
             if (!snapshot.empty) {
@@ -25,7 +23,7 @@ export class UsuarioRepository {
             });
 
             // cadastra no firestore, sendo o doc o email do usuário
-            await this.db.collection(COLLECTION_USUARIOS).doc(email).set({
+            await this.db.collection(COLECAO.USUARIO).doc(email).set({
                 email,
                 nome,
                 apelido,
@@ -58,7 +56,7 @@ export class UsuarioRepository {
 
     async mostrarUsuario(email) {
         try {
-            const usuarioRef = this.db.collection(COLLECTION_USUARIOS).doc(email);
+            const usuarioRef = this.db.collection(COLECAO.USUARIO).doc(email);
             const usuarioSnapshot = await usuarioRef.get();
             if (!usuarioSnapshot.exists) {
                 throw new Error("Usuário não encontrado.");
@@ -91,7 +89,7 @@ export class UsuarioRepository {
 
     async mostrarEstatisticas(email) {
         try {
-            const usuarioRef = this.db.collection(COLLECTION_USUARIOS).doc(email);
+            const usuarioRef = this.db.collection(COLECAO.USUARIO).doc(email);
             const usuarioSnapshot = await usuarioRef.get();
             if (!usuarioSnapshot.exists) {
                 throw new Error("Usuário não encontrado.");
@@ -127,7 +125,7 @@ export class UsuarioRepository {
         try {
             // verifica se o apelido já existe no Firestore
             if (apelido !== null) {
-                const snapshot = await this.db.collection(COLLECTION_USUARIOS)
+                const snapshot = await this.db.collection(COLECAO.USUARIO)
                     .where("apelido", "==", apelido).get();
     
                 if (!snapshot.empty) {
@@ -136,7 +134,7 @@ export class UsuarioRepository {
             }
     
             // recupera o documento do usuário
-            const usuarioSnapshot = await this.db.collection(COLLECTION_USUARIOS).doc(email).get();
+            const usuarioSnapshot = await this.db.collection(COLECAO.USUARIO).doc(email).get();
             if (!usuarioSnapshot.exists) {
                 throw new Error("Usuário não cadastrado!");
             }
@@ -157,7 +155,7 @@ export class UsuarioRepository {
     
             // atualiza no Firestore, caso tenha algo para atualizar
             if (Object.keys(atualizacoes).length > 0) {
-                await this.db.collection(COLLECTION_USUARIOS).doc(email).update(atualizacoes);
+                await this.db.collection(COLECAO.USUARIO).doc(email).update(atualizacoes);
             }
 
         } catch (error) {
@@ -174,7 +172,7 @@ export class UsuarioRepository {
     async atualizarPreferencias(email, preferenciaConcentracao = null, preferenciaDescanso = null) {
         try {
             // Recupera o documento do usuário no Firestore
-            const usuarioSnapshot = await this.db.collection(COLLECTION_USUARIOS).doc(email).get();
+            const usuarioSnapshot = await this.db.collection(COLECAO.USUARIO).doc(email).get();
             if (!usuarioSnapshot.exists) {
                 throw new Error("Usuário não cadastrado!");
             }
@@ -192,7 +190,7 @@ export class UsuarioRepository {
     
             // Atualiza as preferências no Firestore
             if (Object.keys(atualizacoes).length > 0) {
-                await this.db.collection(COLLECTION_USUARIOS).doc(email).update(atualizacoes);
+                await this.db.collection(COLECAO.USUARIO).doc(email).update(atualizacoes);
             }
     
             return { 
@@ -211,7 +209,7 @@ export class UsuarioRepository {
             const userRecord = await admin.auth().getUserByEmail(email);
     
             // recupera o documento do usuário no Firestore
-            const usuarioSnapshot = await this.db.collection(COLLECTION_USUARIOS).doc(email).get();
+            const usuarioSnapshot = await this.db.collection(COLECAO.USUARIO).doc(email).get();
             
             if (!usuarioSnapshot.exists) {
                 throw new Error("Usuário não cadastrado!");
@@ -229,7 +227,7 @@ export class UsuarioRepository {
             await admin.auth().deleteUser(userRecord.uid);
     
             // deleta o documento do usuário no Firestore
-            await this.db.collection(COLLECTION_USUARIOS).doc(email).delete();
+            await this.db.collection(COLECAO.USUARIO).doc(email).delete();
     
             return true;
         } catch (error) {

@@ -1,8 +1,6 @@
 import admin from 'firebase-admin';
 import { atualizarOfensiva, calcularPontos } from '../services/ActivityServices.js';
-
-const COLLECTION_ATIVIDADES = 'atividades';
-const COLLECTION_USUARIOS = 'usuarios';
+import { COLECAO } from '../constants/Collections.js';
 
 export class AtividadeRepository {
 
@@ -11,7 +9,7 @@ export class AtividadeRepository {
     async cadastrarAtividade(titulo, descricao, categoria, dificuldade, tempoConcentracao, email) {
         const pontos = calcularPontos(tempoConcentracao, dificuldade);
     
-        const atividadeRef = this.db.collection(COLLECTION_ATIVIDADES).doc();
+        const atividadeRef = this.db.collection(COLECAO.ATIVIDADE).doc();
         const atividadeId = atividadeRef.id;
         const id = atividadeId;
     
@@ -32,7 +30,7 @@ export class AtividadeRepository {
     
         await atividadeRef.set(atividade);
     
-        const usuarioRef = this.db.collection(COLLECTION_USUARIOS).doc(email);
+        const usuarioRef = this.db.collection(COLECAO.USUARIO).doc(email);
         const usuarioDoc = await usuarioRef.get();
     
         if (!usuarioDoc.exists) {
@@ -61,7 +59,7 @@ export class AtividadeRepository {
 
     async mostrarAtividades(email) {
         try {
-            const usuarioRef = this.db.collection(COLLECTION_USUARIOS).doc(email);
+            const usuarioRef = this.db.collection(COLECAO.USUARIO).doc(email);
             const usuarioSnapshot = await usuarioRef.get();
             if (!usuarioSnapshot.exists) {
                 throw new Error("Usuário não encontrado.");
@@ -85,7 +83,7 @@ export class AtividadeRepository {
             const atividades = [];
 
             for(const id of idAtividades){
-                const atividadeSnapshot = await this.db.collection(COLLECTION_ATIVIDADES).doc(id).get();
+                const atividadeSnapshot = await this.db.collection(COLECAO.ATIVIDADE).doc(id).get();
                 if (atividadeSnapshot.exists) {
                     atividades.push(atividadeSnapshot.data());
                 }
@@ -99,7 +97,7 @@ export class AtividadeRepository {
 
     async deletarAtividade(id) {
         try {
-            const atividadeRef = this.db.collection(COLLECTION_ATIVIDADES).doc(id);
+            const atividadeRef = this.db.collection(COLECAO.ATIVIDADE).doc(id);
             await atividadeRef.delete();
         } catch (error) {
             throw new Error("Erro ao deletar a atividade: " + error.message);
