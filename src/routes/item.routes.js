@@ -10,4 +10,8 @@ app.post('/cadastrar', validarCadastroItem, (req, res) => {
     itemController.cadastrarItem(req, res);
 })
 
+app.post('/comprar', (req, res) => {
+    itemController.comprarItem(req, res);
+})
+
 export const itemRouter = app;

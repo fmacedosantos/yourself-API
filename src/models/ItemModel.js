@@ -3,6 +3,7 @@ import { ItemRepository } from "../repositories/ItemRepository.js"
 export class Item {
 
     id
+    email
     nome 
     preco
     icone
@@ -15,5 +16,9 @@ export class Item {
 
     cadastrarItem() {
         return this.#repository.cadastrarItem(this.nome, this.preco, this.icone);
+    }
+
+    comprarItem() {
+        return this.#repository.comprarItem(this.id, this.email);
     }
 }

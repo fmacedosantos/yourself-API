@@ -18,4 +18,20 @@ export class ItemController {
             response.status(500).json({ message: error.message });
         }
     }
+
+    async comprarItem(req, res) {
+        try {
+            const { id, email } = req.body;
+
+            const item = new Item();
+
+            item.id = id;
+            item.email = email;
+
+            await item.comprarItem();
+            res.status(200).send({ message: `O usuário de email ${email} adquiriu com sucesso o item de ID ${id}!` });
+        } catch (error) {
+            response.status(500).json({ message: error.message });
+        }
+    }
 }
