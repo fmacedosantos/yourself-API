@@ -23,5 +23,9 @@ app.patch('/atualizar', validarAtualizarAtividade, (req, res) => {
     atividadeController.atualizarAtividade(req, res);
 })
 
+app.delete("/deletar", (req, res) => {
+    atividadeController.deletarAtividade(req, res);
+})
+
 // exportando as rotas
 export const atividadeRouter = app;

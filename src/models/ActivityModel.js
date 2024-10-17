@@ -32,4 +32,8 @@ export class Atividade {
     atualizarAtividade(){
         return this.#repository.atualizarAtividade(this.id, this.titulo, this.descricao, this.categoria)
     }
+
+    deletarAtividade() {
+        return this.#repository.deletarAtividade(this.id);
+    }
 }
