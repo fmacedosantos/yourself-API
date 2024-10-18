@@ -220,7 +220,7 @@ export class UsuarioRepository {
     
             // exclui as atividades associadas ao usuário
             for (const atividadeId of atividades) {
-                await this.db.collection(COLLECTION_ATIVIDADES).doc(atividadeId).delete();
+                await this.db.collection(COLECAO.ATIVIDADE).doc(atividadeId).delete();
             }
     
             // deleta o usuário do Firebase Authentication
