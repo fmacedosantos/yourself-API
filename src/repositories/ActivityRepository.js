@@ -15,7 +15,6 @@ export class AtividadeRepository {
     
         const dataAtual = new Date();
         const data = dataAtual.toLocaleDateString('pt-BR'); 
-    
         const atividade = {
             id,
             titulo,
@@ -25,8 +24,9 @@ export class AtividadeRepository {
             tempoConcentracao,
             pontos,
             email,
-            data
+            data: data 
         };
+
     
         await atividadeRef.set(atividade);
     
@@ -42,7 +42,7 @@ export class AtividadeRepository {
         const novoTotalPontos = usuarioData.totalPontos + pontos;
     
         // Atualizar a ofensiva ao registrar a atividade
-        const { novaOfensiva, novaMaiorOfensiva } = atualizarOfensiva(usuarioData, dataAtual);
+        const { novaOfensiva, novaMaiorOfensiva } = atualizarOfensiva(usuarioData, true);
     
         await usuarioRef.update({
             atividades: admin.firestore.FieldValue.arrayUnion(atividadeId),
@@ -50,7 +50,7 @@ export class AtividadeRepository {
             totalPontos: novoTotalPontos,
             ofensiva: novaOfensiva,
             maiorOfensiva: novaMaiorOfensiva,
-            ultimaAtividade: data // Atualizando a data da última atividade
+            ultimaAtividade: data // Salva o objeto Date diretamente
         });
     
         return atividadeId;
@@ -69,7 +69,7 @@ export class AtividadeRepository {
 
             // Atualizar a ofensiva ao acessar os dados do usuário
             const dataAtual = new Date();
-            const { novaOfensiva, novaMaiorOfensiva } = atualizarOfensiva(usuarioData, dataAtual);
+            const { novaOfensiva, novaMaiorOfensiva } = atualizarOfensiva(usuarioData, false);
 
             // Se a ofensiva foi atualizada, salvar no Firestore
             if (novaOfensiva !== usuarioData.ofensiva || novaMaiorOfensiva !== usuarioData.maiorOfensiva) {
@@ -98,9 +98,28 @@ export class AtividadeRepository {
     async deletarAtividade(id) {
         try {
             const atividadeRef = this.db.collection(COLECAO.ATIVIDADE).doc(id);
+            const atividadeSnapshot = await atividadeRef.get();
+    
+            if (!atividadeSnapshot.exists) {
+                throw new Error("Atividade não encontrada.");
+            }
+    
             await atividadeRef.delete();
+    
+            const usuariosQuery = await this.db.collection(COLECAO.USUARIO)
+                .where("atividades", "array-contains", id).get();
+    
+            if (!usuariosQuery.empty) {
+                usuariosQuery.forEach(async (usuarioDoc) => {
+                    await usuarioDoc.ref.update({
+                        atividades: admin.firestore.FieldValue.arrayRemove(id)
+                    });
+                });
+            }
+    
         } catch (error) {
             throw new Error("Erro ao deletar a atividade: " + error.message);
         }
     }
+    
 }

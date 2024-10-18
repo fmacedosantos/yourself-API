@@ -44,7 +44,7 @@ export class UsuarioController {
         }
     }
 
-    async mostrarEstatisticasUsuario(req, res) {
+    async mostrarEstatisticas(req, res) {
         try {
             // variáveis do body
             const { email } = req.body;
@@ -56,8 +56,27 @@ export class UsuarioController {
             usuario.email = email;
 
             // chamando o método do repository
-            const dadosEstatisticas = await usuario.mostrarEstatisticasUsuario();
-            res.status(200).send({ dadosEstatisticas })
+            const dadosEstatisticas = await usuario.mostrarEstatisticas();
+            res.status(200).send({ dadosEstatisticas });
+        } catch (error) {
+            res.status(500).json({ message: error.message });
+        }
+    }
+
+    async mostrarPreferencias(req, res) {
+        try {
+            // variáveis do body
+            const { email } = req.body;
+
+            // chamando o model
+            const usuario = new Usuario();
+
+            // atribuindo as variáveis ao model
+            usuario.email = email;
+
+            // chamando o método do repository
+            const dadosPreferencias = await usuario.mostrarPreferencias();
+            res.status(200).send({ dadosPreferencias });
         } catch (error) {
             res.status(500).json({ message: error.message });
         }

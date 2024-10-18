@@ -34,8 +34,12 @@ export class Usuario {
         return this.#repository.mostrarUsuario(this.email);
     }
 
-    mostrarEstatisticasUsuario() {
+    mostrarEstatisticas() {
         return this.#repository.mostrarEstatisticas(this.email);
+    }
+
+    mostrarPreferencias() {
+        return this.#repository.mostrarPreferencias(this.email);
     }
 
     atualizarUsuario(){
