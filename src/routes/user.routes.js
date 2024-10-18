@@ -20,7 +20,11 @@ app.get('/mostrar', validarEmailUsuario, (req, res) => {
 })
 
 app.get('/mostrar-estatisticas', validarEmailUsuario, (req, res) => {
-    usuarioController.mostrarEstatisticasUsuario(req, res);
+    usuarioController.mostrarEstatisticas(req, res);
+})
+
+app.get('/mostrar-preferencias', validarEmailUsuario, (req, res) => {
+    usuarioController.mostrarPreferencias(req, res);
 })
 
 app.patch('/atualizar', validarAtualizarUsuario, (req, res) => {
