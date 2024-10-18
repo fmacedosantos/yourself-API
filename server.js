@@ -11,6 +11,9 @@ const app = express();
 
 // inicializando o acesso ao banco de dados e credenciando a chave de conta de servico
 const inicandoBanco = admin;
+if (inicandoBanco) {
+    console.log('A conexão com o banco de dados Firestore foi iniciada\n');
+}
 
 // middleware pra interpretar o corpo da requisição como json
 app.use(bodyParser.json());
