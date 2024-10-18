@@ -63,17 +63,6 @@ export class UsuarioRepository {
             }
     
             const usuarioData = usuarioSnapshot.data();
-            const dataAtual = new Date();
-            
-            // Atualiza a ofensiva somente se houver uma nova atividade em um novo dia
-            const { novaOfensiva, novaMaiorOfensiva } = atualizarOfensiva(usuarioData, false);
-    
-            if (novaOfensiva !== usuarioData.ofensiva || novaMaiorOfensiva !== usuarioData.maiorOfensiva) {
-                await usuarioRef.update({
-                    ofensiva: novaOfensiva,
-                    maiorOfensiva: novaMaiorOfensiva
-                });
-            }
     
             return {
                 email: usuarioData.email,
@@ -118,7 +107,26 @@ export class UsuarioRepository {
         } catch (error) {
             throw new Error("Erro ao mostrar as estatísticas do usuário: " + error.message);
         }
-    }        
+    } 
+    
+    async mostrarPreferencias(email) {
+        try {
+            const usuarioRef = this.db.collection(COLECAO.USUARIO).doc(email);
+            const usuarioSnapshot = await usuarioRef.get();
+            if (!usuarioSnapshot.exists) {
+                throw new Error("Usuário não encontrado.");
+            }
+    
+            const usuarioData = usuarioSnapshot.data();
+    
+            return {
+                preferenciaConcentracao: usuarioData.preferenciaConcentracao,
+                preferenciaDescanso: usuarioData.preferenciaDescanso
+            };
+        } catch (error) {
+            throw new Error("Erro ao mostrar os dados do usuário.");
+        }
+    }
 
     async atualizarUsuario(email, nome = null, apelido = null, novaSenha = null) {
         try {
