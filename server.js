@@ -10,9 +10,11 @@ import { itemRouter } from "./src/routes/item.routes.js";
 const app = express();
 
 // inicializando o acesso ao banco de dados e credenciando a chave de conta de servico
-admin.initializeApp({
-    credential: admin.credential.cert("serviceAccountKey.json")
-});
+if (!admin.apps.length) {  
+    admin.initializeApp({
+        credential: admin.credential.cert("serviceAccountKey.json")
+    });
+}
 
 // middleware pra interpretar o corpo da requisição como json
 app.use(bodyParser.json());
