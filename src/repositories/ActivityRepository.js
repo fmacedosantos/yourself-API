@@ -42,7 +42,7 @@ export class AtividadeRepository {
         const novoTotalPontos = usuarioData.totalPontos + pontos;
     
         // Atualizar a ofensiva ao registrar a atividade
-        const { novaOfensiva, novaMaiorOfensiva } = atualizarOfensiva(usuarioData, dataAtual);
+        const { novaOfensiva, novaMaiorOfensiva } = atualizarOfensiva(usuarioData, true);
     
         await usuarioRef.update({
             atividades: admin.firestore.FieldValue.arrayUnion(atividadeId),
@@ -69,7 +69,7 @@ export class AtividadeRepository {
 
             // Atualizar a ofensiva ao acessar os dados do usuário
             const dataAtual = new Date();
-            const { novaOfensiva, novaMaiorOfensiva } = atualizarOfensiva(usuarioData, dataAtual);
+            const { novaOfensiva, novaMaiorOfensiva } = atualizarOfensiva(usuarioData, false);
 
             // Se a ofensiva foi atualizada, salvar no Firestore
             if (novaOfensiva !== usuarioData.ofensiva || novaMaiorOfensiva !== usuarioData.maiorOfensiva) {

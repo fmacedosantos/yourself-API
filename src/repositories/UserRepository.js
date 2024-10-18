@@ -66,7 +66,7 @@ export class UsuarioRepository {
             const dataAtual = new Date();
             
             // Atualiza a ofensiva somente se houver uma nova atividade em um novo dia
-            const { novaOfensiva, novaMaiorOfensiva } = atualizarOfensiva(usuarioData, dataAtual);
+            const { novaOfensiva, novaMaiorOfensiva } = atualizarOfensiva(usuarioData, false);
     
             if (novaOfensiva !== usuarioData.ofensiva || novaMaiorOfensiva !== usuarioData.maiorOfensiva) {
                 await usuarioRef.update({
@@ -98,8 +98,7 @@ export class UsuarioRepository {
             const usuarioData = usuarioSnapshot.data();
     
             // Atualizar a ofensiva ao acessar as estatísticas do usuário
-            const dataAtual = new Date();
-            const { novaOfensiva, novaMaiorOfensiva } = atualizarOfensiva(usuarioData, dataAtual);
+            const { novaOfensiva, novaMaiorOfensiva } = atualizarOfensiva(usuarioData, false);
     
             // Se a ofensiva foi atualizada, salvar no Firestore
             if (novaOfensiva !== usuarioData.ofensiva || novaMaiorOfensiva !== usuarioData.maiorOfensiva) {
