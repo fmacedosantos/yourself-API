@@ -19,8 +19,9 @@ export class AtividadeController {
             atividade.email = email;
 
             // chamando o método do repository
-            const atividadeId = await atividade.cadastrarAtividade();
-            response.status(201).send({ message: "Atividade cadastrada com sucesso!", atividadeId });
+            
+            await atividade.cadastrarAtividade();
+            response.status(201).send({ message: "Atividade cadastrada com sucesso!" });
         } catch (error) {
             response.status(500).json({ message: error.message });
         }
@@ -33,9 +34,8 @@ export class AtividadeController {
             const atividade = new Atividade();
             atividade.email = email;
     
-            const atividades = await atividade.mostrarAtividades();
-    
-            response.status(200).send({ atividades });
+            const dadosAtividades = await atividade.mostrarAtividades();
+            response.status(200).send({ dadosAtividades });
         } catch (error) {
             response.status(500).json({ message: error.message });
         }
@@ -57,8 +57,6 @@ export class AtividadeController {
 
             // chamando o método do repository para atualizar a atividade
             await atividade.atualizarAtividade();
-
-            // envia a resposta com a atividade atualizada
             response.status(200).send({ message: 'Atividade atualizada com sucesso!' });
         } catch (error) {
             response.status(500).json({ message: error.message });
@@ -74,7 +72,6 @@ export class AtividadeController {
             atividade.id = id;
 
             await atividade.deletarAtividade();
-
             res.status(200).send({ message: `A atividade de ID ${id} foi excluída com sucesso!` })
         } catch (error) {
             res.status(500).json({ message: error.message });

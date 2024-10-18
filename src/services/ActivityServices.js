@@ -1,3 +1,14 @@
+import admin from '../../firebase.js';
+import { COLECAO } from '../constants/Collections.js';
+
+const db = admin.firestore();
+
+export async function atividadeInexistente(id){
+    const atividadeRef = db.collection(COLECAO.ATIVIDADE).doc(id);
+    const atividadeSnapshot = await atividadeRef.get();
+    return !atividadeSnapshot.exists
+}
+
 export function calcularPontos(tempoConcentracao, dificuldade) {
     let dificuldadeFormatada = 0;
     switch (dificuldade) {
@@ -37,7 +48,7 @@ export function atualizarOfensiva(usuarioData, estaCadastrandoAtividade) {
             novaMaiorOfensiva = novaOfensiva;
         }
     } else {
-        novaOfensiva = estaCadastrandoAtividade ? 1 : 0;  // Inicia ofensiva na primeira atividade
+        novaOfensiva = estaCadastrandoAtividade ? 1 : 0;  
     }
 
     return { novaOfensiva, novaMaiorOfensiva };
