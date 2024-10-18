@@ -97,7 +97,7 @@ export class UsuarioRepository {
     
             const usuarioData = usuarioSnapshot.data();
     
-            // Atualizar a ofensiva ao acessar as estatísticas do usuário
+            // Verifique se 'ultimaAtividade' está presente e no formato correto
             const { novaOfensiva, novaMaiorOfensiva } = atualizarOfensiva(usuarioData, false);
     
             // Se a ofensiva foi atualizada, salvar no Firestore
@@ -116,9 +116,9 @@ export class UsuarioRepository {
                 maiorOfensiva: novaMaiorOfensiva
             };
         } catch (error) {
-            throw new Error("Erro ao mostrar as estatísticas do usuário.");
+            throw new Error("Erro ao mostrar as estatísticas do usuário: " + error.message);
         }
-    }    
+    }        
 
     async atualizarUsuario(email, nome = null, apelido = null, novaSenha = null) {
         try {

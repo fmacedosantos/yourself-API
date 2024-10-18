@@ -15,7 +15,6 @@ export class AtividadeRepository {
     
         const dataAtual = new Date();
         const data = dataAtual.toLocaleDateString('pt-BR'); 
-    
         const atividade = {
             id,
             titulo,
@@ -25,8 +24,9 @@ export class AtividadeRepository {
             tempoConcentracao,
             pontos,
             email,
-            data
+            data: data 
         };
+
     
         await atividadeRef.set(atividade);
     
@@ -50,7 +50,7 @@ export class AtividadeRepository {
             totalPontos: novoTotalPontos,
             ofensiva: novaOfensiva,
             maiorOfensiva: novaMaiorOfensiva,
-            ultimaAtividade: data // Atualizando a data da última atividade
+            ultimaAtividade: data // Salva o objeto Date diretamente
         });
     
         return atividadeId;

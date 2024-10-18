@@ -15,19 +15,18 @@ export function calcularPontos(tempoConcentracao, dificuldade) {
 }
 
 export function atualizarOfensiva(usuarioData, estaCadastrandoAtividade) {
-    const dataUltimaAtividade = usuarioData.ultimaAtividade;
+    const dataUltimaAtividade = usuarioData.ultimaAtividade ? new Date(usuarioData.ultimaAtividade) : null;
     const dataAtual = new Date();
-
-    const ultimaAtividadeMs = ultimaAtividade.getTime();
-    const dataAtualMs = dataAtual.getTime();
-
-    const diferencaMs = dataAtualMs - ultimaAtividadeMs;
 
     let novaOfensiva = usuarioData.ofensiva || 0;
     let novaMaiorOfensiva = usuarioData.maiorOfensiva || 0;
 
     if (dataUltimaAtividade) {
+        const ultimaAtividadeMs = dataUltimaAtividade.getTime();
+        const dataAtualMs = dataAtual.getTime();
+        const diferencaMs = dataAtualMs - ultimaAtividadeMs;
         const diffDias = diferencaMs / (1000 * 60 * 60 * 24);
+
         if (diffDias === 1 && estaCadastrandoAtividade == true) {
             novaOfensiva += 1;
         } else if (diffDias > 1) {
@@ -38,8 +37,9 @@ export function atualizarOfensiva(usuarioData, estaCadastrandoAtividade) {
             novaMaiorOfensiva = novaOfensiva;
         }
     } else {
-        novaOfensiva = 0 
+        novaOfensiva = estaCadastrandoAtividade ? 1 : 0;  // Inicia ofensiva na primeira atividade
     }
 
     return { novaOfensiva, novaMaiorOfensiva };
 }
+
