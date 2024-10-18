@@ -77,10 +77,10 @@ export class UsuarioRepository {
     
             return {
                 email: usuarioData.email,
-                pontos: usuarioData.pontos,
-                totalPontos: usuarioData.totalPontos,
-                ofensiva: novaOfensiva,
-                maiorOfensiva: novaMaiorOfensiva
+                nome: usuarioData.nome,
+                apelido: usuarioData.apelido,
+                anoRegistro: usuarioData.anoRegistro,
+                ultimaAtividade: usuarioData.ultimaAtividade
             };
         } catch (error) {
             throw new Error("Erro ao mostrar os dados do usuário.");
