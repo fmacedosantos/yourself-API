@@ -84,6 +84,23 @@ export class AtividadeRepository {
         
     }
 
+    async atualizarAtividade(id, titulo = null, descricao = null, categoria= null) {
+        const atividadeSnapshot = await this.db.collection(COLECAO.ATIVIDADE).doc(id).get();
+
+        const atividadeData = atividadeSnapshot.data();
+
+        const atualizacoes = {
+            titulo: titulo !== null ? titulo : atividadeData.titulo,
+            descricao: descricao !== null ? descricao : atividadeData.descricao,
+            categoria: categoria !== null ? categoria : atividadeData.categoria
+        }
+
+        if (Object.keys(atualizacoes).length > 0) {
+            await this.db.collection(COLECAO.ATIVIDADE).doc(id).update(atualizacoes);
+        }
+        
+    }
+
     async deletarAtividade(id) {
         
         const atividadeRef = this.db.collection(COLECAO.ATIVIDADE).doc(id);
