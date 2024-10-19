@@ -37,7 +37,6 @@ export class AtividadeRepository {
         const novosPontos = usuarioData.pontos + pontos;
         const novoTotalPontos = usuarioData.totalPontos + pontos;
     
-        // Atualizar a ofensiva ao registrar a atividade
         const { novaOfensiva, novaMaiorOfensiva } = atualizarOfensiva(usuarioData, true);
     
         await usuarioRef.update({
