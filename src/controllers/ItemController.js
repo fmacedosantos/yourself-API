@@ -15,7 +15,7 @@ export class ItemController {
             await item.cadastrarItem();
             res.status(201).send({ message: "Item cadastrado com sucesso!" });
         } catch (error) {
-            response.status(500).json({ message: error.message });
+            res.status(500).json({ message: error.message });
         }
     }
 
@@ -31,7 +31,7 @@ export class ItemController {
             await item.comprarItem();
             res.status(200).send({ message: "Item comprado com sucesso!" });
         } catch (error) {
-            response.status(500).json({ message: error.message });
+            res.status(500).json({ message: error.message });
         }
     }
 
@@ -44,9 +44,9 @@ export class ItemController {
             item.email = email;
 
             const dadosItens = await item.mostrarItens();
-            response.status(200).send({ dadosItens });
+            res.status(200).send({ dadosItens });
         } catch (error) {
-            response.status(500).json({ message: error.message });
+            res.status(500).json({ message: error.message });
         }
     }
 }
