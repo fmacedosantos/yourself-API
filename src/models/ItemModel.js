@@ -21,4 +21,9 @@ export class Item {
     comprarItem() {
         return this.#repository.comprarItem(this.id, this.email);
     }
+
+    mostrarItens() {
+        return this.#repository.mostrarItens(this.email);
+    }
+    
 }

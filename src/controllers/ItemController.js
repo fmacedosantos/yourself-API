@@ -34,4 +34,19 @@ export class ItemController {
             response.status(500).json({ message: error.message });
         }
     }
+
+    async mostrarItens(req, res) {
+        try {
+            const { email } = req.body;
+
+            const item = new Item();
+
+            item.email = email;
+
+            const dadosItens = await item.mostrarItens();
+            response.status(200).send({ dadosItens });
+        } catch (error) {
+            response.status(500).json({ message: error.message });
+        }
+    }
 }

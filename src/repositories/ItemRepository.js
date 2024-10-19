@@ -45,4 +45,25 @@ export class ItemRepository {
         });
         
     }
+
+    async mostrarItens(email) {
+
+        const usuarioRef = this.db.collection(COLECAO.USUARIO).doc(email);
+        const usuarioSnapshot = await usuarioRef.get();
+
+        const usuarioData = usuarioSnapshot.data();
+
+        const idItens = usuarioData.itens || [];
+        const itens = [];
+
+        for(const id of idItens){
+            const itemSnapshot = await this.db.collection(COLECAO.ITEM).doc(id).get();
+            if (itemSnapshot.exists) {
+                itens.push(itemSnapshot.data());
+            }
+        }
+
+        return itens;
+        
+    }
 }

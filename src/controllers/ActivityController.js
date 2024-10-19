@@ -32,6 +32,7 @@ export class AtividadeController {
             const { email } = request.body;
     
             const atividade = new Atividade();
+            
             atividade.email = email;
     
             const dadosAtividades = await atividade.mostrarAtividades();
