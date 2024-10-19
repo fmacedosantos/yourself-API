@@ -18,7 +18,7 @@ export class ItemRepository {
         };
 
         await this.db.collection(COLECAO.ITEM).doc(id).set(item);
-        return id;
+        
     }
 
     async comprarItem(id, email) {
@@ -26,16 +26,8 @@ export class ItemRepository {
         const itemRef = this.db.collection(COLECAO.ITEM).doc(id);
         const itemDoc = await itemRef.get();
 
-        if (!itemDoc.exists) {
-            return "Item não encontrado!"
-        }
-
         const usuarioRef = this.db.collection(COLECAO.USUARIO).doc(email);
         const usuarioDoc = await usuarioRef.get();
-    
-        if (!usuarioDoc.exists) {
-            return "Usuário não encontrado!";
-        }
 
         const pontosUsuario = usuarioDoc.get("pontos");
         const precoItem = itemDoc.get("preco");
@@ -51,6 +43,6 @@ export class ItemRepository {
             itens: admin.firestore.FieldValue.arrayUnion(id),
             pontos: novosPontos
         });
-        return `O usuário de email ${email} adquiriu com sucesso o item de ID ${id}!`;
+        
     }
 }

@@ -116,8 +116,10 @@ export class UsuarioController {
             usuario.preferenciaConcentracao = preferenciaConcentracao;
             usuario.preferenciaDescanso = preferenciaDescanso;
 
-            const usuarioAtualizado = await usuario.atualizarPreferencias();
-            res.status(200).send({ message: 'Preferências atualizadas com sucesso!', usuarioAtualizado });
+            await usuario.atualizarPreferencias();
+
+            const preferenciasAtualizadas = await usuario.mostrarPreferencias();
+            res.status(200).send({ message: 'Preferências atualizadas com sucesso!', preferenciasAtualizadas });
         } catch (error) {
             res.status(500).json({ message: error.message });
         }
@@ -135,13 +137,8 @@ export class UsuarioController {
             usuario.email = email;
     
             // chamando o método do repository
-            const deletado = await usuario.deletarUsuario();
-    
-            if (deletado) {
-                res.status(200).send({ message: 'Usuário deletado com sucesso!' });
-            } else {
-                res.status(400).send({ message: 'Falha ao deletar usuário.' });
-            }
+            await usuario.deletarUsuario();
+            res.status(200).send({ message: 'Usuário deletado com sucesso!' });
         } catch (error) {
             res.status(500).json({ message: error.message });
         }

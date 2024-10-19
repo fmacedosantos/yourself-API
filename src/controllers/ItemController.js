@@ -12,8 +12,8 @@ export class ItemController {
             item.preco = preco;
             item.icone = icone;
 
-            const itemId = await item.cadastrarItem();
-            res.status(201).send({ message: `Item de ID ${itemId} cadastrado com sucesso!` });
+            await item.cadastrarItem();
+            res.status(201).send({ message: "Item cadastrado com sucesso!" });
         } catch (error) {
             response.status(500).json({ message: error.message });
         }
@@ -28,8 +28,8 @@ export class ItemController {
             item.id = id;
             item.email = email;
 
-            const compra = await item.comprarItem();
-            res.status(200).send({ message: compra });
+            await item.comprarItem();
+            res.status(200).send({ message: "Item comprado com sucesso!" });
         } catch (error) {
             response.status(500).json({ message: error.message });
         }
