@@ -1,4 +1,4 @@
-import { itemInexistente } from "../services/ItemServices.js";
+import { itemInexistente, itemPossuido, pontosInsuficientes } from "../services/ItemServices.js";
 import { usuarioInexistente } from "../services/UserServices.js";
 
 export const validarCadastroItem = (req, res, next) => {
@@ -20,9 +20,17 @@ export const validarCompraItem = async (req, res, next) => {
         return res.status(400).send({ message: "Item não encontrado!" });
     }
     
-    const usuarioExiste = await usuarioInexistente(email);
-    if (usuarioExiste) {  
+    const usuarioNaoExiste = await usuarioInexistente(email);
+    if (usuarioNaoExiste) {  
         return res.status(400).send({ message: "Usuário não encontrado!" });
+    }
+
+    if (await itemPossuido(id, email)) {
+        return res.status(400).send({ message: "Item já possuído!" });
+    }
+
+    if (await pontosInsuficientes(id, email)) {
+        return res.status(400).send({ message: "Pontos insuficientes!" });
     }
 
     next();

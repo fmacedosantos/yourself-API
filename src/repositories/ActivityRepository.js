@@ -59,17 +59,6 @@ export class AtividadeRepository {
 
         const usuarioData = usuarioSnapshot.data();
 
-        // Atualizar a ofensiva ao acessar os dados do usuário
-        const { novaOfensiva, novaMaiorOfensiva } = atualizarOfensiva(usuarioData, false);
-
-        // Se a ofensiva foi atualizada, salvar no Firestore
-        if (novaOfensiva !== usuarioData.ofensiva || novaMaiorOfensiva !== usuarioData.maiorOfensiva) {
-            await usuarioRef.update({
-                ofensiva: novaOfensiva,
-                maiorOfensiva: novaMaiorOfensiva
-            });
-        }
-
         const idAtividades = usuarioData.atividades || [];
         const atividades = [];
 

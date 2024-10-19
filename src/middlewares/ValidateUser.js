@@ -18,8 +18,8 @@ export const validarCadastroUsuario = async (req, res, next) => {
         return res.status(400).send({ message: "O nome de usuário já está em uso!" });
     }
 
-    const usuarioJaExiste = await usuarioInexistente(email);
-    if (!usuarioJaExiste) {  
+    const usuarioNaoExiste = await usuarioInexistente(email);
+    if (!usuarioNaoExiste) {  
         return res.status(400).send({ message: "Usuário já cadastrado!" });
     }
 
@@ -34,8 +34,8 @@ export const validarEmailUsuario = async (req, res, next) => {
         return res.status(400).json({ message: mensagemEmail });
     }
 
-    const usuarioExiste = await usuarioInexistente(email);
-    if (usuarioExiste) {  
+    const usuarioNaoExiste = await usuarioInexistente(email);
+    if (usuarioNaoExiste) {  
         return res.status(400).send({ message: "Usuário não encontrado!" });
     }
 

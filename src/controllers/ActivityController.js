@@ -2,10 +2,10 @@
 import { Atividade } from "../models/ActivityModel.js";
 
 export class AtividadeController {
-    async cadastrarAtividade(request, response) {
+    async cadastrarAtividade(req, res) {
         try {
             // variáveis do body
-            const { titulo, descricao, categoria, dificuldade, tempoConcentracao, email } = request.body;
+            const { titulo, descricao, categoria, dificuldade, tempoConcentracao, email } = req.body;
 
             // chamando o model
             const atividade = new Atividade();
@@ -21,30 +21,31 @@ export class AtividadeController {
             // chamando o método do repository
             
             await atividade.cadastrarAtividade();
-            response.status(201).send({ message: "Atividade cadastrada com sucesso!" });
+            res.status(201).send({ message: "Atividade cadastrada com sucesso!" });
         } catch (error) {
-            response.status(500).json({ message: error.message });
+            res.status(500).json({ message: error.message });
         }
     }
 
-    async mostrarAtividades(request, response) {
+    async mostrarAtividades(req, res) {
         try {
-            const { email } = request.body;
+            const { email } = req.body;
     
             const atividade = new Atividade();
+            
             atividade.email = email;
     
             const dadosAtividades = await atividade.mostrarAtividades();
-            response.status(200).send({ dadosAtividades });
+            res.status(200).send({ dadosAtividades });
         } catch (error) {
-            response.status(500).json({ message: error.message });
+            res.status(500).json({ message: error.message });
         }
     }
 
-    async atualizarAtividade(request, response) {
+    async atualizarAtividade(req, res) {
         try {
             // variáveis do body
-            const { id, titulo, descricao, categoria } = request.body;
+            const { id, titulo, descricao, categoria } = req.body;
 
             // chamando o model
             const atividade = new Atividade();
@@ -57,9 +58,9 @@ export class AtividadeController {
 
             // chamando o método do repository para atualizar a atividade
             await atividade.atualizarAtividade();
-            response.status(200).send({ message: 'Atividade atualizada com sucesso!' });
+            res.status(200).send({ message: 'Atividade atualizada com sucesso!' });
         } catch (error) {
-            response.status(500).json({ message: error.message });
+            res.status(500).json({ message: error.message });
         }
     }
 

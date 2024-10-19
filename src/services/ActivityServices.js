@@ -6,6 +6,7 @@ const db = admin.firestore();
 export async function atividadeInexistente(id){
     const atividadeRef = db.collection(COLECAO.ATIVIDADE).doc(id);
     const atividadeSnapshot = await atividadeRef.get();
+    
     return !atividadeSnapshot.exists
 }
 

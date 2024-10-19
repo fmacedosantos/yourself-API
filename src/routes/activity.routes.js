@@ -21,11 +21,11 @@ app.get("/mostrar", validarEmailUsuario, (req, res) => {
 
 app.patch('/atualizar', validarAtualizarAtividade, (req, res) => {
     atividadeController.atualizarAtividade(req, res);
-})
+});
 
 app.delete("/deletar", validarIdAtividade, (req, res) => {
     atividadeController.deletarAtividade(req, res);
-})
+});
 
 // exportando as rotas
 export const atividadeRouter = app;

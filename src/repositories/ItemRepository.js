@@ -32,10 +32,6 @@ export class ItemRepository {
         const pontosUsuario = usuarioDoc.get("pontos");
         const precoItem = itemDoc.get("preco");
 
-        if (precoItem > pontosUsuario) {
-            return "Os pontos do usuário são insuficientes para comprar o item!";
-        }
-
         const usuarioData = usuarioDoc.data();
         const novosPontos = usuarioData.pontos - precoItem;
 
@@ -43,6 +39,27 @@ export class ItemRepository {
             itens: admin.firestore.FieldValue.arrayUnion(id),
             pontos: novosPontos
         });
+        
+    }
+
+    async mostrarItens(email) {
+
+        const usuarioRef = this.db.collection(COLECAO.USUARIO).doc(email);
+        const usuarioSnapshot = await usuarioRef.get();
+
+        const usuarioData = usuarioSnapshot.data();
+
+        const idItens = usuarioData.itens || [];
+        const itens = [];
+
+        for(const id of idItens){
+            const itemSnapshot = await this.db.collection(COLECAO.ITEM).doc(id).get();
+            if (itemSnapshot.exists) {
+                itens.push(itemSnapshot.data());
+            }
+        }
+
+        return itens;
         
     }
 }

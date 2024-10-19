@@ -17,27 +17,27 @@ app.post('/cadastrar', validarCadastroUsuario, (req, res) => {
 
 app.get('/mostrar', validarEmailUsuario, (req, res) => {
     usuarioController.mostrarUsuario(req, res);
-})
+});
 
 app.get('/mostrar-estatisticas', validarEmailUsuario, (req, res) => {
     usuarioController.mostrarEstatisticas(req, res);
-})
+});
 
 app.get('/mostrar-preferencias', validarEmailUsuario, (req, res) => {
     usuarioController.mostrarPreferencias(req, res);
-})
+});
 
 app.patch('/atualizar', validarAtualizarUsuario, (req, res) => {
     usuarioController.atualizarUsuario(req, res);
-})
+});
 
 app.patch('/atualizar-preferencias', validarAtualizarPreferencias, (req, res) => {
     usuarioController.atualizarPreferencias(req, res);
-})
+});
 
 app.delete('/deletar', validarEmailUsuario, (req, res) => {
     usuarioController.deletarUsuario(req, res);
-})
+});
 
 app.post('/autenticar-jwt', autenticarJWT, (req, res) => {
     res.status(200).send({ 
