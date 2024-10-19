@@ -73,7 +73,7 @@ export class AtividadeController {
             atividade.id = id;
 
             await atividade.deletarAtividade();
-            res.status(200).send({ message: `A atividade de ID ${id} foi excluída com sucesso!` })
+            res.status(200).send({ message: `A atividade foi excluída com sucesso!` })
         } catch (error) {
             res.status(500).json({ message: error.message });
         }

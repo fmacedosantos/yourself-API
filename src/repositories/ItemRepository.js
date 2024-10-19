@@ -62,4 +62,22 @@ export class ItemRepository {
         return itens;
         
     }
+
+    async deletarItem(id) {
+
+        const itemRef = this.db.collection(COLECAO.ITEM).doc(id);
+
+        await itemRef.delete();
+
+        const usuariosQuery = await this.db.collection(COLECAO.USUARIO)
+            .where("itens", "array-contains", id).get();
+
+        if (!usuariosQuery.empty) {
+            usuariosQuery.forEach(async (usuarioDoc) => {
+                await usuarioDoc.ref.update({
+                    itens: admin.firestore.FieldValue.arrayRemove(id)
+                });
+            });
+        }
+    }
 }

@@ -25,5 +25,9 @@ export class Item {
     mostrarItens() {
         return this.#repository.mostrarItens(this.email);
     }
+
+    deletarItem() {
+        return this.#repository.deletarItem(this.id);
+    }
     
 }
