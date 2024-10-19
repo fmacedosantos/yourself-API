@@ -1,6 +1,6 @@
 import express from "express";
 import { ItemController } from "../controllers/ItemController.js";
-import { validarCadastroItem, validarCompraItem } from "../middlewares/ValidateItem.js";
+import { validarCadastroItem, validarCompraItem, validarIdItem } from "../middlewares/ValidateItem.js";
 import { validarEmailUsuario } from "../middlewares/ValidateUser.js";
 
 const app = express();
@@ -18,5 +18,9 @@ app.post('/comprar', validarCompraItem, (req, res) => {
 app.get('/mostrar', validarEmailUsuario, (req, res) => {
     itemController.mostrarItens(req, res);
 });
+
+app.delete('/deletar', validarIdItem, (req, res) => {
+    itemController.deletarItem(req, res);
+})
 
 export const itemRouter = app;

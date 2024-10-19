@@ -35,3 +35,17 @@ export const validarCompraItem = async (req, res, next) => {
 
     next();
 }
+
+export const validarIdItem = async (req, res, next) => {
+    const { id } = req.body;
+
+    if (!id) {
+        return res.status(400).json({ message: "O id do item não foi informado!" });
+    }
+
+    if (await itemInexistente(id)) {
+        return res.status(400).send({ message: "Item não encontrado!" });
+    }
+
+    next();
+}

@@ -49,4 +49,19 @@ export class ItemController {
             res.status(500).json({ message: error.message });
         }
     }
+
+    async deletarItem(req, res) {
+        try {
+            const { id } = req.body;
+
+            const item = new Item();
+
+            item.id = id;
+
+            await item.deletarItem();
+            res.status(200).send({ message: `O item foi excluído com sucesso!` })
+        } catch (error) {
+            res.status(500).json({ message: error.message });
+        }
+    }
 }
