@@ -32,10 +32,6 @@ export class ItemRepository {
         const pontosUsuario = usuarioDoc.get("pontos");
         const precoItem = itemDoc.get("preco");
 
-        if (precoItem > pontosUsuario) {
-            return "Os pontos do usuário são insuficientes para comprar o item!";
-        }
-
         const usuarioData = usuarioDoc.data();
         const novosPontos = usuarioData.pontos - precoItem;
 

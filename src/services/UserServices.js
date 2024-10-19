@@ -6,6 +6,7 @@ const db = admin.firestore();
 export async function usuarioInexistente(email) {
     const usuarioRef = db.collection(COLECAO.USUARIO).doc(email);
     const usuarioSnapshot = await usuarioRef.get();
+
     return !usuarioSnapshot.exists;  
 }
 
@@ -16,5 +17,6 @@ export async function apelidoExistente(apelido) {
 
         return !snapshot.empty;  
     }
+    
     return false;
 }

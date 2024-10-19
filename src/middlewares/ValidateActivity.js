@@ -10,8 +10,8 @@ export const validarCadastroAtividade = async (req, res, next) => {
         return res.status(400).json({ message: "Algum dos dados necessários para cadastrar a atividade não foram informados! Informe titulo, categoria, dificuldade, tempoConcentracao e email." });
     }
 
-    const usuarioExiste = await usuarioInexistente(email);
-    if (usuarioExiste) {  
+    const usuarioNaoExiste = await usuarioInexistente(email);
+    if (usuarioNaoExiste) {  
         return res.status(400).send({ message: "Usuário não encontrado!" });
     }
 
