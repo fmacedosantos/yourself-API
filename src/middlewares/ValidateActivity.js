@@ -1,4 +1,5 @@
-import { atividadeInexistente } from "../services/ActivityServices";
+import { atividadeInexistente } from "../services/ActivityServices.js";
+import { usuarioInexistente } from "../services/UserServices.js";
 
 const mensagemId = "O id da atividade não foi informado!"
 
@@ -29,7 +30,7 @@ export const validarAtualizarAtividade = async (req, res, next) => {
     }
 
     if (await atividadeInexistente(id)) {
-        return res.status(400).send({ message: "Atividade não encontrada." });
+        return res.status(400).send({ message: "Atividade não encontrada!" });
     }
 
     next();
@@ -43,7 +44,7 @@ export const validarIdAtividade = async (req, res, next) => {
     }
 
     if (await atividadeInexistente(id)) {
-        return res.status(400).send({ message: "Atividade não encontrada." });
+        return res.status(400).send({ message: "Atividade não encontrada!" });
     }
 
     next();
