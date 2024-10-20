@@ -63,6 +63,23 @@ export class ItemRepository {
         
     }
 
+    async atualizarItem(id, nome = null, preco = null, icone = null) {
+        const itemSnapshot = await this.db.collection(COLECAO.ITEM).doc(id).get();
+
+        const itemData = itemSnapshot.data();
+
+        const atualizacoes = {
+            nome: nome !== null ? nome : itemData.nome,
+            preco: preco !== null ? preco : itemData.preco,
+            icone: icone !== null ? icone : itemData.icone
+        }
+
+        if (Object.keys(atualizacoes).length > 0) {
+            await this.db.collection(COLECAO.ITEM).doc(id).update(atualizacoes);
+        }
+        
+    }
+
     async deletarItem(id) {
 
         const itemRef = this.db.collection(COLECAO.ITEM).doc(id);

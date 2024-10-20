@@ -19,6 +19,10 @@ app.get('/mostrar', validarEmailUsuario, (req, res) => {
     itemController.mostrarItens(req, res);
 });
 
+app.patch('/atualizar', (req, res) => {
+    itemController.atualizarItem(req, res);
+})
+
 app.delete('/deletar', validarIdItem, (req, res) => {
     itemController.deletarItem(req, res);
 })
