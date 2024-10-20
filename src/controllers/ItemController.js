@@ -50,6 +50,24 @@ export class ItemController {
         }
     }
 
+    async atualizarItem(req, res) {
+        try {
+            const { id, nome, preco, icone } = req.body;
+
+            const item = new Item();
+
+            item.id = id;
+            item.nome = nome;
+            item.preco = preco;
+            item.icone = icone;
+
+            await item.atualizarItem();
+            res.status(200).send({ message: 'Item atualizado com sucesso!' });
+        } catch (error) {
+            res.status(500).json({ message: error.message });
+        }
+    }
+
     async deletarItem(req, res) {
         try {
             const { id } = req.body;

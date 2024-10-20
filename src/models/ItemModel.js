@@ -26,6 +26,10 @@ export class Item {
         return this.#repository.mostrarItens(this.email);
     }
 
+    atualizarItem() {
+        return this.#repository.atualizarItem(this.id, this.nome, this.preco, this.icone);
+    }
+
     deletarItem() {
         return this.#repository.deletarItem(this.id);
     }
