@@ -12,12 +12,11 @@ export class AtividadeRepository {
     
         const atividadeRef = this.db.collection(COLECAO.ATIVIDADE).doc();
         const atividadeId = atividadeRef.id;
-        const id = atividadeId;
     
         const dataAtual = new Date();
         const data = dataAtual.toLocaleDateString('pt-BR'); 
         const atividade = {
-            id,
+            id: atividadeId,
             titulo,
             descricao: descricao || "",
             categoria,
@@ -27,9 +26,6 @@ export class AtividadeRepository {
             email,
             data: data 
         };
-
-    
-        await atividadeRef.set(atividade);
     
         const usuarioRef = this.db.collection(COLECAO.USUARIO).doc(email);
         const usuarioDoc = await usuarioRef.get();
@@ -47,6 +43,8 @@ export class AtividadeRepository {
             maiorOfensiva: novaMaiorOfensiva,
             ultimaAtividade: data 
         });
+
+        await atividadeRef.set(atividade);
 
     }
         

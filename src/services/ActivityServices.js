@@ -34,12 +34,13 @@ export function atualizarOfensiva(usuarioData, estaCadastrandoAtividade) {
     let novaMaiorOfensiva = usuarioData.maiorOfensiva || 0;
 
     if (dataUltimaAtividade) {
-        const ultimaAtividadeMs = dataUltimaAtividade.getTime();
-        const dataAtualMs = dataAtual.getTime();
-        const diferencaMs = dataAtualMs - ultimaAtividadeMs;
+        const dataUltimaAtividadeNormalizada = new Date(dataUltimaAtividade.getFullYear(), dataUltimaAtividade.getMonth(), dataUltimaAtividade.getDate());
+        const dataAtualNormalizada = new Date(dataAtual.getFullYear(), dataAtual.getMonth(), dataAtual.getDate());
+
+        const diferencaMs = dataAtualNormalizada - dataUltimaAtividadeNormalizada;
         const diffDias = diferencaMs / (1000 * 60 * 60 * 24);
 
-        if (diffDias === 1 && estaCadastrandoAtividade == true) {
+        if (diffDias === 1 && estaCadastrandoAtividade) {
             novaOfensiva += 1;
         } else if (diffDias > 1) {
             novaOfensiva = 0; 
@@ -54,4 +55,5 @@ export function atualizarOfensiva(usuarioData, estaCadastrandoAtividade) {
 
     return { novaOfensiva, novaMaiorOfensiva };
 }
+
 
