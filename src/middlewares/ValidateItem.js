@@ -49,3 +49,21 @@ export const validarIdItem = async (req, res, next) => {
 
     next();
 }
+
+export const validarAtualizarItem = async (req, res, next) => {
+    const { id, nome, preco, icone } = req.body;
+
+    if (!id) {
+        return res.status(400).json({ message: "O id do item não foi informado!" });
+    }
+
+    if (await itemInexistente(id)) {
+        return res.status(400).send({ message: "Item não encontrado!" });
+    }
+
+    if (!nome && !preco && !icone) {
+        return res.status(400).json({ message: "Nenhum dos dados necessários para atualizar o item foram informados! Informe nome, preco ou icone." });
+    }
+
+    next();
+}
