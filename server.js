@@ -1,5 +1,6 @@
 // importações
 import express from "express";
+import cors from 'cors';
 import bodyParser from 'body-parser';
 import { usuarioRouter } from "./src/routes/user.routes.js";
 import { atividadeRouter } from "./src/routes/activity.routes.js";
@@ -17,6 +18,9 @@ if (inicandoBanco) {
 
 // middleware pra interpretar o corpo da requisição como json
 app.use(bodyParser.json());
+
+// ativa o CORS para todas as rotas
+app.use(cors());
 
 // rotas de usuario
 app.use('/usuario', usuarioRouter);
