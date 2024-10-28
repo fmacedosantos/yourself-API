@@ -15,27 +15,27 @@ app.post('/cadastrar', validarCadastroUsuario, (req, res) => {
     usuarioController.cadastrarUsuario(req, res);
 });
 
-app.get('/mostrar', validarEmailUsuario, (req, res) => {
+app.get('/mostrar', autenticarJWT, validarEmailUsuario, (req, res) => {
     usuarioController.mostrarUsuario(req, res);
 });
 
-app.get('/mostrar-estatisticas', validarEmailUsuario, (req, res) => {
+app.get('/mostrar-estatisticas', autenticarJWT, validarEmailUsuario, (req, res) => {
     usuarioController.mostrarEstatisticas(req, res);
 });
 
-app.get('/mostrar-preferencias', validarEmailUsuario, (req, res) => {
+app.get('/mostrar-preferencias', autenticarJWT, validarEmailUsuario, (req, res) => {
     usuarioController.mostrarPreferencias(req, res);
 });
 
-app.patch('/atualizar', validarAtualizarUsuario, (req, res) => {
+app.patch('/atualizar', autenticarJWT, validarAtualizarUsuario, (req, res) => {
     usuarioController.atualizarUsuario(req, res);
 });
 
-app.patch('/atualizar-preferencias', validarAtualizarPreferencias, (req, res) => {
+app.patch('/atualizar-preferencias', autenticarJWT, validarAtualizarPreferencias, (req, res) => {
     usuarioController.atualizarPreferencias(req, res);
 });
 
-app.delete('/deletar', validarEmailUsuario, (req, res) => {
+app.delete('/deletar', autenticarJWT, validarEmailUsuario, (req, res) => {
     usuarioController.deletarUsuario(req, res);
 });
 

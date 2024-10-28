@@ -27,8 +27,8 @@ export class UsuarioController {
 
     async mostrarUsuario(req, res) {
         try {
-            // variáveis do body
-            const { email } = req.body;
+            // variáveis do jwt
+            const email = req.usuario.email;
 
             // chamando o model
             const usuario = new Usuario();
@@ -46,8 +46,8 @@ export class UsuarioController {
 
     async mostrarEstatisticas(req, res) {
         try {
-            // variáveis do body
-            const { email } = req.body;
+            // variáveis do jwt
+            const email = req.usuario.email;
 
             // chamando o model
             const usuario = new Usuario();
@@ -65,8 +65,8 @@ export class UsuarioController {
 
     async mostrarPreferencias(req, res) {
         try {
-            // variáveis do body
-            const { email } = req.body;
+            // variáveis do jwt
+            const email = req.usuario.email;
 
             // chamando o model
             const usuario = new Usuario();
@@ -85,7 +85,10 @@ export class UsuarioController {
     async atualizarUsuario(req, res) {
         try {
             // variáveis do body
-            const { email, nome, apelido, novaSenha } = req.body;
+            const { nome, apelido, novaSenha } = req.body;
+
+            // variáveis do jwt
+            const email = req.usuario.email;
     
             // chamando o model
             const usuario = new Usuario();
@@ -108,7 +111,10 @@ export class UsuarioController {
     
     async atualizarPreferencias(req, res) {
         try {
-            const {email, preferenciaConcentracao, preferenciaDescanso } = req.body;
+            const {preferenciaConcentracao, preferenciaDescanso } = req.body;
+
+            // variáveis do jwt
+            const email = req.usuario.email;
 
             const usuario = new Usuario();
 
@@ -127,8 +133,8 @@ export class UsuarioController {
 
     async deletarUsuario(req, res) {
         try {
-            // variáveis do body
-            const { email } = req.body;
+            // variáveis do jwt
+            const email = req.usuario.email;
     
             // chamando o model
             const usuario = new Usuario();

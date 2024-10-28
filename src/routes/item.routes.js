@@ -2,6 +2,7 @@ import express from "express";
 import { ItemController } from "../controllers/ItemController.js";
 import { validarAtualizarItem, validarCadastroItem, validarCompraItem, validarIdItem } from "../middlewares/ValidateItem.js";
 import { validarEmailUsuario } from "../middlewares/ValidateUser.js";
+import { autenticarJWT } from "../middlewares/AuthenticateJWT.js";
 
 const app = express();
 
@@ -11,11 +12,11 @@ app.post('/cadastrar', validarCadastroItem, (req, res) => {
     itemController.cadastrarItem(req, res);
 });
 
-app.post('/comprar', validarCompraItem, (req, res) => {
+app.post('/comprar', autenticarJWT, validarCompraItem, (req, res) => {
     itemController.comprarItem(req, res);
 });
 
-app.get('/mostrar', validarEmailUsuario, (req, res) => {
+app.get('/mostrar', autenticarJWT, validarEmailUsuario, (req, res) => {
     itemController.mostrarItens(req, res);
 });
 

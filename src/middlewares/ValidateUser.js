@@ -27,7 +27,7 @@ export const validarCadastroUsuario = async (req, res, next) => {
 
 
 export const validarEmailUsuario = async (req, res, next) => {  
-    const { email } = req.body;
+    const email = req.usuario.email;
 
     if (!email) {
         return res.status(400).json({ message: MENSAGENS.USUARIO.EMAIL_NAO_INFORMADO });
@@ -43,7 +43,9 @@ export const validarEmailUsuario = async (req, res, next) => {
 
 
 export const validarAtualizarUsuario = async (req, res, next) => {  
-    const { email, nome, apelido, novaSenha } = req.body;
+    const { nome, apelido, novaSenha } = req.body;
+
+    const email = req.usuario.email;
     
     if (!email) {
         return res.status(400).json({ message: MENSAGENS.USUARIO.EMAIL_NAO_INFORMADO });
@@ -63,7 +65,9 @@ export const validarAtualizarUsuario = async (req, res, next) => {
 };
 
 export const validarAtualizarPreferencias = async (req, res, next) => {  
-    const { email, preferenciaConcentracao, preferenciaDescanso } = req.body;
+    const { preferenciaConcentracao, preferenciaDescanso } = req.body;
+
+    const email = req.usuario.email;
 
     if (!email) {
         return res.status(400).json({ message: MENSAGENS.USUARIO.EMAIL_NAO_INFORMADO });

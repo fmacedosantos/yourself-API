@@ -21,7 +21,9 @@ export class ItemController {
 
     async comprarItem(req, res) {
         try {
-            const { id, email } = req.body;
+            const { id } = req.body;
+
+            const email = req.usuario.email;
 
             const item = new Item();
 
@@ -37,7 +39,7 @@ export class ItemController {
 
     async mostrarItens(req, res) {
         try {
-            const { email } = req.body;
+            const email = req.usuario.email;
 
             const item = new Item();
 

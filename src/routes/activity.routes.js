@@ -3,6 +3,7 @@ import express from "express";
 import { AtividadeController } from "../controllers/ActivityController.js";
 import { validarAtualizarAtividade, validarCadastroAtividade, validarIdAtividade } from "../middlewares/ValidateActivity.js";
 import { validarEmailUsuario } from "../middlewares/ValidateUser.js";
+import { autenticarJWT } from "../middlewares/AuthenticateJWT.js";
 
 // criando a aplicação express
 const app = express();
@@ -11,11 +12,11 @@ const app = express();
 const atividadeController = new AtividadeController();
 
 // rotas
-app.post('/cadastrar', validarCadastroAtividade, (req, res) => {
+app.post('/cadastrar', autenticarJWT, validarCadastroAtividade, (req, res) => {
     atividadeController.cadastrarAtividade(req, res);
 });
 
-app.get("/mostrar", validarEmailUsuario, (req, res) => {
+app.get("/mostrar", autenticarJWT, validarEmailUsuario, (req, res) => {
     atividadeController.mostrarAtividades(req, res);
 });
 

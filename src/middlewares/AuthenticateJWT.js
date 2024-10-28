@@ -1,24 +1,21 @@
-
-import admin from 'firebase-admin'
+import admin from 'firebase-admin';
 import { MENSAGENS } from '../constants/Messages.js';
 
 export async function autenticarJWT(req, res, next) {
-
     const jwt = req.headers.authorization;
     if (!jwt) {
-        res.status(401).json({message: MENSAGENS.USUARIO.NAO_AUTORIZADO})
-        return;
+        return res.status(401).json({ message: MENSAGENS.USUARIO.NAO_AUTORIZADO });
     }
 
-    let decodedIdToken = '';
     try {
-        decodedIdToken = await admin.auth().verifyIdToken(jwt, true);
-    } catch (error) {
-        res.status(401).json({message: MENSAGENS.USUARIO.NAO_AUTORIZADO})
-        return;
-    }
+        const decodedIdToken = await admin.auth().verifyIdToken(jwt, true);
+        
+        req.usuario = {
+            email: decodedIdToken.email
+        };
 
-    req.usuario = decodedIdToken.sub
-    
-    next();
+        next();
+    } catch (error) {
+        res.status(401).json({ message: MENSAGENS.USUARIO.NAO_AUTORIZADO });
+    }
 }

@@ -3,7 +3,9 @@ import { atividadeInexistente } from "../services/ActivityServices.js";
 import { usuarioInexistente } from "../services/UserServices.js";
 
 export const validarCadastroAtividade = async (req, res, next) => {
-    const { titulo, categoria, dificuldade, tempoConcentracao, email } = req.body;
+    const { titulo, categoria, dificuldade, tempoConcentracao } = req.body;
+
+    const email = req.usuario.email;
 
     if (!titulo || !categoria || !dificuldade || !tempoConcentracao || !email) {
         return res.status(400).json({ message: MENSAGENS.ATIVIDADE.ERRO_CADASTRO });
