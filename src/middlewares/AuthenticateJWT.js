@@ -1,24 +1,36 @@
+import { MENSAGENS } from "../constants/Messages.js";
+import admin from "../../firebase.js";
 
-import admin from 'firebase-admin'
-import { MENSAGENS } from '../constants/Messages.js';
+const inicandoBanco = admin;
+if (inicandoBanco) {
+    console.log('A conexão com o banco de dados Firestore foi iniciada\n');
+}
 
 export async function autenticarJWT(req, res, next) {
+    const authorizationHeader = req.headers.authorization;
+    const token = authorizationHeader && authorizationHeader.startsWith("Bearer ") 
+        ? authorizationHeader.split(" ")[1] 
+        : null;
 
-    const jwt = req.headers.authorization;
-    if (!jwt) {
-        res.status(401).json({message: MENSAGENS.USUARIO.NAO_AUTORIZADO})
-        return;
+    if (!token) {
+        console.log("Token não encontrado no cabeçalho.");
+        return res.status(401).json({ message: MENSAGENS.USUARIO.NAO_AUTORIZADO });
     }
 
-    let decodedIdToken = '';
     try {
-        decodedIdToken = await admin.auth().verifyIdToken(jwt, true);
-    } catch (error) {
-        res.status(401).json({message: MENSAGENS.USUARIO.NAO_AUTORIZADO})
-        return;
-    }
+        console.log("Token recebido para validação:", token); // Log do token
 
-    req.usuario = decodedIdToken.sub
-    
-    next();
+        const decodedIdToken = await admin.auth().verifyIdToken(token);
+        
+        console.log("Token decodificado com sucesso:", decodedIdToken); // Log do conteúdo decodificado
+        
+        req.usuario = {
+            email: decodedIdToken.email,
+        };
+
+        next();
+    } catch (error) {
+        console.error("Erro ao verificar o token:", error); // Log do erro detalhado
+        res.status(401).json({ message: MENSAGENS.USUARIO.NAO_AUTORIZADO });
+    }
 }

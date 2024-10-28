@@ -11,7 +11,9 @@ export const validarCadastroItem = (req, res, next) => {
 }
 
 export const validarCompraItem = async (req, res, next) => {
-    const { id, email } = req.body;
+    const { id } = req.body;
+
+    const email = req.usuario.email;
 
     if (!id || !email) {
         return res.status(400).json({ message: MENSAGENS.ITEM.ERRO_COMPRA });

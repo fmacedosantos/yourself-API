@@ -5,7 +5,9 @@ export class AtividadeController {
     async cadastrarAtividade(req, res) {
         try {
             // variáveis do body
-            const { titulo, descricao, categoria, dificuldade, tempoConcentracao, email } = req.body;
+            const { titulo, descricao, categoria, dificuldade, tempoConcentracao } = req.body;
+            
+            const email = req.usuario.email;
 
             // chamando o model
             const atividade = new Atividade();
@@ -29,7 +31,7 @@ export class AtividadeController {
 
     async mostrarAtividades(req, res) {
         try {
-            const { email } = req.body;
+            const email = req.usuario.email;
     
             const atividade = new Atividade();
             
