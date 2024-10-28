@@ -78,6 +78,8 @@ export function atualizarOfensiva(usuarioData, estaCadastrandoAtividade, dataUlt
 
     if (diffDias === 1 && estaCadastrandoAtividade) {
         novaOfensiva += 1;
+    } else if (diffDias > 1 && estaCadastrandoAtividade) {
+        novaOfensiva = 1; 
     } else if (diffDias > 1) {
         novaOfensiva = 0; 
     }
