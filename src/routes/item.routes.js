@@ -20,6 +20,10 @@ app.get('/mostrar', autenticarJWT, validarEmailUsuario, (req, res) => {
     itemController.mostrarItens(req, res);
 });
 
+app.get('/mostrar-todos', autenticarJWT, (req, res) => {
+    itemController.mostrarTodosItens(req, res);
+})
+
 app.patch('/atualizar', validarAtualizarItem, (req, res) => {
     itemController.atualizarItem(req, res);
 })

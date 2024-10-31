@@ -63,6 +63,19 @@ export class ItemRepository {
         
     }
 
+    async mostrarTodosItens() {
+
+        const itens = [];
+        const itemSnapshot = await this.db.collection(COLECAO.ITEM).get();
+    
+        itemSnapshot.forEach((doc) => {
+            itens.push(doc.data());
+        });
+    
+        return itens;
+        
+    }
+    
     async atualizarItem(id, nome = null, preco = null, icone = null) {
         const itemSnapshot = await this.db.collection(COLECAO.ITEM).doc(id).get();
 

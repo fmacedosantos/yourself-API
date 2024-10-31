@@ -26,6 +26,10 @@ export class Item {
         return this.#repository.mostrarItens(this.email);
     }
 
+    mostrarTodosItens() {
+        return this.#repository.mostrarTodosItens();
+    }
+
     atualizarItem() {
         return this.#repository.atualizarItem(this.id, this.nome, this.preco, this.icone);
     }

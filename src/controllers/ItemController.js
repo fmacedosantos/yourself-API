@@ -52,6 +52,17 @@ export class ItemController {
         }
     }
 
+    async mostrarTodosItens(req, res) {
+        try {
+            const item = new Item();
+
+            const dadosItens = await item.mostrarTodosItens()
+            res.status(200).send({ dadosItens });
+        } catch (error) {
+            res.status(500).json({ message: error.message });
+        }
+    }
+
     async atualizarItem(req, res) {
         try {
             const { id, nome, preco, icone } = req.body;
