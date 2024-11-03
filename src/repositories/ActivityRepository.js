@@ -7,14 +7,16 @@ export class AtividadeRepository {
     db = admin.firestore();
 
     async cadastrarAtividade(titulo, descricao, categoria, dificuldade, tempoConcentracao, email) {
-
         const pontos = calcularPontos(tempoConcentracao, dificuldade);
-    
         const atividadeRef = this.db.collection(COLECAO.ATIVIDADE).doc();
         const atividadeId = atividadeRef.id;
     
-        const dataAtual = new Date();
-        const data = dataAtual.toLocaleDateString('pt-BR'); 
+        // Obter a data e a hora atuais
+        const data = new Date();
+        
+        // Formatar apenas o dia para o campo ultimaAtividade
+        const ultimaAtividade = data.toLocaleDateString('pt-BR');
+
         const atividade = {
             id: atividadeId,
             titulo,
@@ -24,7 +26,7 @@ export class AtividadeRepository {
             tempoConcentracao,
             pontos,
             email,
-            data: data 
+            data: admin.firestore.Timestamp.fromDate(data)
         };
     
         const usuarioRef = this.db.collection(COLECAO.USUARIO).doc(email);
@@ -41,45 +43,38 @@ export class AtividadeRepository {
             totalPontos: novoTotalPontos,
             ofensiva: novaOfensiva,
             maiorOfensiva: novaMaiorOfensiva,
-            ultimaAtividade: data 
+            ultimaAtividade 
         });
 
         await atividadeRef.set(atividade);
-
     }
         
 
     async mostrarAtividades(email) {
         const usuarioRef = this.db.collection(COLECAO.USUARIO).doc(email);
         const usuarioSnapshot = await usuarioRef.get();
-
+    
         const usuarioData = usuarioSnapshot.data();
         const idAtividades = usuarioData.atividades || [];
         const atividades = [];
-
+    
         const dataLimite = new Date();
         dataLimite.setMonth(dataLimite.getMonth() - 5);
-
+    
         for (const id of idAtividades) {
             const atividadeSnapshot = await this.db.collection(COLECAO.ATIVIDADE).doc(id).get();
-
+    
             if (atividadeSnapshot.exists) {
                 const atividadeData = atividadeSnapshot.data();
-
-                const dataAtividade = new Date(atividadeData.data.split('/').reverse().join('-'));
-
-                if (dataAtividade >= dataLimite) {
+    
+                if (atividadeData.data.toDate() >= dataLimite) {
                     atividades.push(atividadeData);
                 }
             }
         }
-
-        atividades.sort((a, b) => {
-            const dataA = new Date(a.data.split('/').reverse().join('-'));
-            const dataB = new Date(b.data.split('/').reverse().join('-'));
-            return dataB - dataA;
-        });
-
+    
+        atividades.sort((a, b) => b.data.toDate() - a.data.toDate());
+    
         return atividades;
     }
 
