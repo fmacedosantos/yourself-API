@@ -23,7 +23,7 @@ export function calcularPontos(tempoConcentracao, dificuldade) {
             dificuldadeFormatada = 1.5;
             break;
     }
-    return tempoConcentracao * dificuldadeFormatada;
+    return Math.floor(tempoConcentracao * dificuldadeFormatada);
 }
 
 function parseDateBR(dataString) {
@@ -37,38 +37,56 @@ function isValidDate(d) {
 }
 
 export function atualizarOfensiva(usuarioData, estaCadastrandoAtividade, dataUltimaAtividadeTeste = null) {
+    // Se for a primeira atividade do usuário (usuário novo)
+    if (!usuarioData.ultimaAtividade && estaCadastrandoAtividade) {
+        return {
+            novaOfensiva: 1, // Começa com 1 já que é a primeira atividade
+            novaMaiorOfensiva: 1
+        };
+    }
+
     let dataUltimaAtividade = null;
 
     if (dataUltimaAtividadeTeste) {
-        // Tenta usar a data de teste no formato brasileiro
         dataUltimaAtividade = parseDateBR(dataUltimaAtividadeTeste);
     } else if (usuarioData.ultimaAtividade) {
-        // Verifica o tipo de data retornada pelo Firestore
         if (typeof usuarioData.ultimaAtividade === 'string') {
             if (usuarioData.ultimaAtividade.includes('-')) {
-                // Tenta tratar como string ISO (YYYY-MM-DD)
                 dataUltimaAtividade = new Date(usuarioData.ultimaAtividade);
             } else {
-                // Trata como data no formato brasileiro
                 dataUltimaAtividade = parseDateBR(usuarioData.ultimaAtividade);
             }
         } else if (usuarioData.ultimaAtividade.toDate) {
-            // Caso seja um objeto Firestore Timestamp, converte para Date
             dataUltimaAtividade = usuarioData.ultimaAtividade.toDate();
         } else {
             dataUltimaAtividade = new Date(usuarioData.ultimaAtividade);
         }
     }
 
-    // Validação da data
-    if (!isValidDate(dataUltimaAtividade)) {
-        console.error('Data inválida:', dataUltimaAtividade);
-        return { novaOfensiva: usuarioData.ofensiva || 0, novaMaiorOfensiva: usuarioData.maiorOfensiva || 0 };
+    // Se ainda não tem última atividade e não está cadastrando
+    if (!dataUltimaAtividade && !estaCadastrandoAtividade) {
+        return {
+            novaOfensiva: usuarioData.ofensiva || 0,
+            novaMaiorOfensiva: usuarioData.maiorOfensiva || 0
+        };
+    }
+
+    // Se está cadastrando a primeira atividade, use a data atual
+    if (!dataUltimaAtividade && estaCadastrandoAtividade) {
+        dataUltimaAtividade = new Date();
     }
 
     const dataAtual = new Date();
-    const dataUltimaAtividadeNormalizada = new Date(dataUltimaAtividade.getFullYear(), dataUltimaAtividade.getMonth(), dataUltimaAtividade.getDate());
-    const dataAtualNormalizada = new Date(dataAtual.getFullYear(), dataAtual.getMonth(), dataAtual.getDate());
+    const dataUltimaAtividadeNormalizada = new Date(
+        dataUltimaAtividade.getFullYear(),
+        dataUltimaAtividade.getMonth(),
+        dataUltimaAtividade.getDate()
+    );
+    const dataAtualNormalizada = new Date(
+        dataAtual.getFullYear(),
+        dataAtual.getMonth(),
+        dataAtual.getDate()
+    );
 
     const diferencaMs = dataAtualNormalizada - dataUltimaAtividadeNormalizada;
     const diffDias = diferencaMs / (1000 * 60 * 60 * 24);
@@ -76,12 +94,16 @@ export function atualizarOfensiva(usuarioData, estaCadastrandoAtividade, dataUlt
     let novaOfensiva = usuarioData.ofensiva || 0;
     let novaMaiorOfensiva = usuarioData.maiorOfensiva || 0;
 
-    if (diffDias === 1 && estaCadastrandoAtividade) {
-        novaOfensiva += 1;
-    } else if (diffDias > 1 && estaCadastrandoAtividade) {
-        novaOfensiva = 1; 
+    if (estaCadastrandoAtividade) {
+        if (diffDias === 0) { // Mesma data
+            novaOfensiva = novaOfensiva || 1; // Mantém a ofensiva ou inicia com 1
+        } else if (diffDias === 1) { // Dia consecutivo
+            novaOfensiva += 1;
+        } else { // Mais de um dia ou primeira atividade
+            novaOfensiva = 1;
+        }
     } else if (diffDias > 1) {
-        novaOfensiva = 0; 
+        novaOfensiva = 0;
     }
 
     if (novaOfensiva > novaMaiorOfensiva) {
