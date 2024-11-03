@@ -50,24 +50,37 @@ export class AtividadeRepository {
         
 
     async mostrarAtividades(email) {
-        
         const usuarioRef = this.db.collection(COLECAO.USUARIO).doc(email);
         const usuarioSnapshot = await usuarioRef.get();
 
         const usuarioData = usuarioSnapshot.data();
-
         const idAtividades = usuarioData.atividades || [];
         const atividades = [];
 
-        for(const id of idAtividades){
+        const dataLimite = new Date();
+        dataLimite.setMonth(dataLimite.getMonth() - 5);
+
+        for (const id of idAtividades) {
             const atividadeSnapshot = await this.db.collection(COLECAO.ATIVIDADE).doc(id).get();
+
             if (atividadeSnapshot.exists) {
-                atividades.push(atividadeSnapshot.data());
+                const atividadeData = atividadeSnapshot.data();
+
+                const dataAtividade = new Date(atividadeData.data.split('/').reverse().join('-'));
+
+                if (dataAtividade >= dataLimite) {
+                    atividades.push(atividadeData);
+                }
             }
         }
 
+        atividades.sort((a, b) => {
+            const dataA = new Date(a.data.split('/').reverse().join('-'));
+            const dataB = new Date(b.data.split('/').reverse().join('-'));
+            return dataB - dataA;
+        });
+
         return atividades;
-        
     }
 
     async atualizarAtividade(id, titulo = null, descricao = null, categoria= null) {
