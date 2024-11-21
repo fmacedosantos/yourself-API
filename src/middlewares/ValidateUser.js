@@ -44,7 +44,6 @@ export const validarEmailUsuario = async (req, res, next) => {
 
 export const validarAtualizarUsuario = async (req, res, next) => {  
     const { nome, apelido, novaSenha } = req.body;
-
     const email = req.usuario.email;
     
     if (!email) {
@@ -57,8 +56,10 @@ export const validarAtualizarUsuario = async (req, res, next) => {
         return res.status(400).send({ message: MENSAGENS.USUARIO.NAO_EXISTE });
     }
 
-    if (await apelidoExistente(apelido)) {  
-        return res.status(400).send({ message: MENSAGENS.USUARIO.APELIDO_EXISTENTE });
+    if (apelido) {
+        if (await apelidoExistente(apelido)) {  
+            return res.status(400).send({ message: MENSAGENS.USUARIO.APELIDO_EXISTENTE });
+        }
     }
     
     next();
