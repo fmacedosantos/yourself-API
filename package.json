@@ -4,8 +4,8 @@
   "main": "server.js",
   "scripts": {
     "start": "node server.js localhost 3000",
-    "delete-key": "del /f serviceAccountKey.json",
-    "delete-key-linux": "rm -f serviceAccountKey.json",
+    "delete": "del /f serviceAccountKey.json",
+    "delete-linux": "rm -f serviceAccountKey.json",
     "decrypt": "gpg --decrypt --output serviceAccountKey.json serviceAccountKey.json.gpg"
   },
   "keywords": [],
