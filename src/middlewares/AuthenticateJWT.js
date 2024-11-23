@@ -14,15 +14,18 @@ export async function autenticarJWT(req, res, next) {
     }
 
     try {
-
-        const decodedIdToken = await admin.auth().verifyIdToken(token);
-        
+        const decodedIdToken = await admin.auth().verifyIdToken(token, true); 
         req.usuario = {
             email: decodedIdToken.email,
         };
-
         next();
     } catch (error) {
-        res.status(401).json({ message: MENSAGENS.USUARIO.NAO_AUTORIZADO });
+        console.error('Erro na validação do JWT:', error.message);
+
+        if (error.code === 'auth/id-token-expired') {
+            return res.status(401).json({ message: 'Sessão expirada. Faça login novamente.' });
+        }
+
+        return res.status(401).json({ message: MENSAGENS.USUARIO.NAO_AUTORIZADO });
     }
 }
