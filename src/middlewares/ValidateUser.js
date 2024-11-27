@@ -82,5 +82,9 @@ export const validarAtualizarPreferencias = async (req, res, next) => {
         return res.status(400).send({ message: MENSAGENS.USUARIO.NAO_EXISTE });
     }
 
+    if (preferenciaConcentracao <= 0 || preferenciaDescanso <= 0){
+        return res.status(400).json({ message: MENSAGENS.USUARIO.ERRO_NUMERO_PREFERENCIAS });
+    }
+
     next();
 };

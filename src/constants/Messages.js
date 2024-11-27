@@ -8,7 +8,8 @@ export const MENSAGENS = {
         NAO_EXISTE: "Usuário não encontrado!",
         ERRO_CADASTRO: "Algum dos dados necessários para criar o usuário não foram informados! Informe email, nome, apelido e senha.",
         ERRO_ATUALIZAR: "Nenhum dos dados necessários para atualizar o usuário foram informados! Informe nome, apelido ou novaSenha.",
-        ERRO_ATUALIZAR_PREFERENCIAS: "Nenhum dos dados necessários para atualizar as preferências do usuário foram informados! Informe preferenciaConcentracao ou preferenciaDescanso."
+        ERRO_ATUALIZAR_PREFERENCIAS: "Nenhum dos dados necessários para atualizar as preferências do usuário foram informados! Informe preferenciaConcentracao ou preferenciaDescanso.",
+        ERRO_NUMERO_PREFERENCIAS: "O tempo de preferência e de concentração deve ser maior do que 0."
     },
     ATIVIDADE: {
         ID_NAO_INFORMADO: "O id da atividade não foi informado!",
