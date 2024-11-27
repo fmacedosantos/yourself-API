@@ -50,7 +50,7 @@ export const validarAtualizarUsuario = async (req, res, next) => {
         return res.status(400).json({ message: MENSAGENS.USUARIO.EMAIL_NAO_INFORMADO });
     }
     if (!nome && !apelido && !novaSenha) {
-        return res.status(200).json({ message: MENSAGENS.USUARIO.ERRO_ATUALIZAR });
+        return res.status(400).json({ message: MENSAGENS.USUARIO.ERRO_ATUALIZAR });
     }
     if (await usuarioInexistente(email)) {  
         return res.status(400).send({ message: MENSAGENS.USUARIO.NAO_EXISTE });
@@ -75,7 +75,7 @@ export const validarAtualizarPreferencias = async (req, res, next) => {
     }
 
     if (!preferenciaConcentracao && !preferenciaDescanso) {
-        return res.status(200).json({ message: MENSAGENS.USUARIO.ERRO_ATUALIZAR_PREFERENCIAS });
+        return res.status(400).json({ message: MENSAGENS.USUARIO.ERRO_ATUALIZAR_PREFERENCIAS });
     }
     
     if (await usuarioInexistente(email)) {  
