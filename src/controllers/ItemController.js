@@ -1,6 +1,6 @@
-import { Item } from "../models/ItemModel.js";
+const  Item  = require("../models/ItemModel.js");
 
-export class ItemController {
+class ItemController {
 
     async cadastrarItem(req, res) {
         try {
@@ -96,3 +96,5 @@ export class ItemController {
         }
     }
 }
+
+module.exports = ItemController;

@@ -1,16 +1,16 @@
-import admin from '../../firebase.js';
-import { COLECAO } from '../constants/Collections.js';
+const admin = require('../../firebase.js');
+const COLECAO = require('../constants/Collections.js');
 
 const db = admin.firestore();
 
-export async function itemInexistente(id){
+async function itemInexistente(id){
     const itemRef = db.collection(COLECAO.ITEM).doc(id);
     const itemSnapshot = await itemRef.get();
     
     return !itemSnapshot.exists
 }
 
-export async function itemPossuido(id, email) {
+async function itemPossuido(id, email) {
     const usuarioRef = db.collection(COLECAO.USUARIO).doc(email);
     const usuarioSnapshot = await usuarioRef.get();
     const usuarioData = usuarioSnapshot.data();
@@ -18,7 +18,7 @@ export async function itemPossuido(id, email) {
     return usuarioData.itens.includes(id);
 }
 
-export async function pontosInsuficientes(id, email) {
+async function pontosInsuficientes(id, email) {
     const itemRef = db.collection(COLECAO.ITEM).doc(id);
     const itemDoc = await itemRef.get();
     const usuarioRef = db.collection(COLECAO.USUARIO).doc(email);
@@ -28,4 +28,10 @@ export async function pontosInsuficientes(id, email) {
     const precoItem = itemDoc.get("preco");
 
     return precoItem > pontosUsuario
+}
+
+module.exports = {
+    itemInexistente,
+    itemPossuido,
+    pontosInsuficientes
 }

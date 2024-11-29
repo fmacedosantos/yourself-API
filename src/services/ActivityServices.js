@@ -1,16 +1,16 @@
-import admin from '../../firebase.js';
-import { COLECAO } from '../constants/Collections.js';
+const admin = require('../../firebase.js');
+const COLECAO = require('../constants/Collections.js');
 
 const db = admin.firestore();
 
-export async function atividadeInexistente(id) {
+async function atividadeInexistente(id) {
     const atividadeRef = db.collection(COLECAO.ATIVIDADE).doc(id);
     const atividadeSnapshot = await atividadeRef.get();
     
     return !atividadeSnapshot.exists;
 }
 
-export function calcularPontos(tempoConcentracao, dificuldade) {
+function calcularPontos(tempoConcentracao, dificuldade) {
     let dificuldadeFormatada = 0;
     switch (dificuldade) {
         case 1:
@@ -45,7 +45,7 @@ function parseDateBR(dataString) {
     return new Date(ano, mes - 1, dia);
 }
 
-export function atualizarOfensiva(usuarioData, estaCadastrandoAtividade, dataUltimaAtividadeTeste = null) {
+function atualizarOfensiva(usuarioData, estaCadastrandoAtividade, dataUltimaAtividadeTeste = null) {
     // Se não tem dados do usuário, retorna zeros
     if (!usuarioData) {
         return { novaOfensiva: 0, novaMaiorOfensiva: 0 };
@@ -118,4 +118,12 @@ export function atualizarOfensiva(usuarioData, estaCadastrandoAtividade, dataUlt
     novaMaiorOfensiva = Math.max(novaOfensiva, novaMaiorOfensiva);
 
     return { novaOfensiva, novaMaiorOfensiva };
+}
+
+module.exports = {
+    atividadeInexistente,
+    calcularPontos,
+    atualizarOfensiva,
+    parseDateBR,
+    normalizarData
 }

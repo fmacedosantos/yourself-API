@@ -1,7 +1,7 @@
 // importações
-import { Usuario } from "../models/UserModel.js";
+const  Usuario  = require("../models/UserModel.js");
 
-export class UsuarioController {
+class UsuarioController {
 
     async cadastrarUsuario(req, res) {
         try {
@@ -151,3 +151,5 @@ export class UsuarioController {
     }
     
 }
+
+module.exports = UsuarioController;
