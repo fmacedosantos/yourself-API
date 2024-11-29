@@ -1,4 +1,4 @@
-const { AtividadeRepository } = require("../repositories/ActivityRepository.js");
+const AtividadeRepository  = require("../repositories/ActivityRepository.js");
 
 class Atividade {
 

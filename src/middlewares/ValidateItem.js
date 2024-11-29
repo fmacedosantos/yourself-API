@@ -1,4 +1,4 @@
-const { MENSAGENS } = require("../constants/Messages.js");
+const  MENSAGENS = require("../constants/Messages.js");
 const { itemInexistente, itemPossuido, pontosInsuficientes } = require("../services/ItemServices.js");
 const { usuarioInexistente } = require("../services/UserServices.js");
 

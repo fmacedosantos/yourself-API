@@ -1,5 +1,5 @@
 // importações
-const { Usuario } = require("../models/UserModel.js");
+const  Usuario  = require("../models/UserModel.js");
 
 class UsuarioController {
 

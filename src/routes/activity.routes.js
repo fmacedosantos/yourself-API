@@ -2,7 +2,7 @@
 const express = require("express");
 const  AtividadeController  = require("../controllers/ActivityController.js");
 const { validarAtualizarAtividade, validarCadastroAtividade, validarIdAtividade } = require("../middlewares/ValidateActivity.js");
-const { validarEmailUsuario } = require("../middlewares/ValidateUser.js");
+const { validarEmailUsuario }  = require("../middlewares/ValidateUser.js");
 const  autenticarJWT  = require("../middlewares/AuthenticateJWT.js");
 
 // criando a aplicação express

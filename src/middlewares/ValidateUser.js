@@ -1,4 +1,4 @@
-const { MENSAGENS } = require("../constants/Messages.js");
+const MENSAGENS = require("../constants/Messages.js");
 const { apelidoExistente, usuarioInexistente } = require("../services/UserServices.js");
 
 const validarCadastroUsuario = async (req, res, next) => {  

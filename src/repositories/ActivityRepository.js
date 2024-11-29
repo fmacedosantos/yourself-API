@@ -1,6 +1,6 @@
 const admin = require('firebase-admin');
 const { atualizarOfensiva, calcularPontos } = require('../services/ActivityServices.js');
-const { COLECAO } = require('../constants/Collections.js');
+const  COLECAO  = require('../constants/Collections.js');
 
 class AtividadeRepository {
 

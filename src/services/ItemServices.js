@@ -1,5 +1,5 @@
 const admin = require('../../firebase.js');
-const { COLECAO } = require('../constants/Collections.js');
+const COLECAO = require('../constants/Collections.js');
 
 const db = admin.firestore();
 

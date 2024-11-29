@@ -1,4 +1,4 @@
-const { Item } = require("../models/ItemModel.js");
+const  Item  = require("../models/ItemModel.js");
 
 class ItemController {
 

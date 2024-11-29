@@ -1,4 +1,4 @@
-const { UsuarioRepository } = require("../repositories/UserRepository.js");
+const  UsuarioRepository  = require("../repositories/UserRepository.js");
 
 class Usuario {
 

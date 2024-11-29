@@ -1,4 +1,4 @@
-const { ItemRepository } = require("../repositories/ItemRepository.js");
+const  ItemRepository  = require("../repositories/ItemRepository.js");
 
 class Item {
 

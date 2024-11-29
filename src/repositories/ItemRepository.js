@@ -1,5 +1,5 @@
 const admin = require('firebase-admin');
-const { COLECAO } = require('../constants/Collections.js');
+const  COLECAO  = require('../constants/Collections.js');
 
 class ItemRepository {
 

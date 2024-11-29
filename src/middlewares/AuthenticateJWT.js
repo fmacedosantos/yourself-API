@@ -1,4 +1,4 @@
-const { MENSAGENS } = require("../constants/Messages.js");
+const  MENSAGENS = require("../constants/Messages.js");
 const admin = require("../../firebase.js");
 
 const inicandoBanco = admin;

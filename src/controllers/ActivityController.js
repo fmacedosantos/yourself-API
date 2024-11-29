@@ -1,5 +1,5 @@
 // importações
-const { Atividade } = require("../models/ActivityModel.js");
+const  Atividade  = require("../models/ActivityModel.js");
 
 class AtividadeController {
     async cadastrarAtividade(req, res) {
