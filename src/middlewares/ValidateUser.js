@@ -25,6 +25,37 @@ const validarCadastroUsuario = async (req, res, next) => {
     next();
 };
 
+const validarAutenticarUsuario = async (req, res, next) => {  
+    const {email, senha} = req.body;
+
+    if (!email || !senha) {
+        return res.status(400).json({ message: MENSAGENS.USUARIO.ERRO_AUTENTICACAO });
+    }
+
+    const usuarioNaoExiste = await usuarioInexistente(email);
+    if (usuarioNaoExiste) {  
+        return res.status(400).send({ message: MENSAGENS.USUARIO.NAO_EXISTE });
+    }
+
+    next();
+};
+
+const validarAutenticarUsuarioJWT = async (req, res, next) => {  
+    const {senha} = req.body;
+    const email = req.usuario.email;
+
+    if (!email || !senha) {
+        return res.status(400).json({ message: MENSAGENS.USUARIO.ERRO_AUTENTICACAO });
+    }
+
+    const usuarioNaoExiste = await usuarioInexistente(email);
+    if (usuarioNaoExiste) {  
+        return res.status(400).send({ message: MENSAGENS.USUARIO.NAO_EXISTE });
+    }
+
+    next();
+};
+
 
 const validarEmailUsuario = async (req, res, next) => {  
     const email = req.usuario.email;
@@ -93,5 +124,7 @@ module.exports = {
     validarEmailUsuario,
     validarCadastroUsuario,
     validarAtualizarUsuario,
-    validarAtualizarPreferencias
+    validarAtualizarPreferencias,
+    validarAutenticarUsuario,
+    validarAutenticarUsuarioJWT
 }

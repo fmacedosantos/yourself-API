@@ -25,6 +25,39 @@ class UsuarioController {
         }
     }
 
+    async autenticarUsuario(req, res) {
+        try {
+            const {email, senha} = req.body;
+
+            const usuario = new Usuario();
+
+            usuario.email = email;
+            usuario.senha = senha;
+
+            const {success, message} = await usuario.autenticarUsuario();
+            res.status(200).send({ success: success, message: message });
+        } catch (error) {
+            res.status(500).json({ message: error.message });
+        }
+    }
+
+    async autenticarUsuarioJWT(req, res) {
+        try {
+            const {senha} = req.body;
+            const email = req.usuario.email;
+
+            const usuario = new Usuario();
+
+            usuario.email = email;
+            usuario.senha = senha;
+
+            const success = await usuario.autenticarUsuario();
+            res.status(200).send({ success: success });
+        } catch (error) {
+            res.status(500).json({ message: error.message });
+        }
+    }
+
     async mostrarUsuario(req, res) {
         try {
             // variáveis do jwt

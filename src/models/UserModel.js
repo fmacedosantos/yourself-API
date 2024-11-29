@@ -30,6 +30,10 @@ class Usuario {
         return this.#repository.cadastrarUsuario(this.email, this.senha, this.nome, this.apelido);
     }
 
+    autenticarUsuario() {
+        return this.#repository.autenticarUsuario(this.email, this.senha);
+    }
+
     mostrarUsuario() {
         return this.#repository.mostrarUsuario(this.email);
     }

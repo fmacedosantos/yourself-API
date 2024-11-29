@@ -5,8 +5,9 @@ const MENSAGENS = {
         SENHA_MENOR_QUE_6: "A senha deve possuir, pelo menos, 6 caracteres.",
         APELIDO_EXISTENTE: "O apelido já está em uso!",
         JA_CADASTRADO: "Usuário já cadastrado!",
-        NAO_EXISTE: "Usuário não encontrado!",
+        NAO_EXISTE: "Credenciais erradas ou não informadas!",
         ERRO_CADASTRO: "Algum dos dados necessários para criar o usuário não foram informados! Informe email, nome, apelido e senha.",
+        ERRO_AUTENTICACAO: "Algum dos dados necessários para autenticar o usuário não foram informados! Informe email e senha.",
         ERRO_ATUALIZAR: "Nenhum dos dados necessários para atualizar o usuário foram informados! Informe nome, apelido ou novaSenha.",
         ERRO_ATUALIZAR_PREFERENCIAS: "Nenhum dos dados necessários para atualizar as preferências do usuário foram informados! Informe preferenciaConcentracao ou preferenciaDescanso.",
         ERRO_NUMERO_PREFERENCIAS: "O tempo de preferência e de concentração deve ser maior do que 0."

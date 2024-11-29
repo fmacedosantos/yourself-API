@@ -1,6 +1,8 @@
 const admin = require('firebase-admin');
+const bcrypt = require('bcryptjs'); // Importando a biblioteca bcrypt
 const { atualizarOfensiva } = require('../services/ActivityServices.js');
-const  COLECAO  = require('../constants/Collections.js');
+const COLECAO = require('../constants/Collections.js');
+const MENSAGENS = require('../constants/Messages.js');
 
 class UsuarioRepository {
 
@@ -8,9 +10,11 @@ class UsuarioRepository {
 
     async cadastrarUsuario(email, senha, nome, apelido) {
 
+        const senhaHash = await bcrypt.hash(senha, 10); 
+
         await admin.auth().createUser({
             email: email,
-            password: senha
+            password: senha 
         });
 
         const usuarioRef = this.db.collection(COLECAO.USUARIO).doc(email);
@@ -28,15 +32,31 @@ class UsuarioRepository {
             preferenciaDescanso: 5,
             itens: [],
             atividades: [],
-            ultimaAtividade: null
+            ultimaAtividade: null,
+            senhaHash 
         }
     
         await usuarioRef.set(usuario);
+    }
 
-    }    
+    async autenticarUsuario(email, senha) {
+        const usuarioRef = this.db.collection(COLECAO.USUARIO).doc(email);
+        const usuarioSnapshot = await usuarioRef.get();
+
+        const usuarioData = usuarioSnapshot.data();
+        const senhaHash = usuarioData.senhaHash;
+
+        const senhaValida = await bcrypt.compare(senha, senhaHash);
+
+        if (!senhaValida) {
+            return {success: false, message: MENSAGENS.USUARIO.NAO_EXISTE};
+        } else {
+            return {success: true, message: "Usuário autenticado com sucesso!"};
+        }
+
+    }
 
     async mostrarUsuario(email) {
-
         const usuarioRef = this.db.collection(COLECAO.USUARIO).doc(email);
         const usuarioSnapshot = await usuarioRef.get();
 
@@ -49,11 +69,9 @@ class UsuarioRepository {
             anoRegistro: usuarioData.anoRegistro,
             ultimaAtividade: usuarioData.ultimaAtividade
         };
-
-    }       
+    }
 
     async mostrarEstatisticas(email) {
-        
         const usuarioRef = this.db.collection(COLECAO.USUARIO).doc(email);
         const usuarioSnapshot = await usuarioRef.get();
 
@@ -74,11 +92,9 @@ class UsuarioRepository {
             ofensiva: novaOfensiva,
             maiorOfensiva: novaMaiorOfensiva
         };
-        
-    } 
-    
-    async mostrarPreferencias(email) {
+    }
 
+    async mostrarPreferencias(email) {
         const usuarioRef = this.db.collection(COLECAO.USUARIO).doc(email);
         const usuarioSnapshot = await usuarioRef.get();
 
@@ -88,11 +104,9 @@ class UsuarioRepository {
             preferenciaConcentracao: usuarioData.preferenciaConcentracao,
             preferenciaDescanso: usuarioData.preferenciaDescanso
         };
-        
     }
 
     async atualizarUsuario(email, nome = null, apelido = null, novaSenha = null) {
-        
         const usuarioSnapshot = await this.db.collection(COLECAO.USUARIO).doc(email).get();
 
         const usuarioData = usuarioSnapshot.data();
@@ -105,16 +119,17 @@ class UsuarioRepository {
         if (novaSenha !== null) {
             const userRecord = await admin.auth().getUserByEmail(email);
             await admin.auth().updateUser(userRecord.uid, { password: novaSenha });
+
+            const senhaHash = await bcrypt.hash(novaSenha, 10);
+            atualizacoes.senhaHash = senhaHash;
         }
 
         if (Object.keys(atualizacoes).length > 0) {
             await this.db.collection(COLECAO.USUARIO).doc(email).update(atualizacoes);
         }
-
     }
-    
+
     async atualizarPreferencias(email, preferenciaConcentracao = null, preferenciaDescanso = null) {
-        
         const usuarioSnapshot = await this.db.collection(COLECAO.USUARIO).doc(email).get();
 
         const usuarioData = usuarioSnapshot.data();
@@ -130,15 +145,13 @@ class UsuarioRepository {
         if (Object.keys(atualizacoes).length > 0) {
             await this.db.collection(COLECAO.USUARIO).doc(email).update(atualizacoes);
         }
-        
-    }    
+    }
 
     async deletarUsuario(email) {
-        
         const userRecord = await admin.auth().getUserByEmail(email);
 
         const usuarioSnapshot = await this.db.collection(COLECAO.USUARIO).doc(email).get();
-        
+
         if (!usuarioSnapshot.exists) {
             throw new Error("Usuário não cadastrado!");
         }
@@ -152,9 +165,7 @@ class UsuarioRepository {
         await admin.auth().deleteUser(userRecord.uid);
 
         await this.db.collection(COLECAO.USUARIO).doc(email).delete();
-        
     }
-    
 }
 
 module.exports = UsuarioRepository;

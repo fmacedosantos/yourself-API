@@ -6,7 +6,9 @@ const {
     validarAtualizarPreferencias, 
     validarAtualizarUsuario, 
     validarCadastroUsuario, 
-    validarEmailUsuario 
+    validarEmailUsuario, 
+    validarAutenticarUsuario,
+    validarAutenticarUsuarioJWT
 } = require("../middlewares/ValidateUser.js");
 
 // criando a aplicação express
@@ -19,6 +21,14 @@ const usuarioController = new UsuarioController();
 app.post("/cadastrar", validarCadastroUsuario, (req, res) => {
     usuarioController.cadastrarUsuario(req, res);
 });
+
+app.post("/autenticar", validarAutenticarUsuario, (req, res) => {
+    usuarioController.autenticarUsuario(req, res);
+})
+
+app.post("/reautenticar", autenticarJWT, validarAutenticarUsuarioJWT, (req, res) => {
+    usuarioController.autenticarUsuarioJWT(req, res);
+})
 
 app.get("/mostrar", autenticarJWT, validarEmailUsuario, (req, res) => {
     usuarioController.mostrarUsuario(req, res);
