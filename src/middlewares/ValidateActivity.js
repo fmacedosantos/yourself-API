@@ -1,8 +1,8 @@
-import { MENSAGENS } from "../constants/Messages.js";
-import { atividadeInexistente } from "../services/ActivityServices.js";
-import { usuarioInexistente } from "../services/UserServices.js";
+const { MENSAGENS } = require("../constants/Messages.js");
+const { atividadeInexistente } = require("../services/ActivityServices.js");
+const { usuarioInexistente } = require("../services/UserServices.js");
 
-export const validarCadastroAtividade = async (req, res, next) => {
+const validarCadastroAtividade = async (req, res, next) => {
     const { titulo, categoria, dificuldade, tempoConcentracao } = req.body;
 
     const email = req.usuario.email;
@@ -19,7 +19,7 @@ export const validarCadastroAtividade = async (req, res, next) => {
     next();
 };
 
-export const validarAtualizarAtividade = async (req, res, next) => {
+const validarAtualizarAtividade = async (req, res, next) => {
     const { id, titulo, descricao, categoria } = req.body;
 
     if (!id) {
@@ -37,7 +37,7 @@ export const validarAtualizarAtividade = async (req, res, next) => {
     next();
 }
 
-export const validarIdAtividade = async (req, res, next) => {
+const validarIdAtividade = async (req, res, next) => {
     const { id } = req.body;
 
     if (!id) {
@@ -50,3 +50,9 @@ export const validarIdAtividade = async (req, res, next) => {
 
     next();
 }
+
+module.exports = {
+    validarCadastroAtividade,
+    validarAtualizarAtividade,
+    validarIdAtividade
+};

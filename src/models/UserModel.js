@@ -1,6 +1,6 @@
-import { UsuarioRepository } from "../repositories/UserRepository.js";
+const { UsuarioRepository } = require("../repositories/UserRepository.js");
 
-export class Usuario {
+class Usuario {
 
     // atributos
     email;
@@ -55,3 +55,5 @@ export class Usuario {
     }
 
 }
+
+module.exports = Usuario;

@@ -1,8 +1,8 @@
-import admin from 'firebase-admin';
-import { atualizarOfensiva } from '../services/ActivityServices.js';
-import { COLECAO } from '../constants/Collections.js';
+const admin = require('firebase-admin');
+const { atualizarOfensiva } = require('../services/ActivityServices.js');
+const { COLECAO } = require('../constants/Collections.js');
 
-export class UsuarioRepository {
+class UsuarioRepository {
 
     db = admin.firestore();
 
@@ -156,3 +156,5 @@ export class UsuarioRepository {
     }
     
 }
+
+module.exports = UsuarioRepository;

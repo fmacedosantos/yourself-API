@@ -1,7 +1,7 @@
 // importações
-import { Atividade } from "../models/ActivityModel.js";
+const { Atividade } = require("../models/ActivityModel.js");
 
-export class AtividadeController {
+class AtividadeController {
     async cadastrarAtividade(req, res) {
         try {
             // variáveis do body
@@ -81,3 +81,5 @@ export class AtividadeController {
         }
     }
 }
+
+module.exports = AtividadeController;

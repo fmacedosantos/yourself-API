@@ -1,7 +1,7 @@
-import { MENSAGENS } from "../constants/Messages.js";
-import { apelidoExistente, usuarioInexistente } from "../services/UserServices.js";
+const { MENSAGENS } = require("../constants/Messages.js");
+const { apelidoExistente, usuarioInexistente } = require("../services/UserServices.js");
 
-export const validarCadastroUsuario = async (req, res, next) => {  
+const validarCadastroUsuario = async (req, res, next) => {  
     const { email, nome, apelido, senha } = req.body;
 
     if (!email || !nome || !apelido || !senha) {
@@ -26,7 +26,7 @@ export const validarCadastroUsuario = async (req, res, next) => {
 };
 
 
-export const validarEmailUsuario = async (req, res, next) => {  
+const validarEmailUsuario = async (req, res, next) => {  
     const email = req.usuario.email;
 
     if (!email) {
@@ -42,7 +42,7 @@ export const validarEmailUsuario = async (req, res, next) => {
 };
 
 
-export const validarAtualizarUsuario = async (req, res, next) => {  
+const validarAtualizarUsuario = async (req, res, next) => {  
     const { nome, apelido, novaSenha } = req.body;
     const email = req.usuario.email;
     
@@ -65,7 +65,7 @@ export const validarAtualizarUsuario = async (req, res, next) => {
     next();
 };
 
-export const validarAtualizarPreferencias = async (req, res, next) => {  
+const validarAtualizarPreferencias = async (req, res, next) => {  
     const { preferenciaConcentracao, preferenciaDescanso } = req.body;
 
     const email = req.usuario.email;
@@ -88,3 +88,10 @@ export const validarAtualizarPreferencias = async (req, res, next) => {
 
     next();
 };
+
+module.exports = {
+    validarEmailUsuario,
+    validarCadastroUsuario,
+    validarAtualizarUsuario,
+    validarAtualizarPreferencias
+}

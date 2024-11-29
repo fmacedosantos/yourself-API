@@ -1,8 +1,8 @@
-import express from "express";
-import { ItemController } from "../controllers/ItemController.js";
-import { validarAtualizarItem, validarCadastroItem, validarCompraItem, validarIdItem } from "../middlewares/ValidateItem.js";
-import { validarEmailUsuario } from "../middlewares/ValidateUser.js";
-import { autenticarJWT } from "../middlewares/AuthenticateJWT.js";
+const express = require("express");
+const  ItemController  = require("../controllers/ItemController.js");
+const { validarAtualizarItem, validarCadastroItem, validarCompraItem, validarIdItem } = require("../middlewares/ValidateItem.js");
+const { validarEmailUsuario } = require("../middlewares/ValidateUser.js");
+const  autenticarJWT = require("../middlewares/AuthenticateJWT.js");
 
 const app = express();
 
@@ -32,4 +32,4 @@ app.delete('/deletar', validarIdItem, (req, res) => {
     itemController.deletarItem(req, res);
 })
 
-export const itemRouter = app;
+module.exports = app;

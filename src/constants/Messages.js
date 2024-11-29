@@ -1,4 +1,4 @@
-export const MENSAGENS = {
+const MENSAGENS = {
     USUARIO: {
         NAO_AUTORIZADO: "Usuário não autorizado!",
         EMAIL_NAO_INFORMADO: "O email do usuário não foi informado!",
@@ -27,3 +27,5 @@ export const MENSAGENS = {
         ERRO_ATUALIZAR: "Nenhum dos dados necessários para atualizar o item foram informados! Informe nome, preco ou icone."
     }
 }
+
+module.exports = MENSAGENS;

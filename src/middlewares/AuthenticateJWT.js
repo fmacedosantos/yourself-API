@@ -1,9 +1,9 @@
-import { MENSAGENS } from "../constants/Messages.js";
-import admin from "../../firebase.js";
+const { MENSAGENS } = require("../constants/Messages.js");
+const admin = require("../../firebase.js");
 
 const inicandoBanco = admin;
 
-export async function autenticarJWT(req, res, next) {
+async function autenticarJWT(req, res, next) {
     const authorizationHeader = req.headers.authorization;
     const token = authorizationHeader && authorizationHeader.startsWith("Bearer ") 
         ? authorizationHeader.split(" ")[1] 
@@ -29,3 +29,5 @@ export async function autenticarJWT(req, res, next) {
         return res.status(401).json({ message: MENSAGENS.USUARIO.NAO_AUTORIZADO });
     }
 }
+
+module.exports = autenticarJWT;

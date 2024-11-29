@@ -1,7 +1,7 @@
-import admin from 'firebase-admin';
-import { COLECAO } from '../constants/Collections.js';
+const admin = require('firebase-admin');
+const { COLECAO } = require('../constants/Collections.js');
 
-export class ItemRepository {
+class ItemRepository {
 
     db = admin.firestore();
 
@@ -111,3 +111,5 @@ export class ItemRepository {
         }
     }
 }
+
+module.exports = ItemRepository;

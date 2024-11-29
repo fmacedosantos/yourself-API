@@ -1,9 +1,9 @@
 // importações
-import express from "express";
-import { AtividadeController } from "../controllers/ActivityController.js";
-import { validarAtualizarAtividade, validarCadastroAtividade, validarIdAtividade } from "../middlewares/ValidateActivity.js";
-import { validarEmailUsuario } from "../middlewares/ValidateUser.js";
-import { autenticarJWT } from "../middlewares/AuthenticateJWT.js";
+const express = require("express");
+const  AtividadeController  = require("../controllers/ActivityController.js");
+const { validarAtualizarAtividade, validarCadastroAtividade, validarIdAtividade } = require("../middlewares/ValidateActivity.js");
+const { validarEmailUsuario } = require("../middlewares/ValidateUser.js");
+const  autenticarJWT  = require("../middlewares/AuthenticateJWT.js");
 
 // criando a aplicação express
 const app = express();
@@ -29,4 +29,4 @@ app.delete("/deletar", validarIdAtividade, (req, res) => {
 });
 
 // exportando as rotas
-export const atividadeRouter = app;
+module.exports = app;

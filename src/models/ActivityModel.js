@@ -1,6 +1,6 @@
-import { AtividadeRepository } from "../repositories/ActivityRepository.js"
+const { AtividadeRepository } = require("../repositories/ActivityRepository.js");
 
-export class Atividade {
+class Atividade {
 
     // atributos
     id
@@ -37,3 +37,5 @@ export class Atividade {
         return this.#repository.deletarAtividade(this.id);
     }
 }
+
+module.exports = Atividade;

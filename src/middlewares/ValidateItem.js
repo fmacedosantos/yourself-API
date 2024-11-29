@@ -1,8 +1,8 @@
-import { MENSAGENS } from "../constants/Messages.js";
-import { itemInexistente, itemPossuido, pontosInsuficientes } from "../services/ItemServices.js";
-import { usuarioInexistente } from "../services/UserServices.js";
+const { MENSAGENS } = require("../constants/Messages.js");
+const { itemInexistente, itemPossuido, pontosInsuficientes } = require("../services/ItemServices.js");
+const { usuarioInexistente } = require("../services/UserServices.js");
 
-export const validarCadastroItem = (req, res, next) => {
+const validarCadastroItem = (req, res, next) => {
     const { nome, preco, icone } = req.body;
     if (!nome || !preco || !icone) {
         return res.status(400).json({ message: MENSAGENS.ITEM.ERRO_CADASTRO });
@@ -10,7 +10,7 @@ export const validarCadastroItem = (req, res, next) => {
     next();
 }
 
-export const validarCompraItem = async (req, res, next) => {
+const validarCompraItem = async (req, res, next) => {
     const { id } = req.body;
 
     const email = req.usuario.email;
@@ -39,7 +39,7 @@ export const validarCompraItem = async (req, res, next) => {
     next();
 }
 
-export const validarIdItem = async (req, res, next) => {
+const validarIdItem = async (req, res, next) => {
     const { id } = req.body;
 
     if (!id) {
@@ -53,7 +53,7 @@ export const validarIdItem = async (req, res, next) => {
     next();
 }
 
-export const validarAtualizarItem = async (req, res, next) => {
+const validarAtualizarItem = async (req, res, next) => {
     const { id, nome, preco, icone } = req.body;
 
     if (!id) {
@@ -69,4 +69,11 @@ export const validarAtualizarItem = async (req, res, next) => {
     }
 
     next();
+}
+
+module.exports = {
+    validarCadastroItem,
+    validarCompraItem,
+    validarIdItem,
+    validarAtualizarItem
 }

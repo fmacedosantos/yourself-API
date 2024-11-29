@@ -1,6 +1,6 @@
-import { ItemRepository } from "../repositories/ItemRepository.js"
+const { ItemRepository } = require("../repositories/ItemRepository.js");
 
-export class Item {
+class Item {
 
     id
     email
@@ -39,3 +39,5 @@ export class Item {
     }
     
 }
+
+module.exports = Item;
