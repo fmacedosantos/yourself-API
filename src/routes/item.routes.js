@@ -4,32 +4,32 @@ const { validarAtualizarItem, validarCadastroItem, validarCompraItem, validarIdI
 const { validarEmailUsuario } = require("../middlewares/ValidateUser.js");
 const  autenticarJWT = require("../middlewares/AuthenticateJWT.js");
 
-const app = express();
+const router = express.Router();
 
 const itemController = new ItemController();
 
-app.post('/cadastrar', validarCadastroItem, (req, res) => {
+router.post('/cadastrar', validarCadastroItem, (req, res) => {
     itemController.cadastrarItem(req, res);
 });
 
-app.post('/comprar', autenticarJWT, validarCompraItem, (req, res) => {
+router.post('/comprar', autenticarJWT, validarCompraItem, (req, res) => {
     itemController.comprarItem(req, res);
 });
 
-app.get('/mostrar', autenticarJWT, validarEmailUsuario, (req, res) => {
+router.get('/mostrar', autenticarJWT, validarEmailUsuario, (req, res) => {
     itemController.mostrarItens(req, res);
 });
 
-app.get('/mostrar-todos', autenticarJWT, (req, res) => {
+router.get('/mostrar-todos', autenticarJWT, (req, res) => {
     itemController.mostrarTodosItens(req, res);
 })
 
-app.patch('/atualizar', validarAtualizarItem, (req, res) => {
+router.patch('/atualizar', validarAtualizarItem, (req, res) => {
     itemController.atualizarItem(req, res);
 })
 
-app.delete('/deletar', validarIdItem, (req, res) => {
+router.delete('/deletar', validarIdItem, (req, res) => {
     itemController.deletarItem(req, res);
 })
 
-module.exports = app;
+module.exports = router;

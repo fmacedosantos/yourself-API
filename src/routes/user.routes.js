@@ -1,65 +1,62 @@
-// importações
 const express = require("express");
 const UsuarioController = require("../controllers/UserController.js");
-const  autenticarJWT  = require("../middlewares/AuthenticateJWT.js");
-const { 
-    validarAtualizarPreferencias, 
-    validarAtualizarUsuario, 
-    validarCadastroUsuario, 
-    validarEmailUsuario, 
+const autenticarJWT = require("../middlewares/AuthenticateJWT.js");
+const {
+    validarAtualizarPreferencias,
+    validarAtualizarUsuario,
+    validarCadastroUsuario,
+    validarEmailUsuario,
     validarAutenticarUsuario,
     validarAutenticarUsuarioJWT
 } = require("../middlewares/ValidateUser.js");
 
-// criando a aplicação express
-const app = express();
-
-// chamando o controller
+// Use Router em vez de app
+const router = express.Router();
 const usuarioController = new UsuarioController();
 
-// rotas
-app.post("/cadastrar", validarCadastroUsuario, (req, res) => {
+// Definição das rotas
+router.post("/cadastrar", validarCadastroUsuario, (req, res) => {
     usuarioController.cadastrarUsuario(req, res);
 });
 
-app.post("/autenticar", validarAutenticarUsuario, (req, res) => {
+router.post("/autenticar", validarAutenticarUsuario, (req, res) => {
     usuarioController.autenticarUsuario(req, res);
-})
+});
 
-app.post("/reautenticar", autenticarJWT, validarAutenticarUsuarioJWT, (req, res) => {
+router.post("/reautenticar", autenticarJWT, validarAutenticarUsuarioJWT, (req, res) => {
     usuarioController.autenticarUsuarioJWT(req, res);
-})
+});
 
-app.get("/mostrar", autenticarJWT, validarEmailUsuario, (req, res) => {
+router.get("/mostrar", autenticarJWT, validarEmailUsuario, (req, res) => {
     usuarioController.mostrarUsuario(req, res);
 });
 
-app.get("/mostrar-estatisticas", autenticarJWT, validarEmailUsuario, (req, res) => {
+router.get("/mostrar-estatisticas", autenticarJWT, validarEmailUsuario, (req, res) => {
     usuarioController.mostrarEstatisticas(req, res);
 });
 
-app.get("/mostrar-preferencias", autenticarJWT, validarEmailUsuario, (req, res) => {
+router.get("/mostrar-preferencias", autenticarJWT, validarEmailUsuario, (req, res) => {
     usuarioController.mostrarPreferencias(req, res);
 });
 
-app.patch("/atualizar", autenticarJWT, validarAtualizarUsuario, (req, res) => {
+router.patch("/atualizar", autenticarJWT, validarAtualizarUsuario, (req, res) => {
     usuarioController.atualizarUsuario(req, res);
 });
 
-app.patch("/atualizar-preferencias", autenticarJWT, validarAtualizarPreferencias, (req, res) => {
+router.patch("/atualizar-preferencias", autenticarJWT, validarAtualizarPreferencias, (req, res) => {
     usuarioController.atualizarPreferencias(req, res);
 });
 
-app.delete("/deletar", autenticarJWT, validarEmailUsuario, (req, res) => {
+router.delete("/deletar", autenticarJWT, validarEmailUsuario, (req, res) => {
     usuarioController.deletarUsuario(req, res);
 });
 
-app.post("/autenticar-jwt", autenticarJWT, (req, res) => {
-    res.status(200).send({ 
-        message: "Usuário autenticado com sucesso!", 
-        usuario: req.usuario 
+router.post("/autenticar-jwt", autenticarJWT, (req, res) => {
+    res.status(200).send({
+        message: "Usuário autenticado com sucesso!",
+        usuario: req.usuario
     });
 });
 
-// exportando as rotas
-module.exports = app;
+// Exporta o roteador em vez de app
+module.exports = router;
