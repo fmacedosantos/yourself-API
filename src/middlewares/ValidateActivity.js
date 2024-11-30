@@ -8,12 +8,12 @@ const validarCadastroAtividade = async (req, res, next) => {
     const email = req.usuario.email;
 
     if (!titulo || !categoria || !dificuldade || !tempoConcentracao || !email) {
-        return res.status(400).json({ message: MENSAGENS.ATIVIDADE.ERRO_CADASTRO });
+        return res.status(400).json({ success: false, message: MENSAGENS.ATIVIDADE.ERRO_CADASTRO });
     }
 
     const usuarioNaoExiste = await usuarioInexistente(email);
     if (usuarioNaoExiste) {  
-        return res.status(400).send({ message: MENSAGENS.USUARIO.NAO_EXISTE });
+        return res.status(400).send({ success: false, message: MENSAGENS.USUARIO.NAO_EXISTE });
     }
 
     next();
@@ -23,15 +23,15 @@ const validarAtualizarAtividade = async (req, res, next) => {
     const { id, titulo, descricao, categoria } = req.body;
 
     if (!id) {
-        return res.status(400).json({ message: MENSAGENS.ATIVIDADE.ID_NAO_INFORMADO });
+        return res.status(400).json({ success: false, message: MENSAGENS.ATIVIDADE.ID_NAO_INFORMADO });
     }
 
     if (!titulo && !descricao && !categoria) {
-        return res.status(400).json({ message: MENSAGENS.ATIVIDADE.ERRO_ATUALIZAR });
+        return res.status(400).json({ success: false, message: MENSAGENS.ATIVIDADE.ERRO_ATUALIZAR });
     }
 
     if (await atividadeInexistente(id)) {
-        return res.status(400).send({ message: MENSAGENS.ATIVIDADE.NAO_EXISTE });
+        return res.status(400).send({ success: false, message: MENSAGENS.ATIVIDADE.NAO_EXISTE });
     }
 
     next();
@@ -41,11 +41,11 @@ const validarIdAtividade = async (req, res, next) => {
     const { id } = req.body;
 
     if (!id) {
-        return res.status(400).json({ message: MENSAGENS.ATIVIDADE.ID_NAO_INFORMADO });
+        return res.status(400).json({ success: false, message: MENSAGENS.ATIVIDADE.ID_NAO_INFORMADO });
     }
 
     if (await atividadeInexistente(id)) {
-        return res.status(400).send({ message: MENSAGENS.ATIVIDADE.NAO_EXISTE });
+        return res.status(400).send({ success: false, message: MENSAGENS.ATIVIDADE.NAO_EXISTE });
     }
 
     next();

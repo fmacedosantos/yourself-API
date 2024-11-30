@@ -10,7 +10,7 @@ async function autenticarJWT(req, res, next) {
         : null;
 
     if (!token) {
-        return res.status(401).json({ message: MENSAGENS.USUARIO.NAO_AUTORIZADO });
+        return res.status(401).json({ success: false, message: MENSAGENS.USUARIO.NAO_AUTORIZADO });
     }
 
     try {
@@ -20,13 +20,12 @@ async function autenticarJWT(req, res, next) {
         };
         next();
     } catch (error) {
-        console.error('Erro na validação do JWT:', error.message);
 
         if (error.code === 'auth/id-token-expired') {
-            return res.status(401).json({ message: 'Sessão expirada. Faça login novamente.' });
+            return res.status(401).json({ success: false, message: 'Sessão expirada. Faça login novamente.' });
         }
 
-        return res.status(401).json({ message: MENSAGENS.USUARIO.NAO_AUTORIZADO });
+        return res.status(401).json({ success: false, message: MENSAGENS.USUARIO.NAO_AUTORIZADO });
     }
 }
 

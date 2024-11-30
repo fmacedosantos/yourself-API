@@ -19,9 +19,9 @@ class UsuarioController {
 
             // chamando o método do repository
             await usuario.cadastrarUsuario();
-            res.status(201).send({ message: 'Usuário cadastrado com sucesso!' });
+            res.status(201).send({ success: true, message: 'Usuário cadastrado com sucesso!' });
         } catch (error) {
-            res.status(500).json({ message: error.message });
+            res.status(500).json({ success: false, message: error.message });
         }
     }
 
@@ -37,7 +37,7 @@ class UsuarioController {
             const {success, message} = await usuario.autenticarUsuario();
             res.status(200).send({ success: success, message: message });
         } catch (error) {
-            res.status(500).json({ message: error.message });
+            res.status(500).json({ success: false, message: error.message });
         }
     }
 
@@ -54,7 +54,7 @@ class UsuarioController {
             const {success, message} = await usuario.autenticarUsuario();
             res.status(200).send({ success: success, message: message });
         } catch (error) {
-            res.status(500).json({ message: error.message });
+            res.status(500).json({ success: false, message: error.message });
         }
     }
 
@@ -71,9 +71,9 @@ class UsuarioController {
 
             // chamando o método do repository
             const dadosUsuario = await usuario.mostrarUsuario();
-            res.status(200).send({ dadosUsuario });
+            res.status(200).send({ success: true, data: dadosUsuario, message: 'Usuário exibido com sucesso!' });
         } catch (error) {
-            res.status(500).json({ message: error.message });
+            res.status(500).json({ success: false, message: error.message });
         }
     }
 
@@ -90,9 +90,9 @@ class UsuarioController {
 
             // chamando o método do repository
             const dadosEstatisticas = await usuario.mostrarEstatisticas();
-            res.status(200).send({ dadosEstatisticas });
+            res.status(200).send({ success: true, data: dadosEstatisticas, message: 'Estatísticas exibidas com sucesso!' });
         } catch (error) {
-            res.status(500).json({ message: error.message });
+            res.status(500).json({ success: false, message: error.message });
         }
     }
 
@@ -109,9 +109,9 @@ class UsuarioController {
 
             // chamando o método do repository
             const dadosPreferencias = await usuario.mostrarPreferencias();
-            res.status(200).send({ dadosPreferencias });
+            res.status(200).send({ success: true, data: dadosPreferencias, message: 'Preferências exibidas com sucesso!' });
         } catch (error) {
-            res.status(500).json({ message: error.message });
+            res.status(500).json({ success: false, message: error.message });
         }
     }
 
@@ -135,10 +135,9 @@ class UsuarioController {
             // chamando o método do repository
             await usuario.atualizarUsuario();
     
-            const usuarioAtualizado = await usuario.mostrarUsuario();
-            res.status(200).send({ message: 'Usuário atualizado com sucesso!', usuarioAtualizado });
+            res.status(200).send({ success: true, message: 'Usuário atualizado com sucesso!' });
         } catch (error) {
-            res.status(500).json({ message: error.message });
+            res.status(500).json({ success: false, message: error.message });
         }
     }
     
@@ -157,10 +156,9 @@ class UsuarioController {
 
             await usuario.atualizarPreferencias();
 
-            const preferenciasAtualizadas = await usuario.mostrarPreferencias();
-            res.status(200).send({ message: 'Preferências atualizadas com sucesso!', preferenciasAtualizadas });
+            res.status(200).send({ success: true, message: 'Preferências atualizadas com sucesso!' });
         } catch (error) {
-            res.status(500).json({ message: error.message });
+            res.status(500).json({ success: false, message: error.message });
         }
     }
 
@@ -177,9 +175,9 @@ class UsuarioController {
     
             // chamando o método do repository
             await usuario.deletarUsuario();
-            res.status(200).send({ message: 'Usuário deletado com sucesso!' });
+            res.status(200).send({ success: true, message: 'Usuário deletado com sucesso!' });
         } catch (error) {
-            res.status(500).json({ message: error.message });
+            res.status(500).json({ success: false, message: error.message });
         }
     }
     

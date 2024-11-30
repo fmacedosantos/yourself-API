@@ -13,9 +13,9 @@ class ItemController {
             item.icone = icone;
 
             await item.cadastrarItem();
-            res.status(201).send({ message: "Item cadastrado com sucesso!" });
+            res.status(201).send({ success: true, message: "Item cadastrado com sucesso!" });
         } catch (error) {
-            res.status(500).json({ message: error.message });
+            res.status(500).json({ success: false, message: error.message });
         }
     }
 
@@ -31,9 +31,9 @@ class ItemController {
             item.email = email;
 
             await item.comprarItem();
-            res.status(200).send({ message: "Item comprado com sucesso!" });
+            res.status(200).send({ success: true, message: "Item comprado com sucesso!" });
         } catch (error) {
-            res.status(500).json({ message: error.message });
+            res.status(500).json({ success: false, message: error.message });
         }
     }
 
@@ -46,9 +46,9 @@ class ItemController {
             item.email = email;
 
             const dadosItens = await item.mostrarItens();
-            res.status(200).send({ dadosItens });
+            res.status(200).send({ success: true, data: dadosItens, message: 'Itens exibidos com sucesso!' });
         } catch (error) {
-            res.status(500).json({ message: error.message });
+            res.status(500).json({ success: false, message: error.message });
         }
     }
 
@@ -57,9 +57,9 @@ class ItemController {
             const item = new Item();
 
             const dadosItens = await item.mostrarTodosItens()
-            res.status(200).send({ dadosItens });
+            res.status(200).send({ success: true, data: dadosItens, message: 'Itens exibidos com sucesso!' });
         } catch (error) {
-            res.status(500).json({ message: error.message });
+            res.status(500).json({ success: false, message: error.message });
         }
     }
 
@@ -75,9 +75,9 @@ class ItemController {
             item.icone = icone;
 
             await item.atualizarItem();
-            res.status(200).send({ message: 'Item atualizado com sucesso!' });
+            res.status(200).send({ success: true, message: 'Item atualizado com sucesso!' });
         } catch (error) {
-            res.status(500).json({ message: error.message });
+            res.status(500).json({ success: false, message: error.message });
         }
     }
 
@@ -90,9 +90,9 @@ class ItemController {
             item.id = id;
 
             await item.deletarItem();
-            res.status(200).send({ message: `O item foi excluído com sucesso!` })
+            res.status(200).send({ success: true, message: `O item foi excluído com sucesso!` })
         } catch (error) {
-            res.status(500).json({ message: error.message });
+            res.status(500).json({ success: false, message: error.message });
         }
     }
 }
