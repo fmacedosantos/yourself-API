@@ -14,7 +14,7 @@ async function autenticarJWT(req, res, next) {
     }
 
     try {
-        const decodedIdToken = await admin.auth().verifyIdToken(token, true); 
+        const decodedIdToken = await admin.auth().verifyIdToken(token);
         req.usuario = {
             email: decodedIdToken.email,
         };

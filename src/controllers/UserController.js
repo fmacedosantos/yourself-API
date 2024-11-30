@@ -35,7 +35,11 @@ class UsuarioController {
             usuario.senha = senha;
 
             const {success, message} = await usuario.autenticarUsuario();
-            res.status(200).send({ success: success, message: message });
+            if (success) {
+                res.status(200).send({ success: success, message: message });
+            } else {
+                res.status(401).send({ success: success, message: message });
+            }
         } catch (error) {
             res.status(500).json({ message: error.message });
         }
@@ -51,8 +55,12 @@ class UsuarioController {
             usuario.email = email;
             usuario.senha = senha;
 
-            const success = await usuario.autenticarUsuario();
-            res.status(200).send({ success: success });
+            const {success, message} = await usuario.autenticarUsuario();
+            if (success) {
+                res.status(200).send({ success: success, message: message });
+            } else {
+                res.status(401).send({ success: success, message: message });
+            }
         } catch (error) {
             res.status(500).json({ message: error.message });
         }
