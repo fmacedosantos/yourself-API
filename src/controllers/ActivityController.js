@@ -23,9 +23,9 @@ class AtividadeController {
             // chamando o método do repository
             
             await atividade.cadastrarAtividade();
-            res.status(201).send({ message: "Atividade cadastrada com sucesso!" });
+            res.status(201).send({ success: true, message: "Atividade cadastrada com sucesso!" });
         } catch (error) {
-            res.status(500).json({ message: error.message });
+            res.status(500).json({ success: false, message: error.message });
         }
     }
 
@@ -38,9 +38,9 @@ class AtividadeController {
             atividade.email = email;
     
             const dadosAtividades = await atividade.mostrarAtividades();
-            res.status(200).send({ dadosAtividades });
+            res.status(200).send({ success: true, data: dadosAtividades, message: 'Atividades exibidas com sucesso!' });
         } catch (error) {
-            res.status(500).json({ message: error.message });
+            res.status(500).json({ success: false, message: error.message });
         }
     }
 
@@ -60,9 +60,9 @@ class AtividadeController {
 
             // chamando o método do repository para atualizar a atividade
             await atividade.atualizarAtividade();
-            res.status(200).send({ message: 'Atividade atualizada com sucesso!' });
+            res.status(200).send({ success: true, message: 'Atividade atualizada com sucesso!' });
         } catch (error) {
-            res.status(500).json({ message: error.message });
+            res.status(500).json({ success: false, message: error.message });
         }
     }
 
@@ -75,9 +75,9 @@ class AtividadeController {
             atividade.id = id;
 
             await atividade.deletarAtividade();
-            res.status(200).send({ message: `A atividade foi excluída com sucesso!` })
+            res.status(200).send({ success: true, message: `A atividade foi excluída com sucesso!` })
         } catch (error) {
-            res.status(500).json({ message: error.message });
+            res.status(500).json({ success: false, message: error.message });
         }
     }
 }
