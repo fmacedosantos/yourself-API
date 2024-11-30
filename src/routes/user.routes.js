@@ -7,7 +7,7 @@ const {
     validarCadastroUsuario,
     validarEmailUsuario,
     validarAutenticarUsuario,
-    validarAutenticarUsuarioJWT
+    validarReautenticarUsuario,
 } = require("../middlewares/ValidateUser.js");
 
 // Use Router em vez de app
@@ -23,7 +23,7 @@ router.post("/autenticar", validarAutenticarUsuario, (req, res) => {
     usuarioController.autenticarUsuario(req, res);
 });
 
-router.post("/reautenticar", autenticarJWT, validarAutenticarUsuarioJWT, (req, res) => {
+router.post("/reautenticar", autenticarJWT, validarReautenticarUsuario, (req, res) => {
     usuarioController.autenticarUsuarioJWT(req, res);
 });
 
@@ -53,6 +53,7 @@ router.delete("/deletar", autenticarJWT, validarEmailUsuario, (req, res) => {
 
 router.post("/autenticar-jwt", autenticarJWT, (req, res) => {
     res.status(200).send({
+        success: true, 
         message: "Usuário autenticado com sucesso!",
         usuario: req.usuario
     });
