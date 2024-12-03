@@ -14,7 +14,10 @@ Instale todas as dependências do projeto com:
 npm install
 ```
 
-### 3. Configuração de Variáveis de Ambiente
+### 3. Instale Gpg4win
+Acesse o [site](https://www.gpg4win.org/get-gpg4win.html) da ferramenta de descriptografia e baixe.
+
+### 4. Configuração de Variáveis de Ambiente
 Descriptografe as variáveis de ambiente:
 ```bash
 npm run decrypt
