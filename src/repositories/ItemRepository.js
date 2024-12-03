@@ -64,7 +64,6 @@ class ItemRepository {
     }
 
     async mostrarTodosItens() {
-
         const itens = [];
         const itemSnapshot = await this.db.collection(COLECAO.ITEM).get();
     
@@ -72,9 +71,10 @@ class ItemRepository {
             itens.push(doc.data());
         });
     
+        itens.sort((a, b) => a.preco - b.preco);
+    
         return itens;
-        
-    }
+    }    
     
     async atualizarItem(id, nome = null, preco = null, icone = null) {
         const itemSnapshot = await this.db.collection(COLECAO.ITEM).doc(id).get();
