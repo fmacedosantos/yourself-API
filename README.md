@@ -1,4 +1,36 @@
-# Rodando a API
-Baixe e rode o executável.
+# Yourself API
 
-Caso queira fazer modificações na API e então rodar, será necessário o acesso à conta de serviço do Firebase.
+## 🔧 Configuração Inicial
+
+### 1. Clonar o Repositório
+```bash
+git clone https://github.com/fmacedosantos/yourself-API.git
+cd yourself
+```
+
+### 2. Instalação de Dependências
+Instale todas as dependências do projeto com:
+```bash
+npm install
+```
+
+### 3. Configuração de Variáveis de Ambiente
+Descriptografe as variáveis de ambiente:
+```bash
+npm run decrypt
+```
+
+## 🏃‍♂️ Iniciando a Aplicação
+Após seguir todos os passos acima, inicie a aplicação:
+```bash
+npm start
+```
+
+## 🛠️ Solução de Problemas
+- Certifique-se de que todas as etapas foram seguidas corretamente
+
+## 🤝 Contribuição
+Contribuições são bem-vindas! Por favor, leia as diretrizes de contribuição antes de fazer um pull request.
+
+## 🆘 Suporte
+Em caso de dúvidas, abra uma issue no repositório do GitHub ou entre em contato com o mantenedor do projeto.

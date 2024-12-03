@@ -4,7 +4,9 @@
   "main": "server.js",
   "bin": "server.js",
   "scripts": {
-    "start": "node server.js"
+    "start": "node server.js",
+    "decrypt": "gpg --decrypt --output serviceAccountKey.json serviceAccountKey.json.gpg",
+    "delete": "del /f serviceAccountKey.json"
   },
   "keywords": [],
   "author": "",
