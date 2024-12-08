@@ -80,7 +80,7 @@ function listarRotas() {
     console.log("\n========================================\n");
 }
 
-app.listen(3000, () => {
-    console.log("A API foi iniciada na porta 3000.\n");
-    listarRotas();
+const PORT = process.env.PORT || 3000;
+app.listen(PORT, () => {
+    console.log(`A API foi iniciada na porta ${PORT}.\n`);
 });
